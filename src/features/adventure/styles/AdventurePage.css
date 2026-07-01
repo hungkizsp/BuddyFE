@@ -1,0 +1,279 @@
+/* =========================================================
+   Adventure Map – AdventurePage.css
+   2 sections: adv-header-section + adv-map-section
+   ========================================================= */
+
+/* ---------- Page wrapper ---------- */
+.adv-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #fff9eb;
+  font-family: 'Nunito', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+}
+
+/* ==========================================================
+   DIV 1 — Header / Title section
+   ========================================================== */
+.adv-header-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 28px 16px;
+  background: #fff9eb;
+  flex-shrink: 0;
+}
+
+.adv-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+  color: #1a2e1a;
+  letter-spacing: -0.3px;
+  line-height: 1.15;
+}
+
+.adv-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #5aaa8a;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+}
+
+.adv-zoom-group {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.adv-zoom-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: #ede9df;
+  font-size: 20px;
+  font-weight: 700;
+  color: #5a6a5a;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  transition: background 0.18s, color 0.18s;
+}
+
+.adv-zoom-btn:hover {
+  background: #d8d2c6;
+  color: #2a3a2a;
+}
+
+/* ==========================================================
+   DIV 2 — Map canvas section
+   ========================================================== */
+.adv-map-section {
+  position: relative;
+  flex: 1;
+  border-radius: 24px 24px 0 0;
+  margin: 0 12px;
+  overflow: hidden;
+  background: linear-gradient(
+    145deg,
+    #b2e8e8 0%,
+    #a0ddd0 20%,
+    #8ed4b8 38%,
+    #7ecf9e 55%,
+    #6ac97f 75%,
+    #5ec46a 100%
+  );
+  box-shadow: 0 -4px 24px rgba(76, 175, 80, 0.25);
+}
+
+/* ---------- SVG paths ---------- */
+.adv-path-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---------- Clouds ---------- */
+.adv-cloud {
+  position: absolute;
+  pointer-events: none;
+}
+
+.adv-cloud__body {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.adv-cloud__puff {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 50%;
+}
+
+.adv-cloud__puff--1 { width: 36px; height: 24px; }
+.adv-cloud__puff--2 { width: 50px; height: 32px; margin-left: -10px; margin-bottom: 4px; }
+.adv-cloud__puff--3 { width: 34px; height: 22px; margin-left: -10px; }
+
+@keyframes adv-float-cloud {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(8px); }
+}
+.adv-cloud:nth-child(odd)  { animation: adv-float-cloud 9s ease-in-out infinite; }
+.adv-cloud:nth-child(even) { animation: adv-float-cloud 12s ease-in-out infinite reverse; }
+
+/* ---------- World nodes ---------- */
+.adv-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 10;
+}
+
+.adv-node--unlocked:hover  { transform: translate(-50%, -50%) scale(1.1); }
+.adv-node--selected        { transform: translate(-50%, -50%) scale(1.12); }
+.adv-node--locked          { cursor: default; opacity: 0.7; }
+
+/* Pulsing ring */
+.adv-node__ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  border: 3px solid var(--node-ring, #22c55e);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.adv-node--unlocked:hover .adv-node__ring,
+.adv-node--selected .adv-node__ring {
+  opacity: 1;
+  animation: adv-ring-pulse 1.6s ease-out infinite;
+}
+@keyframes adv-ring-pulse {
+  0%   { transform: translate(-50%, -50%) scale(0.9); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+/* Circle */
+.adv-node__circle {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--node-color, #4ade80);
+  display: grid;
+  place-items: center;
+  box-shadow:
+    0 4px 0 rgba(0,0,0,.15),
+    0 6px 20px rgba(0,0,0,.15),
+    inset 0 -3px 0 rgba(0,0,0,.1),
+    inset 0 3px 6px rgba(255,255,255,.35);
+  transition: box-shadow 0.2s;
+  position: relative;
+  z-index: 2;
+}
+.adv-node--unlocked:hover .adv-node__circle {
+  box-shadow:
+    0 6px 0 rgba(0,0,0,.18),
+    0 10px 28px rgba(0,0,0,.2),
+    inset 0 -3px 0 rgba(0,0,0,.1),
+    inset 0 3px 6px rgba(255,255,255,.4);
+}
+
+.adv-node__icon {
+  font-size: 26px;
+  line-height: 1;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.2));
+}
+
+/* Label */
+.adv-node__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1a2e1a;
+  background: rgba(255,255,255,.88);
+  padding: 4px 10px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+
+/* ---------- Stars ---------- */
+.adv-stars { display: flex; gap: 1px; }
+.adv-star  { font-size: 11px; line-height: 1; }
+.adv-star--filled { color: #f59e0b; filter: drop-shadow(0 0 3px #fbbf24); }
+.adv-star--empty  { color: #d1d5db; }
+
+/* ---------- Tooltip ---------- */
+.adv-tooltip {
+  position: absolute;
+  transform: translate(-130%, -120%);
+  background: white;
+  border-radius: 16px;
+  padding: 14px 16px 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.2);
+  z-index: 30;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: adv-tooltip-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.adv-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -10px; left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: white;
+}
+@keyframes adv-tooltip-in {
+  from { opacity: 0; transform: translate(-130%, -120%) scale(0.85); }
+  to   { opacity: 1; transform: translate(-130%, -120%) scale(1); }
+}
+
+.adv-tooltip__close {
+  position: absolute;
+  top: 6px; right: 8px;
+  background: none; border: none;
+  font-size: 16px; color: #9ca3af;
+  cursor: pointer; line-height: 1; padding: 0;
+}
+.adv-tooltip__close:hover { color: #374151; }
+
+.adv-tooltip__title {
+  font-size: 14px; font-weight: 800;
+  color: #1a2e1a; margin: 0;
+}
+
+.adv-tooltip__play {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white; border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 3px 0 #15803d;
+}
+.adv-tooltip__play:hover  { transform: translateY(-1px); box-shadow: 0 5px 0 #15803d; }
+.adv-tooltip__play:active { transform: translateY(1px);  box-shadow: 0 1px 0 #15803d; }
