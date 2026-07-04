@@ -57,6 +57,14 @@
   filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
 }
 
+.ff-world-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #c6ecd6;
+}
+
 .ff-world-title {
   margin: 0;
   font-size: 18px;
@@ -205,6 +213,21 @@
   flex: 1;
   background: linear-gradient(180deg, #6dc96d 0%, #4eb84e 40%, #3da53d 100%);
   border-top: 4px solid #5cc25c;
+}
+
+.ff-loading {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a2e1a;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 8px 20px rgba(0,0,0,.14);
 }
 
 /* Trees */

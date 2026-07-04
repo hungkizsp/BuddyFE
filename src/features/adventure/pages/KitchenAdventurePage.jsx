@@ -1,61 +1,95 @@
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AdventureScene from '../components/AdventureScene';
-import DraggableItem from '../components/DraggableItem';
-import SpeechBubble from '../components/SpeechBubble';
-import MissionPanel from '../components/MissionPanel';
-import RewardPopup from '../components/RewardPopup';
-import '../styles/KitchenAdventurePage.css';
-import appleImg from '../../../assets/apple.png';
-import bananaImg from '../../../assets/banana.png';
-import breadImg from '../../../assets/bread.png';
-import eggImg from '../../../assets/egg.png';
-import milkImg from '../../../assets/milk.png';
-import eggOnToastImg from '../../../assets/egg-on-toast.png';
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import AdventureScene from "../components/AdventureScene";
+import DraggableItem from "../components/DraggableItem";
+import SpeechBubble from "../components/SpeechBubble";
+import MissionPanel from "../components/MissionPanel";
+import RewardPopup from "../components/RewardPopup";
+import useScenarioSteps from "../hooks/useScenarioSteps";
+import useScenarioVocabulary from "../hooks/useScenarioVocabulary";
+import learningService from "../services/learningService";
+import "../styles/KitchenAdventurePage.css";
 
-const INITIAL_TABLE_ITEMS = [
-  { id: 'banana', label: 'Banana', emoji: '🍌', image: bananaImg, alt: 'Banana' },
-  { id: 'egg', label: 'Egg', emoji: '🥚', image: eggImg, alt: 'Egg' },
-  { id: 'bread', label: 'Bread', emoji: '🍞', image: breadImg, alt: 'Bread' },
-  { id: 'milk', label: 'Milk', emoji: '🥛', image: milkImg, alt: 'Milk' }
+const normalizeWord = (value = "") =>
+  value.trim().toLowerCase().replace(/\s+/g, "-");
+const vocabularyImages = import.meta.glob("../../../assets/images/*", {
+  eager: true,
+  import: "default",
+  query: "?url",
+});
+
+const resolveVocabularyImage = (imageUrl) => {
+  if (!imageUrl) return "";
+  if (/^(https?:)?\/\//.test(imageUrl) || imageUrl.startsWith("data:"))
+    return imageUrl;
+
+  const filename = imageUrl.split("/").pop();
+  const localImageKey = Object.keys(vocabularyImages).find((key) =>
+    key.endsWith(`/${filename}`),
+  );
+
+  return localImageKey ? vocabularyImages[localImageKey] : imageUrl;
+};
+
+const ITEM_POSITIONS = [
+  { left: "12%", top: "20%" },
+  { left: "36%", top: "10%" },
+  { left: "44%", top: "12%" },
+  { left: "64%", top: "60%" },
+  { left: "47%", top: "48%" },
+  { left: "74%", top: "60%" },
 ];
 
-const eggOnToastItem = {
-  id: 'egg-on-toast',
-  label: 'Egg on Toast',
-  emoji: '🍳',
-  image: eggOnToastImg,
-  alt: 'Egg on Toast'
-};
+const findVocabulary = (items, expectedWord) =>
+  items.find((item) => item.id === normalizeWord(expectedWord));
 
-const appleItem = {
-  id: 'apple',
-  label: 'Apple',
-  emoji: '🍎',
-  image: appleImg,
-  alt: 'Apple'
-};
+const entityToItemId = (entity = "") =>
+  normalizeWord(entity.replaceAll("_", " "));
 
-const ITEM_POSITIONS = {
-  banana: { left: '22%', top: '70%' },
-  egg: { left: '36%', top: '60%' },
-  bread: { left: '50%', top: '72%' },
-  milk: { left: '64%', top: '60%' },
-  'egg-on-toast': { left: '47%', top: '48%' },
-  apple: { left: '74%', top: '60%' }
-};
+const toDraggableItem = (vocabulary) => ({
+  id: normalizeWord(vocabulary.word || vocabulary.id),
+  label: vocabulary.word,
+  meaning: vocabulary.meaning,
+  image: resolveVocabularyImage(vocabulary.imageUrl),
+  alt: vocabulary.word,
+  exampleSentence: vocabulary.exampleSentence,
+  vocabulary,
+});
 
 export default function KitchenAdventurePage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const routeScenario = location.state?.scenario;
+  const scenarioId = routeScenario?.id || searchParams.get("scenarioId");
 
-  const [gameState, setGameState] = useState('not-started');
-  const [tableItems, setTableItems] = useState(INITIAL_TABLE_ITEMS);
+  const {
+    steps: scenarioSteps,
+    loading: stepsLoading,
+    error: stepsError,
+  } = useScenarioSteps(scenarioId);
+  const {
+    vocabularies,
+    loading: vocabularyLoading,
+    error: vocabularyError,
+  } = useScenarioVocabulary(scenarioId);
+  const [scenario, setScenario] = useState(routeScenario || null);
+  const [scenarioLoading, setScenarioLoading] = useState(
+    !routeScenario && Boolean(scenarioId),
+  );
+  const [scenarioError, setScenarioError] = useState("");
+
+  const [gameState, setGameState] = useState("not-started");
+  const [tableItems, setTableItems] = useState([]);
   const [missionStage, setMissionStage] = useState(0);
   const [preparedEggOnToast, setPreparedEggOnToast] = useState(false);
   const [potContents, setPotContents] = useState([]);
-  const [buddyPosition, setBuddyPosition] = useState({ left: '47%', top: '55%' });
+  const [buddyPosition, setBuddyPosition] = useState({
+    left: "67%",
+    top: "47%",
+  });
   const [isDraggingBuddy, setIsDraggingBuddy] = useState(false);
-  const [feedbackMessage, setFeedbackMessage] = useState('Buddy is waiting. Start the kitchen mission to begin.');
+  const [feedbackMessage, setFeedbackMessage] = useState("");
   const [missionPanelVisible, setMissionPanelVisible] = useState(true);
   const [xp, setXp] = useState(60);
   const [coins, setCoins] = useState(15);
@@ -63,155 +97,255 @@ export default function KitchenAdventurePage() {
   const [isListening, setIsListening] = useState(false);
   const buddyDragStartRef = useRef({ x: 0, y: 0, left: 0, top: 0 });
 
+  useEffect(() => {
+    if (routeScenario || !scenarioId) return undefined;
+
+    let ignore = false;
+
+    const loadScenario = async () => {
+      try {
+        setScenarioLoading(true);
+        setScenarioError("");
+        const data = await learningService.getScenario(scenarioId);
+        if (!ignore) setScenario(data);
+      } catch (err) {
+        if (!ignore)
+          setScenarioError(err.message || "Unable to load scenario.");
+      } finally {
+        if (!ignore) setScenarioLoading(false);
+      }
+    };
+
+    loadScenario();
+
+    return () => {
+      ignore = true;
+    };
+  }, [routeScenario, scenarioId]);
+
+  const vocabularyItems = useMemo(
+    () => vocabularies.map(toDraggableItem),
+    [vocabularies],
+  );
+
+  const itemsByWord = useMemo(
+    () => ({
+      apple: findVocabulary(vocabularyItems, "apple"),
+      bread: findVocabulary(vocabularyItems, "bread"),
+      egg: findVocabulary(vocabularyItems, "egg"),
+      milk: findVocabulary(vocabularyItems, "milk"),
+      banana: findVocabulary(vocabularyItems, "banana"),
+      toast: findVocabulary(vocabularyItems, "toast"),
+      eggOnToast: findVocabulary(vocabularyItems, "egg on toast"),
+    }),
+    [vocabularyItems],
+  );
+
+  const BREAD_ID = "bread";
+  const EGG_ID = "egg";
+  const EGG_ON_TOAST_ID = "egg-on-toast";
+  const activeStep = scenarioSteps[missionStage];
+  const nextStep = scenarioSteps[missionStage + 1];
+
+  const initialTableItems = useMemo(
+    () =>
+      vocabularyItems.filter((item) => {
+        const id = normalizeWord(item.label);
+        return id !== "apple" && id !== "egg-on-toast";
+      }),
+    [vocabularyItems],
+  );
+
+  const resetMission = () => {
+    setTableItems(initialTableItems);
+    setMissionStage(0);
+    setPreparedEggOnToast(false);
+    setPotContents([]);
+    setBuddyPosition({ left: "47%", top: "55%" });
+    setFeedbackMessage(
+      scenarioSteps[0]?.buddyMessage ||
+        scenario?.description ||
+        "Buddy is ready for this mission.",
+    );
+    setShowRewards(false);
+  };
+
   const handleStartMission = () => {
-    if (gameState === 'not-started') {
-      setGameState('walking-to-table');
-      setTableItems(INITIAL_TABLE_ITEMS);
-      setMissionStage(0);
-      setPreparedEggOnToast(false);
-      setPotContents([]);
-      setBuddyPosition({ left: '47%', top: '55%' });
-      setFeedbackMessage('Buddy is walking to the kitchen table. Combine bread and egg in the pot to make egg on toast.');
-      setShowRewards(false);
+    if (gameState === "not-started" && initialTableItems.length > 0) {
+      resetMission();
+      setGameState("walking-to-table");
+      setFeedbackMessage(
+        scenarioSteps[0]?.buddyMessage ||
+          scenario?.description ||
+          "Buddy is walking to the kitchen table.",
+      );
     }
   };
 
   const handleArrivedAtTable = () => {
-    if (gameState === 'walking-to-table') {
-      setGameState('idle-at-table');
+    if (gameState === "walking-to-table") {
+      setGameState("idle-at-table");
     }
+  };
+
+  const removeItem = (itemId) => {
+    setTableItems((prev) => prev.filter((item) => item.id !== itemId));
   };
 
   const handleDropOnBuddy = (itemId) => {
-    if (gameState !== 'idle-at-table') return;
+    if (gameState !== "idle-at-table") return;
 
-    if (itemId === 'banana') {
-      setFeedbackMessage("Buddy: Today I don't want banana. Try something else.");
+    const item = tableItems.find((tableItem) => tableItem.id === itemId);
+    const word = item?.label || itemId;
+    const expectedItemId = entityToItemId(activeStep?.expectedEntity);
+
+    if (itemId === itemsByWord.banana?.id) {
+      setFeedbackMessage(
+        activeStep?.failResponse || `Buddy does not want ${word} right now.`,
+      );
       return;
     }
 
-    if (itemId === 'bread' || itemId === 'egg') {
-      setFeedbackMessage('Buddy: I want egg on toast, not plain bread or egg. Combine them first.');
+    if (itemId === BREAD_ID || itemId === EGG_ID){
+      setFeedbackMessage(
+        activeStep?.failResponse ||
+          `Buddy wants ${itemsByWord.eggOnToast?.label || "the prepared food"}, not ${word} alone.`,
+      );
       return;
     }
 
-    if (itemId === 'egg-on-toast') {
-      if (missionStage === 0) {
-        setMissionStage(1);
-        setFeedbackMessage('Buddy: Egg on toast is perfect! Now please give me milk.');
-        setTableItems((prev) => prev.filter((item) => item.id !== 'egg-on-toast'));
-      }
-      return;
-    }
-
-    if (itemId === 'milk') {
-      if (missionStage === 0) {
-        setFeedbackMessage('Buddy: I need egg on toast first.');
-        return;
-      }
-      if (missionStage === 1) {
-        setMissionStage(2);
-        setFeedbackMessage('Buddy: Milk is refreshing! Now the apple is unlocked.');
-        setTableItems((prev) => prev.filter((item) => item.id !== 'milk').concat(appleItem));
-      }
-      return;
-    }
-
-    if (itemId === 'apple') {
-      if (missionStage === 0) {
-        setFeedbackMessage('Buddy: Egg on toast first, then milk, then apple.');
-        return;
-      }
-      if (missionStage === 1) {
-        setFeedbackMessage('Buddy: I want milk before apple.');
-        return;
-      }
-      if (missionStage === 2) {
-        setMissionStage(3);
-        setGameState('completed');
-        setFeedbackMessage('Buddy: Yummy! Thank you!');
-        setXp((prev) => prev + 20);
-        setCoins((prev) => prev + 10);
-        setTableItems((prev) => prev.filter((item) => item.id !== 'apple'));
+    if (itemId === expectedItemId) {
+      if (activeStep?.expectedIntent === "MISSION_COMPLETE") {
+        setGameState("completed");
+        setFeedbackMessage(
+          activeStep.successResponse ||
+            activeStep.buddyMessage ||
+            "Mission complete.",
+        );
         setShowRewards(true);
+        return;
+      }
+
+      if (
+        itemId === EGG_ON_TOAST_ID ||
+        itemId === itemsByWord.milk?.id ||
+        itemId === itemsByWord.apple?.id
+      ) {
+        const isFinalFoodStep =
+          nextStep?.expectedIntent === "MISSION_COMPLETE" || !nextStep;
+        setMissionStage((prev) => prev + 1);
+        setFeedbackMessage(
+          nextStep?.buddyMessage ||
+            activeStep?.successResponse ||
+            `${word} is correct.`,
+        );
+        removeItem(itemId);
+        if (itemId === itemsByWord.milk?.id && itemsByWord.apple) {
+          setTableItems((prev) => prev.concat(itemsByWord.apple));
+        }
+        if (isFinalFoodStep) {
+          setGameState("completed");
+          setFeedbackMessage(
+            nextStep?.successResponse ||
+              activeStep?.successResponse ||
+              "Mission complete.",
+          );
+          setXp((prev) => prev + 20);
+          setCoins((prev) => prev + 10);
+          setShowRewards(true);
+        }
       }
       return;
     }
 
-    setFeedbackMessage('Buddy: That does not look like the food I need right now.');
+    setFeedbackMessage(
+      activeStep?.failResponse ||
+        `${word} is not the item Buddy needs right now.`,
+    );
   };
 
-  const handleCombineItems = (draggedId, targetId) => {
-    if (gameState !== 'idle-at-table') return false;
-    if (missionStage !== 0 || preparedEggOnToast) {
-      setFeedbackMessage('Buddy is waiting for food in the right order.');
-      return false;
-    }
+const handleCombineItems = (draggedId, targetId) => {
+  if (gameState !== "idle-at-table") return false;
 
-    const isPair = new Set([draggedId, targetId]);
-    if (isPair.has('bread') && isPair.has('egg')) {
-      setPreparedEggOnToast(true);
-      setFeedbackMessage('Great! You made egg on toast. Feed it to Buddy now.');
-      setTableItems((prev) => prev.filter((item) => item.id !== 'bread' && item.id !== 'egg').concat(eggOnToastItem));
-      return true;
-    }
-
-    setFeedbackMessage('Those items cannot be combined. Try bread and egg.');
+  if (preparedEggOnToast) {
+    setFeedbackMessage("You already cooked Egg on Toast.");
     return false;
-  };
+  }
 
-  const handleDropOnPot = (itemId) => {
-    if (gameState !== 'idle-at-table') return false;
+  const pair = new Set([draggedId, targetId]);
 
-    if (itemId !== 'bread' && itemId !== 'egg') {
-      setFeedbackMessage('Only bread and egg can go into the pot to make egg on toast.');
-      return false;
-    }
+  if (!pair.has(BREAD_ID) || !pair.has(EGG_ID)) {
+    setFeedbackMessage("Try combining Bread and Egg.");
+    return false;
+  }
 
-    if (potContents.includes(itemId)) {
-      setFeedbackMessage(`That ${itemId} is already in the pot.`);
-      return false;
-    }
+  setPreparedEggOnToast(true);
 
-    const nextContents = [...potContents, itemId];
-    setPotContents(nextContents);
-    setTableItems((prev) => prev.filter((item) => item.id !== itemId));
+  setTableItems((prev) => [
+    ...prev.filter((item) => item.id !== BREAD_ID && item.id !== EGG_ID),
+    itemsByWord.eggOnToast,
+  ]);
 
-    if (nextContents.includes('bread') && nextContents.includes('egg')) {
-      setPreparedEggOnToast(true);
-      setPotContents([]);
-      setTableItems((prev) => prev.concat(eggOnToastItem));
-      setFeedbackMessage('Egg on toast is ready! Drag it to Buddy now.');
-      return true;
-    }
+  setFeedbackMessage("Egg on Toast is ready.");
 
-    setFeedbackMessage(`Added ${itemId} to the pot. Add the other ingredient.`);
+  return true;
+};
+
+const handleDropOnPot = (itemId) => {
+  if (gameState !== "idle-at-table") return false;
+
+  if (itemId !== BREAD_ID && itemId !== EGG_ID) {
+    setFeedbackMessage("Only Bread and Egg can go into the pot.");
+    return false;
+  }
+
+  if (potContents.includes(itemId)) {
+    setFeedbackMessage("That item is already in the pot.");
+    return false;
+  }
+
+  const nextContents = [...potContents, itemId];
+
+  setPotContents(nextContents);
+
+  removeItem(itemId);
+
+  if (
+    nextContents.includes(BREAD_ID) &&
+    nextContents.includes(EGG_ID)
+  ) {
+    setPreparedEggOnToast(true);
+
+    setPotContents([]);
+
+    setTableItems((prev) => [
+      ...prev,
+      itemsByWord.eggOnToast,
+    ]);
+
+    setFeedbackMessage("Egg on Toast is ready. Drag it to Buddy.");
+
     return true;
-  };
+  }
+
+  setFeedbackMessage("Great! Add the other ingredient.");
+
+  return true;
+};
 
   const getMissionInstruction = () => {
-    if (gameState === 'not-started') {
-      return "Click 'Start Mission' to begin the kitchen adventure.";
-    }
-    if (gameState === 'walking-to-table') {
-      return 'Buddy is walking to the table...';
-    }
-    if (gameState === 'idle-at-table') {
-      if (missionStage === 0) {
-        return 'Combine bread + egg into egg on toast, then feed Buddy milk. Banana is rejected.';
-      }
-      if (missionStage === 1) {
-        return 'Buddy ate egg on toast! Give him milk now to unlock the apple.';
-      }
-      if (missionStage === 2) {
-        return 'One more step: give Buddy the apple to complete the mission.';
-      }
-    }
-    return 'Mission complete! Buddy is happy and full! 🎉';
-  };
-
-  const handleToggleMic = () => {
-    setIsListening((prev) => !prev);
+    if (scenarioLoading || vocabularyLoading || stepsLoading)
+      return "Loading mission data...";
+    if (scenarioError || vocabularyError || stepsError)
+      return scenarioError || vocabularyError || stepsError;
+    if (!scenarioId) return "Choose a scenario from Food Forest to begin.";
+    if (gameState === "not-started")
+      return scenario?.description || "Click 'Start Mission' to begin.";
+    if (gameState === "walking-to-table")
+      return "Buddy is walking to the table...";
+    if (gameState === "idle-at-table")
+      return activeStep?.buddyMessage || "Complete the current mission step.";
+    return "Mission complete. Buddy is happy and full.";
   };
 
   const handleBuddyPointerDown = (e) => {
@@ -222,7 +356,7 @@ export default function KitchenAdventurePage() {
       x: e.clientX,
       y: e.clientY,
       left: parseFloat(buddyPosition.left),
-      top: parseFloat(buddyPosition.top)
+      top: parseFloat(buddyPosition.top),
     };
   };
 
@@ -230,8 +364,20 @@ export default function KitchenAdventurePage() {
     if (!isDraggingBuddy) return;
     const deltaX = e.clientX - buddyDragStartRef.current.x;
     const deltaY = e.clientY - buddyDragStartRef.current.y;
-    const left = Math.min(90, Math.max(10, buddyDragStartRef.current.left + (deltaX / window.innerWidth) * 100));
-    const top = Math.min(85, Math.max(15, buddyDragStartRef.current.top + (deltaY / window.innerHeight) * 100));
+    const left = Math.min(
+      90,
+      Math.max(
+        10,
+        buddyDragStartRef.current.left + (deltaX / window.innerWidth) * 100,
+      ),
+    );
+    const top = Math.min(
+      85,
+      Math.max(
+        15,
+        buddyDragStartRef.current.top + (deltaY / window.innerHeight) * 100,
+      ),
+    );
     setBuddyPosition({ left: `${left}%`, top: `${top}%` });
   };
 
@@ -243,19 +389,21 @@ export default function KitchenAdventurePage() {
     }
   };
 
-  const handleCloseRewards = () => {
-    setShowRewards(false);
-  };
-
-  const handleToggleMissionPanel = () => {
-    setMissionPanelVisible((prev) => !prev);
-  };
-
   const buddy3DPosition = [
     (parseFloat(buddyPosition.left) - 47) / 10,
     -1.8 + (50 - parseFloat(buddyPosition.top)) / 10,
-    0
+    0,
   ];
+
+  const startDisabled =
+    scenarioLoading ||
+    vocabularyLoading ||
+    stepsLoading ||
+    !scenarioId ||
+    initialTableItems.length === 0 ||
+    scenarioSteps.length === 0;
+  const visibleTableItems =
+    gameState === "not-started" ? initialTableItems : tableItems;
 
   return (
     <div className="kitchen-adv-container">
@@ -265,12 +413,9 @@ export default function KitchenAdventurePage() {
         buddyPosition={buddy3DPosition}
       />
 
-      {gameState === 'idle-at-table' && (
+      {gameState === "idle-at-table" && (
         <>
-          <div
-            className="pot-drop-zone"
-            aria-label="Pot area for egg on toast"
-          >
+          <div className="pot-drop-zone" aria-label="Pot area">
             <span>Pot</span>
           </div>
           <div
@@ -292,32 +437,34 @@ export default function KitchenAdventurePage() {
       )}
 
       <div className="kitchen-table-items">
-        {tableItems.map((item) => (
+        {visibleTableItems.map((item, index) => (
           <DraggableItem
             key={item.id}
             item={item}
-            position={ITEM_POSITIONS[item.id]}
+            position={ITEM_POSITIONS[index % ITEM_POSITIONS.length]}
             onDropOnBuddy={handleDropOnBuddy}
             onDropOnItem={handleCombineItems}
             onDropOnPot={handleDropOnPot}
-            disabled={gameState !== 'idle-at-table'}
+            disabled={gameState !== "idle-at-table"}
           />
         ))}
       </div>
 
       <header className="hud-header">
         <div className="hud-title-container">
-          <span className="hud-title-forest">🔍 Food Forest</span>
-          <span className="hud-title-level">Breakfast Trouble</span>
+          <span className="hud-title-forest">
+            {scenario?.worldName || "Food Forest"}
+          </span>
+          <span className="hud-title-level">
+            {scenario?.title || "Kitchen Adventure"}
+          </span>
         </div>
 
         <div className="hud-stats-container">
           <div className="stat-card">
-            <span className="stat-icon xp-color">🌟</span>
             <span>XP: {xp}</span>
           </div>
           <div className="stat-card">
-            <span className="stat-icon coin-color">🪙</span>
             <span>Coins: {coins}</span>
           </div>
         </div>
@@ -326,47 +473,61 @@ export default function KitchenAdventurePage() {
       <div className="mission-panel-toggle-wrapper">
         <button
           className="mission-toggle-btn"
-          onClick={handleToggleMissionPanel}
+          onClick={() => setMissionPanelVisible((prev) => !prev)}
           type="button"
         >
-          {missionPanelVisible ? 'Hide Mission Panel' : 'Show Mission Panel'}
+          {missionPanelVisible ? "Hide Mission Panel" : "Show Mission Panel"}
         </button>
       </div>
 
       {missionPanelVisible && (
         <MissionPanel
           gameState={gameState}
+          title={scenario?.title}
+          description={scenario?.description}
           onStartMission={handleStartMission}
           instruction={getMissionInstruction()}
+          loading={scenarioLoading || vocabularyLoading || stepsLoading}
+          error={scenarioError || vocabularyError || stepsError}
+          startDisabled={startDisabled}
         />
       )}
 
-      <div className="mic-button-wrapper">
+      {/* <div className="mic-button-wrapper">
         <button
-          className={`mic-btn ${isListening ? 'active-listening' : ''}`}
-          onClick={handleToggleMic}
+          className={`mic-btn ${isListening ? "active-listening" : ""}`}
+          onClick={() => setIsListening((prev) => !prev)}
           aria-label="Microphone"
+          type="button"
         >
-          🎤
+          Mic
         </button>
-      </div>
+      </div> */}
 
       <button
         className="back-to-map-btn"
-        onClick={() => navigate('/adventure/food-forest')}
+        onClick={() => navigate("/adventure/food-forest")}
+        type="button"
       >
-        ← Back to Map
+        Back to Map
       </button>
 
-      {gameState !== 'not-started' && (
-        <SpeechBubble gameState={gameState} message={feedbackMessage} buddyPosition={buddyPosition} />
+      {gameState !== "not-started" && (
+        <SpeechBubble
+          gameState={gameState}
+          message={feedbackMessage}
+          buddyPosition={buddyPosition}
+          scenarioDescription={
+            activeStep?.buddyMessage || scenario?.description
+          }
+        />
       )}
 
       <RewardPopup
         show={showRewards}
         xpReward={20}
         coinReward={10}
-        onClose={handleCloseRewards}
+        onClose={() => setShowRewards(false)}
       />
     </div>
   );

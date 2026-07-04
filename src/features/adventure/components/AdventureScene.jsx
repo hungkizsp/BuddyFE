@@ -5,7 +5,7 @@ export default function AdventureScene({ gameState, onArrivedAtTable, buddyPosit
   return (
     <div className="canvas-container">
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 50 }}
+        camera={{ position: [0, 0, 5], fov: 40 }}
         gl={{ alpha: true, antialias: true, preserveDrawingBuffer: true }}
         shadows
       >
