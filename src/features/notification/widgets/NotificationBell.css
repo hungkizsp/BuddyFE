@@ -1,0 +1,143 @@
+/* ── Bell button (nav item style) ────────────────────────────── */
+.noti-bell-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.noti-bell-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  text-align: left;
+  position: relative;
+}
+
+.noti-bell-btn:hover,
+.noti-bell-btn--active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+}
+
+.noti-bell-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.noti-bell-label {
+  flex: 1;
+}
+
+/* ── Unread badge ─────────────────────────────────────────────── */
+.noti-badge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: linear-gradient(135deg, #f43f5e, #ef4444);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: noti-badge-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  flex-shrink: 0;
+}
+
+@keyframes noti-badge-pop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+/* ── Popup dropdown ───────────────────────────────────────────── */
+.noti-popup {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 0;
+  width: 340px;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(99, 179, 237, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  animation: noti-popup-in 0.2s ease-out;
+}
+
+@keyframes noti-popup-in {
+  from { opacity: 0; transform: translateX(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* ── Popup header ─────────────────────────────────────────────── */
+.noti-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.noti-popup-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.noti-popup-mark-all {
+  background: transparent;
+  border: none;
+  color: #63b3ed;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.noti-popup-mark-all:hover {
+  background: rgba(99, 179, 237, 0.12);
+}
+
+/* ── Popup body ───────────────────────────────────────────────── */
+.noti-popup-body {
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+/* ── Popup footer ─────────────────────────────────────────────── */
+.noti-popup-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 10px 16px;
+}
+
+.noti-popup-view-all {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #63b3ed;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  text-align: center;
+}
+
+.noti-popup-view-all:hover {
+  background: rgba(99, 179, 237, 0.1);
+}
