@@ -8,6 +8,130 @@
   --font-game: 'Fredoka One', 'Nunito', sans-serif;
   --font-ui: 'Nunito', sans-serif;
 }
+.fruit-basket-drop-zone {
+  position: absolute;
+  left: 1%;
+  top: 42%;
+  width: 180px;
+  height: 160px;
+  z-index: 4;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 10px 8px 6px;
+  border: 3px dashed rgba(249, 115, 22, 0.9);
+  border-radius: 24px;
+  background: rgba(255, 237, 213, 0.78);
+  color: #92400e;
+  font-family: var(--font-game);
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.16);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fruit-basket-drop-zone:hover {
+  transform: scale(1.03);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.2);
+}
+
+.fruit-basket-drop-zone:active {
+  transform: scale(0.97);
+}
+
+.fruit-basket-drop-zone img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.fruit-basket-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.62);
+}
+
+.fruit-basket-popup-modal {
+  width: min(560px, 100%);
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 24px;
+  padding: 24px;
+  background: #fffdf8;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.24);
+}
+
+.fruit-basket-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.fruit-basket-popup-header h3 {
+  margin: 0;
+  font-family: var(--font-game);
+  color: #1f2937;
+}
+
+.fruit-basket-popup-close {
+  border: none;
+  background: #fef3c7;
+  color: #92400e;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.fruit-basket-popup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.fruit-basket-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 10px;
+  border: 2px solid #fbbf24;
+  border-radius: 18px;
+  background: #fff7ed;
+  color: #1f2937;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.fruit-basket-option:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(249, 115, 22, 0.16);
+}
+
+.fruit-basket-option:active {
+  transform: scale(0.97);
+}
+
+.fruit-basket-option-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.fruit-basket-option-name {
+  font-family: var(--font-game);
+  font-size: 14px;
+}
 
 .kitchen-adv-container {
   position: relative;
@@ -418,7 +542,7 @@
 
 .mission-panel-toggle-wrapper {
   position: absolute;
-  bottom: 140px;
+  bottom: 0px;
   left: 25px;
   z-index: 11;
   pointer-events: auto;
@@ -427,7 +551,7 @@
 .mission-toggle-btn {
   font-family: var(--font-game);
   font-size: 14px;
-  margin-bottom: 212%;
+  /* margin-bottom: 212%; */
   padding: 10px 10px;
   border-radius: 14px;
   border: 2px solid #ffffff;

@@ -5,13 +5,17 @@ import DraggableItem from "../components/DraggableItem";
 import SpeechBubble from "../components/SpeechBubble";
 import MissionPanel from "../components/MissionPanel";
 import RewardPopup from "../components/RewardPopup";
+import FruitBasketPopup from "../components/FruitBasketPopup";
 import useScenarioSteps from "../hooks/useScenarioSteps";
 import useScenarioVocabulary from "../hooks/useScenarioVocabulary";
 import learningService from "../services/learningService";
 import "../styles/KitchenAdventurePage.css";
+import fruitBasketImg from "../../../assets/fruit-basket.png";
+import fruitBasketOpenImg from "../../../assets/fruit-basket-inside.png";
 
 const normalizeWord = (value = "") =>
   value.trim().toLowerCase().replace(/\s+/g, "-");
+
 const vocabularyImages = import.meta.glob("../../../assets/images/*", {
   eager: true,
   import: "default",
@@ -32,7 +36,7 @@ const resolveVocabularyImage = (imageUrl) => {
 };
 
 const ITEM_POSITIONS = [
-  { left: "12%", top: "20%" },
+  { left: "18%", top: "20%" },
   { left: "36%", top: "10%" },
   { left: "44%", top: "12%" },
   { left: "64%", top: "60%" },
@@ -95,6 +99,8 @@ export default function KitchenAdventurePage() {
   const [coins, setCoins] = useState(15);
   const [showRewards, setShowRewards] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [showFruitBasket, setShowFruitBasket] = useState(false);
+  const [hasAppleFromBasket, setHasAppleFromBasket] = useState(false);
   const buddyDragStartRef = useRef({ x: 0, y: 0, left: 0, top: 0 });
 
   useEffect(() => {
@@ -151,9 +157,46 @@ export default function KitchenAdventurePage() {
     () =>
       vocabularyItems.filter((item) => {
         const id = normalizeWord(item.label);
-        return id !== "apple" && id !== "egg-on-toast";
+
+        return !["apple", "orange", "pear", "grapes", "egg-on-toast"].includes(
+          id,
+        );
       }),
     [vocabularyItems],
+  );
+
+  const getFruitImage = (filename) =>
+    resolveVocabularyImage(filename) || fruitBasketImg;
+
+  const basketItems = useMemo(
+    () => [
+      {
+        id: "apple",
+        name: "Apple",
+        image: getFruitImage("apple.png"),
+      },
+      {
+        id: "banana",
+        name: "Banana",
+        image: getFruitImage("banana.png"),
+      },
+      {
+        id: "orange",
+        name: "Orange",
+        image: getFruitImage("oranges.png"),
+      },
+      {
+        id: "pear",
+        name: "Pear",
+        image: getFruitImage("pear.png"),
+      },
+      {
+        id: "grapes",
+        name: "Grapes",
+        image: getFruitImage("grapes.png"),
+      },
+    ],
+    [],
   );
 
   const resetMission = () => {
@@ -161,7 +204,9 @@ export default function KitchenAdventurePage() {
     setMissionStage(0);
     setPreparedEggOnToast(false);
     setPotContents([]);
-    setBuddyPosition({ left: "47%", top: "55%" });
+    setHasAppleFromBasket(false);
+    setShowFruitBasket(false);
+    setBuddyPosition({ left: "67%", top: "47%" });
     setFeedbackMessage(
       scenarioSteps[0]?.buddyMessage ||
         scenario?.description ||
@@ -192,6 +237,38 @@ export default function KitchenAdventurePage() {
     setTableItems((prev) => prev.filter((item) => item.id !== itemId));
   };
 
+  const handleSelectFruit = (fruitId) => {
+    setShowFruitBasket(false);
+
+    if (fruitId === "apple") {
+      if (!hasAppleFromBasket) {
+        setHasAppleFromBasket(true);
+        setTableItems((prev) => {
+          const appleItem = vocabularyItems.find(
+            (item) => normalizeWord(item.label) === "apple",
+          );
+          if (!appleItem) return prev;
+          return prev.some((item) => item.id === appleItem.id)
+            ? prev
+            : [...prev, appleItem];
+        });
+        setFeedbackMessage("Great! Apple is exactly what I want.");
+      }
+      return;
+    }
+
+    const fruitReplies = {
+      banana: "Bananas are delicious, but today I'd like an apple.",
+      orange: "Orange is refreshing, but I'm craving an apple.",
+      pear: "Pears are sweet, but I'd rather have an apple.",
+      grapes: "Grapes look tasty, but I want an apple today.",
+    };
+
+    setFeedbackMessage(
+      fruitReplies[fruitId] || "I'd rather have an apple today.",
+    );
+  };
+
   const handleDropOnBuddy = (itemId) => {
     if (gameState !== "idle-at-table") return;
 
@@ -199,14 +276,7 @@ export default function KitchenAdventurePage() {
     const word = item?.label || itemId;
     const expectedItemId = entityToItemId(activeStep?.expectedEntity);
 
-    if (itemId === itemsByWord.banana?.id) {
-      setFeedbackMessage(
-        activeStep?.failResponse || `Buddy does not want ${word} right now.`,
-      );
-      return;
-    }
-
-    if (itemId === BREAD_ID || itemId === EGG_ID){
+    if (itemId === BREAD_ID || itemId === EGG_ID) {
       setFeedbackMessage(
         activeStep?.failResponse ||
           `Buddy wants ${itemsByWord.eggOnToast?.label || "the prepared food"}, not ${word} alone.`,
@@ -234,15 +304,17 @@ export default function KitchenAdventurePage() {
         const isFinalFoodStep =
           nextStep?.expectedIntent === "MISSION_COMPLETE" || !nextStep;
         setMissionStage((prev) => prev + 1);
-        setFeedbackMessage(
-          nextStep?.buddyMessage ||
-            activeStep?.successResponse ||
-            `${word} is correct.`,
-        );
-        removeItem(itemId);
-        if (itemId === itemsByWord.milk?.id && itemsByWord.apple) {
-          setTableItems((prev) => prev.concat(itemsByWord.apple));
+
+        if (itemId === itemsByWord.milk?.id) {
+          setFeedbackMessage(
+            "Great! Now please open the Fruit Basket and find an Apple.",
+          );
+        } else {
+          setFeedbackMessage(
+            nextStep?.buddyMessage || activeStep?.successResponse,
+          );
         }
+        removeItem(itemId);
         if (isFinalFoodStep) {
           setGameState("completed");
           setFeedbackMessage(
@@ -264,74 +336,68 @@ export default function KitchenAdventurePage() {
     );
   };
 
-const handleCombineItems = (draggedId, targetId) => {
-  if (gameState !== "idle-at-table") return false;
+  const handleCombineItems = (draggedId, targetId) => {
+    if (gameState !== "idle-at-table") return false;
 
-  if (preparedEggOnToast) {
-    setFeedbackMessage("You already cooked Egg on Toast.");
-    return false;
-  }
+    if (preparedEggOnToast) {
+      setFeedbackMessage("You already cooked Egg on Toast.");
+      return false;
+    }
 
-  const pair = new Set([draggedId, targetId]);
+    const pair = new Set([draggedId, targetId]);
 
-  if (!pair.has(BREAD_ID) || !pair.has(EGG_ID)) {
-    setFeedbackMessage("Try combining Bread and Egg.");
-    return false;
-  }
+    if (!pair.has(BREAD_ID) || !pair.has(EGG_ID)) {
+      setFeedbackMessage("Try combining Bread and Egg.");
+      return false;
+    }
 
-  setPreparedEggOnToast(true);
-
-  setTableItems((prev) => [
-    ...prev.filter((item) => item.id !== BREAD_ID && item.id !== EGG_ID),
-    itemsByWord.eggOnToast,
-  ]);
-
-  setFeedbackMessage("Egg on Toast is ready.");
-
-  return true;
-};
-
-const handleDropOnPot = (itemId) => {
-  if (gameState !== "idle-at-table") return false;
-
-  if (itemId !== BREAD_ID && itemId !== EGG_ID) {
-    setFeedbackMessage("Only Bread and Egg can go into the pot.");
-    return false;
-  }
-
-  if (potContents.includes(itemId)) {
-    setFeedbackMessage("That item is already in the pot.");
-    return false;
-  }
-
-  const nextContents = [...potContents, itemId];
-
-  setPotContents(nextContents);
-
-  removeItem(itemId);
-
-  if (
-    nextContents.includes(BREAD_ID) &&
-    nextContents.includes(EGG_ID)
-  ) {
     setPreparedEggOnToast(true);
 
-    setPotContents([]);
-
     setTableItems((prev) => [
-      ...prev,
+      ...prev.filter((item) => item.id !== BREAD_ID && item.id !== EGG_ID),
       itemsByWord.eggOnToast,
     ]);
 
-    setFeedbackMessage("Egg on Toast is ready. Drag it to Buddy.");
+    setFeedbackMessage("Egg on Toast is ready.");
 
     return true;
-  }
+  };
 
-  setFeedbackMessage("Great! Add the other ingredient.");
+  const handleDropOnPot = (itemId) => {
+    if (gameState !== "idle-at-table") return false;
 
-  return true;
-};
+    if (itemId !== BREAD_ID && itemId !== EGG_ID) {
+      setFeedbackMessage("Only Bread and Egg can go into the pot.");
+      return false;
+    }
+
+    if (potContents.includes(itemId)) {
+      setFeedbackMessage("That item is already in the pot.");
+      return false;
+    }
+
+    const nextContents = [...potContents, itemId];
+
+    setPotContents(nextContents);
+
+    removeItem(itemId);
+
+    if (nextContents.includes(BREAD_ID) && nextContents.includes(EGG_ID)) {
+      setPreparedEggOnToast(true);
+
+      setPotContents([]);
+
+      setTableItems((prev) => [...prev, itemsByWord.eggOnToast]);
+
+      setFeedbackMessage("Egg on Toast is ready. Drag it to Buddy.");
+
+      return true;
+    }
+
+    setFeedbackMessage("Great! Add the other ingredient.");
+
+    return true;
+  };
 
   const getMissionInstruction = () => {
     if (scenarioLoading || vocabularyLoading || stepsLoading)
@@ -405,6 +471,7 @@ const handleDropOnPot = (itemId) => {
   const visibleTableItems =
     gameState === "not-started" ? initialTableItems : tableItems;
 
+  const canOpenBasket = activeStep?.expectedEntity === "APPLE";
   return (
     <div className="kitchen-adv-container">
       <AdventureScene
@@ -412,6 +479,22 @@ const handleDropOnPot = (itemId) => {
         onArrivedAtTable={handleArrivedAtTable}
         buddyPosition={buddy3DPosition}
       />
+
+      <button
+        className="fruit-basket-drop-zone"
+        disabled={!canOpenBasket}
+        onClick={() => {
+          if (!canOpenBasket) {
+            setFeedbackMessage("Buddy hasn't asked for fruit yet.");
+            return;
+          }
+
+          setShowFruitBasket(true);
+        }}
+      >
+        <span>Fruit Basket</span>
+        <img src={fruitBasketImg} alt="Fruit Basket" />
+      </button>
 
       {gameState === "idle-at-table" && (
         <>
@@ -493,17 +576,6 @@ const handleDropOnPot = (itemId) => {
         />
       )}
 
-      {/* <div className="mic-button-wrapper">
-        <button
-          className={`mic-btn ${isListening ? "active-listening" : ""}`}
-          onClick={() => setIsListening((prev) => !prev)}
-          aria-label="Microphone"
-          type="button"
-        >
-          Mic
-        </button>
-      </div> */}
-
       <button
         className="back-to-map-btn"
         onClick={() => navigate("/adventure/food-forest")}
@@ -528,6 +600,17 @@ const handleDropOnPot = (itemId) => {
         xpReward={20}
         coinReward={10}
         onClose={() => setShowRewards(false)}
+      />
+
+      <FruitBasketPopup
+        show={showFruitBasket}
+        fruits={
+          hasAppleFromBasket
+            ? basketItems.filter((fruit) => fruit.id !== "apple")
+            : basketItems
+        }
+        onClose={() => setShowFruitBasket(false)}
+        onSelectFruit={handleSelectFruit}
       />
     </div>
   );
