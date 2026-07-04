@@ -1,14 +1,219 @@
-/* ── Root ─────────────────────────────────────────────────────── */
-.noti-page-root {
+/* ═══════════════════════════════════════════════════════════════
+ *  Notification Page — Desktop-first layout
+ *  - Full viewport dark background (overrides body #fff9eb)
+ *  - Mobile: single column, max-width 680px (original behaviour)
+ *  - Desktop (≥900px): sidebar + main 2-column layout
+ * ═══════════════════════════════════════════════════════════════ */
+
+/* Full-page dark wrapper — sits above body background */
+.noti-page-shell {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: linear-gradient(135deg, #0b1120 0%, #0f172a 50%, #1a1f35 100%);
+  display: flex;
+  align-items: stretch;
+}
+
+/* ── Center column (mobile default) ───────────────────────────── */
+.noti-page-root {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
   color: #e2e8f0;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   display: flex;
   flex-direction: column;
-  max-width: 680px;
-  margin: 0 auto;
   padding: 0 16px 40px;
+}
+
+/* ── Desktop sidebar panel (left) ─────────────────────────────── */
+.noti-page-aside {
+  display: none; /* hidden on mobile */
+}
+
+/* ── Desktop right decorative panel ───────────────────────────── */
+.noti-page-right {
+  display: none; /* hidden on mobile */
+}
+
+/* ── Desktop layout (≥ 900px) ─────────────────────────────────── */
+@media (min-width: 900px) {
+  .noti-page-shell {
+    padding: 0;
+  }
+
+  /* 3-column grid: left panel | main content | right panel */
+  .noti-page-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr 280px;
+    grid-template-rows: 1fr;
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  /* Left sidebar */
+  .noti-page-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 32px 20px;
+    background: rgba(255, 255, 255, 0.025);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .noti-aside-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .noti-aside-brand-icon {
+    font-size: 28px;
+  }
+
+  .noti-aside-brand-name {
+    font-size: 16px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #63b3ed, #9f7aea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .noti-aside-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #475569;
+    padding: 0 6px;
+  }
+
+  .noti-aside-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .noti-aside-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    text-align: left;
+    transition: all 0.18s;
+    text-decoration: none;
+  }
+
+  .noti-aside-link:hover {
+    background: rgba(255,255,255,0.06);
+    color: #94a3b8;
+  }
+
+  .noti-aside-link--active {
+    background: linear-gradient(135deg, rgba(99,179,237,0.12), rgba(159,122,234,0.12));
+    color: #93c5fd;
+    border: 1px solid rgba(99,179,237,0.2);
+  }
+
+  .noti-aside-link--active:hover {
+    background: linear-gradient(135deg, rgba(99,179,237,0.18), rgba(159,122,234,0.18));
+  }
+
+  /* Main content column */
+  .noti-page-root {
+    max-width: none;
+    margin: 0;
+    padding: 32px 40px 40px;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Right info panel */
+  .noti-page-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 32px 20px;
+  }
+
+  .noti-right-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .noti-right-card-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 14px;
+  }
+
+  .noti-right-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .noti-right-tip:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .noti-right-tip-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .noti-right-tip-text {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .noti-right-tip-text strong {
+    color: #94a3b8;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .noti-right-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .noti-right-stat:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .noti-right-stat-label {
+    font-size: 12px;
+    color: #64748b;
+  }
+
+  .noti-right-stat-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: #93c5fd;
+  }
 }
 
 /* ── Header ───────────────────────────────────────────────────── */
