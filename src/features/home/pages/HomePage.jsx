@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../auth/store/authStore'
+import { useNotificationStore } from '../../notification/store/notificationStore'
+import NotificationBell from '../../notification/widgets/NotificationBell'
 import axiosClient from '../../../shared/api/axiosClient'
 import './HomePage.css'
 
@@ -182,6 +184,7 @@ export default function HomePage() {
           <a href="#" className="nav-item">
             <span>🛒</span> Shop
           </a>
+          <NotificationBell />
         </nav>
 
         <button className="logout-btn" onClick={handleLogout}>
