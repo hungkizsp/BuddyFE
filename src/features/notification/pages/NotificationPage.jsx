@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../auth/store/authStore'
 import { useNotificationStore } from '../store/notificationStore'
+import { useNotificationSSE } from '../hooks/useNotificationSSE'
 import NotificationList from '../components/NotificationList'
 import './NotificationPage.css'
 
@@ -25,6 +26,8 @@ export default function NotificationPage() {
   const { notifications, unreadCount, isLoading, fetchNotifications, markAllAsRead } =
     useNotificationStore()
   const [filter, setFilter] = useState('all')
+
+  useNotificationSSE(currentUser?.id)
 
   useEffect(() => {
     if (!currentUser?.id) {

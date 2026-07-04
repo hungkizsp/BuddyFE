@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../auth/store/authStore'
 import { useNotificationStore } from '../../notification/store/notificationStore'
+import { useNotificationSSE } from '../../notification/hooks/useNotificationSSE'
 import axiosClient from '../../../shared/api/axiosClient'
 import './HomePage.css'
 
@@ -51,8 +52,8 @@ function XpBar({ xp, level }) {
 export default function HomePage() {
   const navigate = useNavigate()
   const { currentUser, logout, loadCurrentUser } = useAuthStore()
-  // unreadCount is used for the bell badge in the chat header
-  const { unreadCount } = useNotificationStore()
+  const { unreadCount, notifications, markAllAsRead, markAsRead } = useNotificationStore()
+  useNotificationSSE(currentUser?.id)
 
   const [messages, setMessages] = useState([
     {
@@ -66,6 +67,18 @@ export default function HomePage() {
   const [buddyMood, setBuddyMood] = useState('HAPPY')
   const [vocabHighlight, setVocabHighlight] = useState(null)
   const chatEndRef = useRef(null)
+  // Bell popup state
+  const [bellOpen, setBellOpen] = useState(false)
+  const bellRef = useRef(null)
+
+  // Close bell popup on outside click
+  useEffect(() => {
+    const handleOutside = (e) => {
+      if (bellRef.current && !bellRef.current.contains(e.target)) setBellOpen(false)
+    }
+    if (bellOpen) document.addEventListener('mousedown', handleOutside)
+    return () => document.removeEventListener('mousedown', handleOutside)
+  }, [bellOpen])
 
   useEffect(() => {
     if (!currentUser) {
@@ -217,27 +230,135 @@ export default function HomePage() {
             </p>
           </div>
           <div className="chat-header-actions">
-            {/* Bell shortcut in chat header — navigates to full notifications page.
-                If a global HeaderBar is created later, move this button there. */}
-            <button
-              className="reset-btn"
-              title="Thông báo"
-              onClick={() => navigate('/notifications')}
-              style={{ position: 'relative', marginRight: '8px' }}
+            {/* Bell popup in chat header — shows mini notification bubble */}
+            <div
+              ref={bellRef}
+              style={{ position: 'relative', marginRight: '8px', display: 'inline-block' }}
             >
-              🔔
-              {unreadCount > 0 && (
-                <span style={{
-                  position: 'absolute', top: '-4px', right: '-4px',
-                  background: 'linear-gradient(135deg,#f43f5e,#ef4444)',
-                  color: '#fff', fontSize: '9px', fontWeight: 800,
-                  borderRadius: '8px', padding: '1px 4px', lineHeight: 1.4,
-                  minWidth: '14px', textAlign: 'center',
+              <button
+                className="reset-btn"
+                title="Thông báo"
+                onClick={() => setBellOpen((v) => !v)}
+                style={{ position: 'relative' }}
+              >
+                🔔
+                {unreadCount > 0 && (
+                  <span style={{
+                    position: 'absolute', top: '-4px', right: '-4px',
+                    background: 'linear-gradient(135deg,#f43f5e,#ef4444)',
+                    color: '#fff', fontSize: '9px', fontWeight: 800,
+                    borderRadius: '8px', padding: '1px 4px', lineHeight: 1.4,
+                    minWidth: '14px', textAlign: 'center',
+                  }}>
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Mini notification bubble popup */}
+              {bellOpen && (
+                <div style={{
+                  position: 'absolute', top: 'calc(100% + 10px)', right: 0,
+                  width: '320px', background: '#1e293b',
+                  border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,179,237,0.08)',
+                  zIndex: 9999, overflow: 'hidden',
+                  animation: 'notiHeaderPopIn 0.2s cubic-bezier(0.16,1,0.3,1)',
                 }}>
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
+                  {/* Header */}
+                  <div style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    padding: '12px 16px 10px',
+                    borderBottom: '1px solid rgba(255,255,255,0.07)',
+                  }}>
+                    <span style={{
+                      fontSize: '14px', fontWeight: 800,
+                      background: 'linear-gradient(90deg,#63b3ed,#9f7aea)',
+                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                    }}>🔔 Thông báo</span>
+                    {unreadCount > 0 && (
+                      <button
+                        onClick={() => markAllAsRead(currentUser?.id)}
+                        style={{
+                          background: 'rgba(99,179,237,0.1)', border: '1px solid rgba(99,179,237,0.2)',
+                          color: '#63b3ed', fontSize: '11px', fontWeight: 600,
+                          cursor: 'pointer', padding: '4px 10px', borderRadius: '8px',
+                        }}
+                      >✓ Đọc tất cả</button>
+                    )}
+                  </div>
+
+                  {/* List */}
+                  <div style={{ maxHeight: '280px', overflowY: 'auto', scrollbarWidth: 'thin' }}>
+                    {notifications.length === 0 ? (
+                      <div style={{
+                        display: 'flex', flexDirection: 'column', alignItems: 'center',
+                        padding: '32px 16px', color: '#475569', gap: '8px',
+                      }}>
+                        <span style={{ fontSize: '28px', opacity: 0.5 }}>🔕</span>
+                        <p style={{ margin: 0, fontSize: '13px' }}>Chưa có thông báo nào</p>
+                      </div>
+                    ) : (
+                      notifications.slice(0, 5).map((n) => (
+                        <div
+                          key={n.id}
+                          onClick={() => !n.isRead && markAsRead(n.id)}
+                          style={{
+                            display: 'flex', alignItems: 'flex-start', gap: '10px',
+                            padding: '11px 14px',
+                            borderBottom: '1px solid rgba(255,255,255,0.05)',
+                            background: n.isRead ? 'transparent' : 'rgba(99,179,237,0.06)',
+                            cursor: n.isRead ? 'default' : 'pointer',
+                            transition: 'background 0.15s',
+                            position: 'relative',
+                          }}
+                        >
+                          {!n.isRead && (
+                            <span style={{
+                              position: 'absolute', left: 0, top: 0, bottom: 0, width: '3px',
+                              background: 'linear-gradient(180deg,#63b3ed,#9f7aea)',
+                              borderRadius: '0 2px 2px 0',
+                            }} />
+                          )}
+                          <span style={{
+                            fontSize: '18px', width: '32px', height: '32px', flexShrink: 0,
+                            borderRadius: '50%', background: 'rgba(255,255,255,0.07)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          }}>
+                            {{ ACHIEVEMENT:'🏆', MISSION:'🎯', REWARD:'🎁', STREAK:'🔥', LEARNING:'📚' }[n.type] || '🔔'}
+                          </span>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <p style={{
+                              margin: '0 0 2px', fontSize: '12px', fontWeight: 600,
+                              color: n.isRead ? '#64748b' : '#e2e8f0',
+                              whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                            }}>{n.title}</p>
+                            <p style={{
+                              margin: 0, fontSize: '11px', color: '#64748b', lineHeight: 1.4,
+                              overflow: 'hidden', display: '-webkit-box',
+                              WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+                            }}>{n.message}</p>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div style={{ padding: '8px 14px', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                    <button
+                      onClick={() => { setBellOpen(false); navigate('/notifications') }}
+                      style={{
+                        width: '100%', background: 'rgba(99,179,237,0.07)',
+                        border: '1px solid rgba(99,179,237,0.15)', color: '#63b3ed',
+                        fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+                        padding: '7px', borderRadius: '10px', transition: 'all 0.2s',
+                      }}
+                    >Xem tất cả thông báo →</button>
+                  </div>
+                </div>
               )}
-            </button>
+            </div>
             <button
               className="reset-btn"
               title="Reset conversation"

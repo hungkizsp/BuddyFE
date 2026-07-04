@@ -7,6 +7,18 @@ export const useNotificationStore = create((set, get) => ({
   isLoading: false,
   error: null,
 
+  addNotification: (notification) =>
+    set((state) => {
+      // Avoid duplicates
+      if (state.notifications.some((n) => n.id === notification.id)) {
+        return state
+      }
+      return {
+        notifications: [notification, ...state.notifications],
+        unreadCount: notification.isRead ? state.unreadCount : state.unreadCount + 1,
+      }
+    }),
+
   fetchNotifications: async (childId) => {
     set({ isLoading: true, error: null })
     try {
