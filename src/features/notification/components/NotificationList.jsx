@@ -22,12 +22,19 @@ function timeAgo(dateStr) {
   return `${days} ngày trước`
 }
 
-export default function NotificationList({ mode = 'page', maxItems = 5, childId }) {
+/**
+ * @param {object}   props
+ * @param {'page'|'popup'} props.mode     - 'popup' for dropdown, 'page' for full page
+ * @param {number}   [props.maxItems=5]   - used when mode='popup'
+ * @param {Array}    [props.items]        - optional override list (e.g. pre-filtered)
+ */
+export default function NotificationList({ mode = 'page', maxItems = 5, items }) {
   const { notifications, isLoading, markAsRead, deleteNotification } =
     useNotificationStore()
 
-  const displayed =
-    mode === 'popup' ? notifications.slice(0, maxItems) : notifications
+  // Use provided items (filtered) or fall back to store list
+  const source = items ?? notifications
+  const displayed = mode === 'popup' ? source.slice(0, maxItems) : source
 
   if (isLoading) {
     return (

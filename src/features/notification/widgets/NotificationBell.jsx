@@ -39,11 +39,12 @@ export default function NotificationBell() {
 
   return (
     <div className="noti-bell-wrapper" ref={popupRef}>
-      {/* Bell trigger */}
+      {/* Floating bubble trigger */}
       <button
-        className={`noti-bell-btn ${open ? 'noti-bell-btn--active' : ''}`}
+        className={`noti-bell-btn ${open ? 'noti-bell-btn--active' : ''} ${unreadCount > 0 ? 'has-unread' : ''}`}
         onClick={() => setOpen((v) => !v)}
         title="Thông báo"
+        aria-label={`Thông báo${unreadCount > 0 ? ` - ${unreadCount} chưa đọc` : ''}`}
       >
         <span className="noti-bell-icon">🔔</span>
         <span className="noti-bell-label">Thông báo</span>
@@ -52,11 +53,11 @@ export default function NotificationBell() {
         )}
       </button>
 
-      {/* Dropdown popup */}
+      {/* Popup panel - slides up from the bubble */}
       {open && (
         <div className="noti-popup">
           <div className="noti-popup-header">
-            <h3 className="noti-popup-title">Thông báo</h3>
+            <h3 className="noti-popup-title">🔔 Thông báo</h3>
             {unreadCount > 0 && (
               <button className="noti-popup-mark-all" onClick={handleMarkAllRead}>
                 ✓ Đọc tất cả

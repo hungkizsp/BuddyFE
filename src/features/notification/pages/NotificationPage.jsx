@@ -85,7 +85,7 @@ export default function NotificationPage() {
           </div>
         ) : (
           <div className="noti-page-list-wrap">
-            <NotificationList mode="page" />
+            <NotificationList mode="page" items={filtered} />
           </div>
         )}
       </div>

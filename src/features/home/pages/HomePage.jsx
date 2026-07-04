@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../auth/store/authStore'
 import { useNotificationStore } from '../../notification/store/notificationStore'
-import NotificationBell from '../../notification/widgets/NotificationBell'
 import axiosClient from '../../../shared/api/axiosClient'
 import './HomePage.css'
 
@@ -52,6 +51,8 @@ function XpBar({ xp, level }) {
 export default function HomePage() {
   const navigate = useNavigate()
   const { currentUser, logout, loadCurrentUser } = useAuthStore()
+  // unreadCount is used for the bell badge in the chat header
+  const { unreadCount } = useNotificationStore()
 
   const [messages, setMessages] = useState([
     {
@@ -168,6 +169,12 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/*
+         * Sidebar nav — runs across the whole app via HomePage layout.
+         * NOTE FOR FUTURE DEVS: If a global NavBar or HeaderBar is added
+         * (one that wraps ALL pages, not just HomePage), move the nav items
+         * below into that global component instead of keeping them here.
+         */}
         <nav className="sidebar-nav">
           <a href="#" className="nav-item active">
             <span>💬</span> Chat with Buddy
@@ -184,7 +191,14 @@ export default function HomePage() {
           <a href="#" className="nav-item">
             <span>🛒</span> Shop
           </a>
-          <NotificationBell />
+          {/* Link tới trang Notifications đầy đủ */}
+          <a
+            href="/notifications"
+            className="nav-item"
+            onClick={(e) => { e.preventDefault(); navigate('/notifications') }}
+          >
+            <span>🔔</span> Notifications
+          </a>
         </nav>
 
         <button className="logout-btn" onClick={handleLogout}>
@@ -203,6 +217,27 @@ export default function HomePage() {
             </p>
           </div>
           <div className="chat-header-actions">
+            {/* Bell shortcut in chat header — navigates to full notifications page.
+                If a global HeaderBar is created later, move this button there. */}
+            <button
+              className="reset-btn"
+              title="Thông báo"
+              onClick={() => navigate('/notifications')}
+              style={{ position: 'relative', marginRight: '8px' }}
+            >
+              🔔
+              {unreadCount > 0 && (
+                <span style={{
+                  position: 'absolute', top: '-4px', right: '-4px',
+                  background: 'linear-gradient(135deg,#f43f5e,#ef4444)',
+                  color: '#fff', fontSize: '9px', fontWeight: 800,
+                  borderRadius: '8px', padding: '1px 4px', lineHeight: 1.4,
+                  minWidth: '14px', textAlign: 'center',
+                }}>
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
+            </button>
             <button
               className="reset-btn"
               title="Reset conversation"
