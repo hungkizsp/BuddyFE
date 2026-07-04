@@ -32,7 +32,7 @@ export default function BuddyCharacter({ gameState, onArrivedAtTable, position }
     <group
       ref={groupRef}
       position={position || [-0.6, -1.8, 0]}
-      rotation={[0, 0, 0]}
+      rotation={[0, -0.1, 0]}
       scale={[1.3, 1.3, 1.3]}
       dispose={null}
     >
