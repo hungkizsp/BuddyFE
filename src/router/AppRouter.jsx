@@ -10,6 +10,7 @@ import BreakfastTroublePage from "../features/adventure/pages/BreakfastTroublePa
 import GameRoomPage from "../features/adventure/pages/GameRoomPage";
 import GameLevelPage from "../features/adventure/pages/GameLevelPage";
 import KitchenAdventurePage from "../features/adventure/pages/KitchenAdventurePage";
+import NotificationPage from "../features/notification/pages/NotificationPage";
 
 export default function AppRouter() {
   return (
@@ -20,6 +21,7 @@ export default function AppRouter() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
+        <Route path="/notifications" element={<NotificationPage />} />
 
         {/* Adventure Hub */}
         <Route path="/adventure" element={<AdventurePage />} />
