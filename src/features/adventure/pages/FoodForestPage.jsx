@@ -131,14 +131,30 @@ export default function FoodForestPage() {
   )
 
   const handleMissionClick = (mission) => {
-    setSelectedMissionId(mission.id)
-    navigate(`/adventure/food-forest/kitchen-adventure?scenarioId=${mission.scenario.id}`, {
+    setSelectedMissionId(mission.id);
+
+    let path = "/adventure/food-forest/kitchen-adventure";
+
+    switch (mission.scenario.title) {
+      case "Supermarket Shopping":
+        path = "/adventure/food-forest/supermarket-shopping";
+        break;
+
+      case "Breakfast Trouble":
+        path = "/adventure/food-forest/kitchen-adventure";
+        break;
+
+      default:
+        path = "/adventure/food-forest/kitchen-adventure";
+    }
+
+    navigate(`${path}?scenarioId=${mission.scenario.id}`, {
       state: {
         world: foodForest,
         scenario: mission.scenario,
       },
-    })
-  }
+    });
+  };
 
   const selectedMission = missions.find((mission) => mission.id === selectedMissionId) || missions[0]
   const loading = worldsLoading || scenariosLoading

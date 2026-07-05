@@ -3,7 +3,7 @@
 import fruitBasketOpenImg from "../../../assets/fruit-basket-inside.png";
 import "./FruitBasketPopup.css";
 
-export default function FruitBasketPopup({ show, fruits = [], onClose, onSelectFruit }) {
+export default function FruitBasketPopup({ show, fruits = [], onClose, onSelectFruit, returnText = "Return to Kitchen" }) {
   if (!show) return null;
 
   return (
@@ -59,6 +59,12 @@ export default function FruitBasketPopup({ show, fruits = [], onClose, onSelectF
             aria-label="Select Orange"
             onClick={() => onSelectFruit("orange")}
           />
+        </div>
+
+        <div className="fruit-basket-popup-footer">
+          <button className="fruit-basket-return-btn" type="button" onClick={onClose}>
+            {returnText} ↩️
+          </button>
         </div>
       </div>
     </div>

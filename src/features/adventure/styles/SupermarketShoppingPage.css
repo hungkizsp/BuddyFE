@@ -1,0 +1,871 @@
+/* =========================================================
+   Supermarket Shopping Page CSS
+   Level 2 – Food Forest World
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap');
+
+/* Re-use the same font tokens as Kitchen Adventure */
+:root {
+  --font-game: 'Fredoka One', 'Nunito', sans-serif;
+  --font-ui: 'Nunito', sans-serif;
+  --sm-green: #16a34a;
+  --sm-green-light: #dcfce7;
+  --sm-blue: #2563eb;
+  --sm-blue-light: #dbeafe;
+  --sm-red: #ef4444;
+  --sm-orange: #f97316;
+  --sm-yellow: #eab308;
+  --sm-shadow: rgba(15, 23, 42, 0.18);
+}
+
+/* ─── Page Container ──────────────────────────────────────── */
+.supermarket-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  background-image: url('../../../assets/supamarket2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  user-select: none;
+}
+/* ─── 3D Buddy canvas (same as kitchen) ──────────────────── */
+.supermarket-container .canvas-container {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ─── Gameplay Area ───────────────────────────────────────── */
+.sm-gameplay-area {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none; /* children opt-in */
+}
+
+/* ─── Shopping Scene (replaces old grid counter) ─────────── */
+.shopping-scene {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  width: min(750px, 80vw);
+  height: min(480px, 60vh);
+  border-radius: 28px;
+  border: 6px solid #1e293b;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  background: #fffdf9;
+  overflow: hidden;
+  pointer-events: auto;
+  z-index: 7;
+  animation: sm-slide-up 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+/* Specific shape for fridge */
+.shopping-scene--snack_dairy {
+  width: min(400px, 80vw);
+  height: min(520px, 70vh);
+}
+
+.shopping-scene__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* fills the scene div */
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+  border-radius: 0;
+}
+
+/* ─── Return to Supermarket button inside Counter modal ──── */
+.shopping-scene__return-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 10;
+  font-family: var(--font-game);
+  font-size: 13px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #78350f;
+  border: 2px solid #78350f;
+  border-radius: 14px;
+  padding: 8px 14px;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 3px 0 #78350f;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.shopping-scene__return-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 #78350f;
+}
+
+.shopping-scene__return-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 #78350f;
+}
+
+/* ─── Supermarket Background hotspots (approach phase) ───── */
+.supermarket-target-hotspot {
+  position: absolute;
+  border: 3px dashed var(--sm-orange);
+  background: rgba(249, 115, 22, 0.15);
+  border-radius: 20px;
+  cursor: pointer;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.6);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.supermarket-target-hotspot:hover {
+  background: rgba(249, 115, 22, 0.3);
+  transform: scale(1.03);
+}
+
+.supermarket-target-hotspot__hint {
+  background: rgba(15, 23, 42, 0.85);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: var(--font-game);
+  font-size: 11px;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Pulse animation helper */
+.animate-pulse {
+  animation: sm-pulse 2s infinite ease-in-out;
+}
+
+@keyframes sm-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5); }
+  50% { box-shadow: 0 0 0 12px rgba(249, 115, 22, 0); }
+}
+
+/* Override speech bubble click behavior wrapper */
+.supermarket-container .speech-bubble-wrapper {
+  pointer-events: auto !important;
+}
+
+/* ─── Hotspot Buttons ────────────────────────────────────── */
+.hotspot {
+  position: absolute;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  pointer-events: auto;
+  /* transparent by default — no visible outline in production */
+  outline: none;
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform  0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hotspot:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.55),
+              0 0 20px rgba(255, 255, 255, 0.2);
+  transform: scale(1.04);
+}
+
+.hotspot:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.hotspot:disabled {
+  cursor: default;
+}
+
+/* Dev mode — show hotspot outlines for layout calibration */
+.hotspot--dev {
+  border: 2px dashed rgba(239, 68, 68, 0.7) !important;
+  background: rgba(239, 68, 68, 0.06) !important;
+}
+
+/* Collected state */
+.hotspot--collected {
+  pointer-events: none;
+}
+
+.hotspot__collected-badge {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(18px, 3vw, 32px);
+  animation: sm-pop-in 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes sm-pop-in {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Label tooltip – appears on hover, anchored below the hotspot */
+.hotspot__label {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-game);
+  font-size: 13px;
+  color: #1e293b;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  padding: 4px 10px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 20;
+}
+
+.hotspot:hover .hotspot__label {
+  opacity: 1;
+}
+
+/* Shake for wrong items */
+@keyframes sm-shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-8px) rotate(-2deg); }
+  30% { transform: translateX(8px)  rotate(2deg); }
+  50% { transform: translateX(-5px); }
+  70% { transform: translateX(5px); }
+  90% { transform: translateX(-2px); }
+}
+
+.hotspot--shake {
+  animation: sm-shake 0.55s ease-out;
+  background: rgba(239, 68, 68, 0.18) !important;
+  box-shadow: inset 0 0 0 2px rgba(239, 68, 68, 0.7) !important;
+}
+
+/* All-done overlay */
+.shopping-scene__all-done {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(220, 252, 231, 0.55);
+  backdrop-filter: blur(4px);
+  font-family: var(--font-game);
+  font-size: 22px;
+  color: var(--sm-green);
+  border-radius: inherit;
+  pointer-events: none;
+  animation: sm-slide-up 0.3s ease both;
+}
+
+.shopping-scene__all-done span {
+  font-size: 52px;
+  animation: sm-pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+/* ─── Shopping Checklist ──────────────────────────────── */
+/* The wrapper is rendered inside .sm-gameplay-area (which is             */
+/* position:absolute inset:0). We use position:absolute here too so it    */
+/* floats in the top-right corner on top of the scene image.              */
+.sm-checklist-wrapper {
+  position: absolute;
+  top: 88px;   /* below HUD header */
+  right: 20px;
+  z-index: 8;  /* above scene (6) but below speech bubble (10) */
+  pointer-events: auto;
+}
+
+.shopping-checklist {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-radius: 22px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 40px var(--sm-shadow);
+  padding: 18px 16px;
+  min-width: 190px;
+}
+
+.shopping-checklist__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.shopping-checklist__title {
+  font-family: var(--font-game);
+  font-size: 15px;
+  color: #1e293b;
+}
+
+.shopping-checklist__progress {
+  font-family: var(--font-game);
+  font-size: 14px;
+  background: var(--sm-green-light);
+  color: var(--sm-green);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.shopping-checklist__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shopping-checklist__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+  transition: opacity 0.3s ease;
+}
+
+.shopping-checklist__item--done {
+  opacity: 0.5;
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.shopping-checklist__icon {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.shopping-checklist__item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Voice Mission Panel ─────────────────────────────────── */
+.sm-voice-panel {
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  width: min(540px, 90vw);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  border-radius: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 60px var(--sm-shadow);
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  pointer-events: auto;
+  z-index: 8;
+}
+.counter-person-img{
+  /* position: relative; */
+  left: 74%;
+  width: 90%;
+  height: 100%; 
+}
+.sm-voice-panel__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sm-voice-panel__icon {
+  font-size: 48px;
+  animation: sm-float 2.5s ease-in-out infinite;
+}
+
+@keyframes sm-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.sm-voice-panel__title {
+  font-family: var(--font-game);
+  font-size: 24px;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* ─── VoiceMission Component Styles ──────────────────────── */
+.voice-mission {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.voice-mission__prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: var(--sm-blue-light);
+  border: 2px solid #bfdbfe;
+  border-radius: 18px;
+  padding: 16px 24px;
+  width: 100%;
+}
+
+.voice-mission__prompt-label {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--sm-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.voice-mission__expected {
+  font-family: var(--font-game);
+  font-size: 18px;
+  color: #1e3a8a;
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Voice button */
+.voice-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  background: linear-gradient(135deg, var(--sm-red), #dc2626);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4), 0 0 0 0 rgba(239, 68, 68, 0);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.2s ease;
+}
+
+.voice-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.55), 0 0 0 0 rgba(239, 68, 68, 0);
+}
+
+.voice-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.voice-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.voice-btn__icon {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.voice-btn__label {
+  font-family: var(--font-game);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Listening pulse */
+.voice-btn--listening {
+  animation: voice-pulse 1.4s ease-out infinite;
+  background: linear-gradient(135deg, #dc2626, var(--sm-orange));
+}
+
+@keyframes voice-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.voice-btn--success {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  box-shadow: 0 8px 24px rgba(22, 163, 74, 0.4);
+}
+
+.voice-btn--fail {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+}
+
+/* Animated sound waves */
+.voice-mission__waves {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 36px;
+}
+
+.voice-mission__waves span {
+  display: inline-block;
+  width: 6px;
+  border-radius: 4px;
+  background: var(--sm-red);
+  animation: sm-wave 1.2s ease-in-out infinite;
+}
+
+.voice-mission__waves span:nth-child(1) { height: 14px; animation-delay: 0s; }
+.voice-mission__waves span:nth-child(2) { height: 28px; animation-delay: 0.15s; }
+.voice-mission__waves span:nth-child(3) { height: 36px; animation-delay: 0.3s; }
+.voice-mission__waves span:nth-child(4) { height: 22px; animation-delay: 0.45s; }
+.voice-mission__waves span:nth-child(5) { height: 12px; animation-delay: 0.6s; }
+
+@keyframes sm-wave {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.6; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+/* Transcript display */
+.voice-mission__transcript {
+  width: 100%;
+  border-radius: 14px;
+  padding: 12px 18px;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 14px;
+}
+
+.voice-mission__transcript--success {
+  background: var(--sm-green-light);
+  border: 2px solid #86efac;
+  color: #14532d;
+}
+
+.voice-mission__transcript--fail {
+  background: #fef2f2;
+  border: 2px solid #fca5a5;
+  color: #7f1d1d;
+}
+
+.voice-mission__transcript-label {
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 4px;
+  opacity: 0.7;
+}
+
+.voice-mission__unsupported {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #6b7280;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  text-align: center;
+}
+
+.voice-mission__hint {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Error message */
+.voice-mission__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  background: #fff7ed;
+  border: 2px solid #fed7aa;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: #9a3412;
+  line-height: 1.4;
+  animation: sm-slide-up 0.25s ease both;
+}
+
+.voice-mission__error-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.voice-mission__error p {
+  margin: 0;
+  font-weight: 700;
+}
+
+/* ─── Pronunciation Score Pills ───────────────────────────────────── */
+.voice-mission__scores {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: sm-slide-up 0.3s ease both;
+}
+
+.voice-mission__score-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1 1 70px;
+  min-width: 64px;
+  max-width: 90px;
+  padding: 10px 8px;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  font-family: var(--font-ui);
+  transition: transform 0.2s ease;
+  animation: score-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.voice-mission__score-pill:hover {
+  transform: translateY(-2px);
+}
+
+/* Great: score >= 90 */
+.voice-mission__score-pill--great {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #14532d;
+}
+
+/* OK: score 75-89 */
+.voice-mission__score-pill--ok {
+  background: #fef9c3;
+  border-color: #fde047;
+  color: #713f12;
+}
+
+/* Poor: score < 75 */
+.voice-mission__score-pill--poor {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #7f1d1d;
+}
+
+.voice-mission__score-pill-label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.75;
+  text-align: center;
+}
+
+.voice-mission__score-pill-value {
+  font-family: var(--font-game);
+  font-size: 22px;
+  line-height: 1;
+}
+
+@keyframes score-pop {
+  from { transform: scale(0.6) translateY(8px); opacity: 0; }
+  to   { transform: scale(1)   translateY(0);   opacity: 1; }
+}
+
+.voice-mission__score-pill:nth-child(1) { animation-delay: 0s; }
+.voice-mission__score-pill:nth-child(2) { animation-delay: 0.07s; }
+.voice-mission__score-pill:nth-child(3) { animation-delay: 0.14s; }
+.voice-mission__score-pill:nth-child(4) { animation-delay: 0.21s; }
+
+/* ─── Duolingo Result Card UI ─────────────────────────────────────── */
+.voice-mission__result-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: sm-slide-up 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.voice-mission__result-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.voice-mission__badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-family: var(--font-game);
+  font-size: 16px;
+}
+
+.voice-mission__badge--success {
+  background: #dcfce7;
+  color: #15803d;
+  border: 2px solid #86efac;
+}
+
+.voice-mission__badge--fail {
+  background: #fee2e2;
+  color: #ef4444;
+  border: 2px solid #fca5a5;
+}
+
+.voice-mission__badge-icon {
+  font-size: 20px;
+}
+
+.voice-mission__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.voice-mission__retry-btn {
+  width: 100%;
+  font-family: var(--font-game);
+  font-size: 15px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #b45309;
+  transition: all 0.1s ease;
+}
+
+.voice-mission__retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #b45309;
+}
+
+.voice-mission__retry-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #b45309;
+}
+
+.voice-mission__return-btn {
+  width: 100%;
+  font-family: var(--font-game);
+  font-size: 15px;
+  background: linear-gradient(135deg, #64748b, #475569);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #334155;
+  transition: all 0.1s ease;
+}
+
+.voice-mission__return-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #334155;
+}
+
+.voice-mission__return-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #334155;
+}
+
+/* Green highlight for return button when passed */
+.voice-mission__return-btn--pass {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 4px 0 #15803d;
+}
+
+.voice-mission__return-btn--pass:hover {
+  box-shadow: 0 6px 0 #15803d;
+}
+
+.voice-mission__return-btn--pass:active {
+  box-shadow: 0 2px 0 #15803d;
+}
+
+.voice-mission__listening-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ─── HUD (re-use kitchen patterns, scoped here for safety) ─ */
+/* .hud-header, .hud-title-container, etc. are already defined  */
+/* in KitchenAdventurePage.css and shared globally. We only     */
+/* add the step badge here.                                      */
+
+.sm-step-badge {
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+  color: white !important;
+  border-color: #4f46e5 !important;
+  font-size: 14px !important;
+}
+
+/* ─── Entrance animations ─────────────────────────────────── */
+@keyframes sm-slide-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scene and checklist animate in on mount (sm-slide-up defined above in scene block) */
+.shopping-checklist,
+.sm-voice-panel {
+  position: absolute;
+  top:4%;
+  animation: sm-slide-up 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.sm-voice-panel { animation-delay: 0.05s; }
+
+/* ─── Item collected pop animation ───────────────────────── */
+@keyframes sm-pop-out {
+  0% { transform: scale(1); opacity: 1; }
+  40% { transform: scale(1.3); opacity: 0.8; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+/* ─── Responsive adjustments ─────────────────────────────── */
+@media (max-width: 768px) {
+  .sm-voice-panel {
+    max-width: 100%;
+    padding: 22px 20px;
+  }
+
+  .hotspot__label {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+}
+
+/* Left pointing arrow animation */
+@keyframes sm-bounce-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-8px); }
+}
