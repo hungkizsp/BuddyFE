@@ -10,6 +10,7 @@ import BreakfastTroublePage from "../features/adventure/pages/BreakfastTroublePa
 import GameRoomPage from "../features/adventure/pages/GameRoomPage";
 import GameLevelPage from "../features/adventure/pages/GameLevelPage";
 import KitchenAdventurePage from "../features/adventure/pages/KitchenAdventurePage";
+import SupermarketShoppingPage from "../features/adventure/pages/SupermarketShoppingPage";
 import NotificationPage from "../features/notification/pages/NotificationPage";
 
 export default function AppRouter() {
@@ -33,6 +34,8 @@ export default function AppRouter() {
         <Route path="/adventure/food-forest/breakfast-trouble" element={<BreakfastTroublePage />} />
         <Route path="/adventure/food-forest/breakfast-trouble/play" element={<GameRoomPage />} />
         <Route path="/adventure/food-forest/kitchen-adventure" element={<KitchenAdventurePage />} />
+        {/* Level 2 – Supermarket Shopping */}
+        <Route path="/adventure/food-forest/supermarket-shopping" element={<SupermarketShoppingPage />} />
 
         {/* Level 2 – Fruit Hunt (Apple Orchard) */}
         <Route path="/adventure/food-forest/fruit-hunt/play" element={<GameLevelPage levelId={2} />} />

@@ -39,7 +39,7 @@ export default function MissionPanel({
         <span>{title || 'Mission Panel'}</span>
         <span className={`mission-status-badge ${badgeClass}`}>{statusText}</span>
       </div>
-      {description ? <div className="mission-description">{description}</div> : null}
+      {/* {description ? <div className="mission-description">{description}</div> : null} */}
       <div className="mission-instruction">{error || instruction}</div>
       <button
         className="mission-start-btn"

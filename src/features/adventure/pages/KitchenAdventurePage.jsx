@@ -11,7 +11,6 @@ import useScenarioVocabulary from "../hooks/useScenarioVocabulary";
 import learningService from "../services/learningService";
 import "../styles/KitchenAdventurePage.css";
 import fruitBasketImg from "../../../assets/fruit-basket.png";
-import fruitBasketOpenImg from "../../../assets/fruit-basket-inside.png";
 
 const normalizeWord = (value = "") =>
   value.trim().toLowerCase().replace(/\s+/g, "-");
@@ -98,7 +97,6 @@ export default function KitchenAdventurePage() {
   const [xp, setXp] = useState(60);
   const [coins, setCoins] = useState(15);
   const [showRewards, setShowRewards] = useState(false);
-  const [isListening, setIsListening] = useState(false);
   const [showFruitBasket, setShowFruitBasket] = useState(false);
   const [hasAppleFromBasket, setHasAppleFromBasket] = useState(false);
   const buddyDragStartRef = useRef({ x: 0, y: 0, left: 0, top: 0 });
@@ -209,8 +207,8 @@ export default function KitchenAdventurePage() {
     setBuddyPosition({ left: "67%", top: "47%" });
     setFeedbackMessage(
       scenarioSteps[0]?.buddyMessage ||
-        scenario?.description ||
-        "Buddy is ready for this mission.",
+      scenario?.description ||
+      "Buddy is ready for this mission.",
     );
     setShowRewards(false);
   };
@@ -221,8 +219,8 @@ export default function KitchenAdventurePage() {
       setGameState("walking-to-table");
       setFeedbackMessage(
         scenarioSteps[0]?.buddyMessage ||
-          scenario?.description ||
-          "Buddy is walking to the kitchen table.",
+        scenario?.description ||
+        "Buddy is walking to the kitchen table.",
       );
     }
   };
@@ -279,7 +277,7 @@ export default function KitchenAdventurePage() {
     if (itemId === BREAD_ID || itemId === EGG_ID) {
       setFeedbackMessage(
         activeStep?.failResponse ||
-          `Buddy wants ${itemsByWord.eggOnToast?.label || "the prepared food"}, not ${word} alone.`,
+        `Buddy wants ${itemsByWord.eggOnToast?.label || "the prepared food"}, not ${word} alone.`,
       );
       return;
     }
@@ -289,8 +287,8 @@ export default function KitchenAdventurePage() {
         setGameState("completed");
         setFeedbackMessage(
           activeStep.successResponse ||
-            activeStep.buddyMessage ||
-            "Mission complete.",
+          activeStep.buddyMessage ||
+          "Mission complete.",
         );
         setShowRewards(true);
         return;
@@ -319,8 +317,8 @@ export default function KitchenAdventurePage() {
           setGameState("completed");
           setFeedbackMessage(
             nextStep?.successResponse ||
-              activeStep?.successResponse ||
-              "Mission complete.",
+            activeStep?.successResponse ||
+            "Mission complete.",
           );
           setXp((prev) => prev + 20);
           setCoins((prev) => prev + 10);
@@ -332,7 +330,7 @@ export default function KitchenAdventurePage() {
 
     setFeedbackMessage(
       activeStep?.failResponse ||
-        `${word} is not the item Buddy needs right now.`,
+      `${word} is not the item Buddy needs right now.`,
     );
   };
 
