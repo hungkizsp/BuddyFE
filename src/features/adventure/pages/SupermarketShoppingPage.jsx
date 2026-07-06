@@ -76,8 +76,8 @@ const BG_MEAT_COUNTER = foodCounter;
 
 // ─── Supermarket Hotspots for approach phase ────────────────────────────────
 const SUPERMARKET_HOTSPOTS = {
-  VEGETABLES: { left: '18%', top: '45%', width: '22%', height: '30%', label: 'Vegetable Counter' },
-  SNACK_DAIRY: { left: '50%', top: '42%', width: '17%', height: '42%', label: 'Snack Fridge' },
+  VEGETABLES: { left: '18%', top: '45%', width: '22%', height: '30%', label: 'Quầy rau củ' },
+  SNACK_DAIRY: { left: '50%', top: '42%', width: '17%', height: '42%', label: 'Tủ lạnh đồ ăn nhẹ' },
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -105,7 +105,7 @@ export default function SupermarketShoppingPage() {
         const data = await learningService.getScenario(scenarioId);
         if (!ignore) setScenario(data);
       } catch (err) {
-        if (!ignore) setScenarioError(err.message || 'Unable to load scenario.');
+        if (!ignore) setScenarioError(err.message || 'Không thể tải kịch bản.');
       } finally {
         if (!ignore) setScenarioLoading(false);
       }
@@ -125,6 +125,7 @@ export default function SupermarketShoppingPage() {
   const [coins] = useState(20);
   const [isCounterVisible, setIsCounterVisible] = useState(false);
   const [isCounterPersonClicked, setIsCounterPersonClicked] = useState(false);
+  const [evaluationDone, setEvaluationDone] = useState(false);
 
   // ── Reset counter visibility on step change ──
   useEffect(() => {
@@ -172,7 +173,7 @@ export default function SupermarketShoppingPage() {
     if (!nextStep) return;
 
     const timer = setTimeout(() => {
-      setFeedbackMessage(activeStep.successResponse || 'Great job!');
+      setFeedbackMessage(activeStep.successResponse || 'Tuyệt vời!');
       setCollectedIds(new Set());
       setMissionStage((prev) => prev + 1);
     }, 600);
@@ -184,7 +185,7 @@ export default function SupermarketShoppingPage() {
   useEffect(() => {
     if (activeStep?.expectedIntent === INTENT_MISSION_COMPLETE && gameState === 'shopping') {
       setGameState('completed');
-      setFeedbackMessage(activeStep.successResponse || 'Mission Complete!');
+      setFeedbackMessage(activeStep.successResponse || 'Hoàn thành nhiệm vụ!');
       setShowReward(true);
     }
   }, [activeStep, gameState]);
@@ -202,18 +203,18 @@ export default function SupermarketShoppingPage() {
   const handleCorrectItem = (itemId) => {
     setCollectedIds((prev) => new Set([...prev, itemId]));
     const picked = correctItems.find((i) => i.id === itemId);
-    setFeedbackMessage(`Great! You picked up ${picked?.label || itemId}! ✅`);
+    setFeedbackMessage(`Tuyệt! Bạn đã chọn ${picked?.label || itemId}! ✅`);
   };
 
   const handleWrongItem = (itemId) => {
     const item = allShopItems.find((i) => i.id === itemId);
     setFeedbackMessage(
-      activeStep?.failResponse || `${item?.label || itemId} is not on the list right now!`,
+      activeStep?.failResponse || `${item?.label || itemId} không có trong danh sách lúc này!`,
     );
   };
 
   const handleVoiceSuccess = () => {
-    setFeedbackMessage(activeStep?.successResponse || 'Great! Now we know where to go.');
+    setFeedbackMessage(activeStep?.successResponse || 'Tuyệt! Giờ mình biết phải đi đâu rồi.');
     const nextStep = scenarioSteps[missionStage + 1];
     if (nextStep) {
       setCollectedIds(new Set());
@@ -224,8 +225,46 @@ export default function SupermarketShoppingPage() {
 
   const handleVoiceFail = (transcript) => {
     setFeedbackMessage(
-      activeStep?.failResponse || "Try saying: 'Excuse me, where is the meat counter?'",
+      activeStep?.failResponse || "Hãy thử nói: 'Excuse me, where is the meat counter?'",
     );
+  };
+
+  const handleEvaluateFeedback = (data) => {
+    const parts = []
+    if (data.overallFeedback) parts.push(data.overallFeedback)
+    if (data.strengths?.length) {
+      parts.push('\n💪 Điểm mạnh:')
+      data.strengths.forEach((s) => parts.push(`  • ${s}`))
+    }
+    if (data.weaknesses?.length) {
+      parts.push('\n🎯 Cần cải thiện:')
+      data.weaknesses.forEach((w) => parts.push(`  • ${w}`))
+    }
+    if (data.improvementTips?.length) {
+      parts.push('\n📝 Mẹo:')
+      data.improvementTips.forEach((t) => parts.push(`  • ${t}`))
+    }
+    if (data.wordFeedback?.length) {
+      parts.push('\n📖 Từng từ:')
+      data.wordFeedback.forEach((w) => {
+        parts.push(`  • "${w.word}": ${w.problem}`)
+        if (w.tip) parts.push(`    Mẹo: ${w.tip}`)
+      })
+    }
+
+    const nextStep = scenarioSteps[missionStage + 1];
+    if (nextStep) {
+      setCollectedIds(new Set());
+      setMissionStage((prev) => prev + 1);
+    }
+
+    setFeedbackMessage(parts.join('\n'))
+    setEvaluationDone(true)
+  };
+
+  const handleDismissEvaluation = () => {
+    setEvaluationDone(false);
+    setFeedbackMessage('');
   };
 
   // ── Step-type detection helpers ──
@@ -252,11 +291,11 @@ export default function SupermarketShoppingPage() {
   const getMissionInstruction = () => {
     const anyLoading = scenarioLoading || vocabularyLoading || stepsLoading;
     const anyError = scenarioError || vocabularyError || stepsError;
-    if (anyLoading) return 'Loading mission data…';
+    if (anyLoading) return 'Đang tải dữ liệu nhiệm vụ…';
     if (anyError) return anyError;
-    if (!scenarioId) return 'Choose a scenario to begin.';
-    if (gameState === 'not-started') return scenario?.description || "Click 'Start Mission' to begin.";
-    return activeStep?.buddyMessage || 'Complete the current mission step.';
+    if (!scenarioId) return 'Chọn một kịch bản để bắt đầu.';
+    if (gameState === 'not-started') return scenario?.description || "Nhấn 'Bắt đầu nhiệm vụ' để bắt đầu.";
+    return activeStep?.buddyMessage || 'Hoàn thành bước nhiệm vụ hiện tại.';
   };
 
   const startDisabled =
@@ -284,7 +323,7 @@ export default function SupermarketShoppingPage() {
       <header className="hud-header">
         <div className="hud-title-container">
           <span className="hud-title-forest">{scenario?.worldName || 'Food Forest'}</span>
-          <span className="hud-title-level">{scenario?.title || 'Supermarket Shopping'}</span>
+          <span className="hud-title-level">{scenario?.title || 'Mua sắm siêu thị'}</span>
         </div>
         <div className="hud-stats-container">
           <div className="stat-card">
@@ -293,11 +332,11 @@ export default function SupermarketShoppingPage() {
           </div>
           <div className="stat-card">
             <span className="stat-icon">🪙</span>
-            <span className="coin-color">Coins: {coins}</span>
+            <span className="coin-color">Xu: {coins}</span>
           </div>
           {gameState === 'shopping' && activeStep && (
             <div className="stat-card sm-step-badge">
-              <span>Step {missionStage + 1} / {scenarioSteps.length - 1}</span>
+              <span>Bước {missionStage + 1} / {scenarioSteps.length - 1}</span>
             </div>
           )}
         </div>
@@ -319,7 +358,7 @@ export default function SupermarketShoppingPage() {
           >
             <img
               src={counterPerson}
-              alt="Counter Person"
+              alt="Nhân viên quầy"
               className="counter-person-img"
             />
           </div>
@@ -337,16 +376,16 @@ export default function SupermarketShoppingPage() {
               }}
               onClick={() => {
                 setIsCounterVisible(true);
-                setFeedbackMessage(`Let's find the required items here!`);
+                setFeedbackMessage(`Hãy tìm các món cần thiết ở đây!`);
               }}
-              aria-label={`Go to ${SUPERMARKET_HOTSPOTS[activeStep.expectedEntity].label}`}
+              aria-label={`Đi đến ${SUPERMARKET_HOTSPOTS[activeStep.expectedEntity].label}`}
             >
-              <span className="supermarket-target-hotspot__hint">🔍 Open Counter</span>
+              <span className="supermarket-target-hotspot__hint">🔍 Mở quầy</span>
             </button>
           )}
 
           {/* Step 3: Click counter person to talk */}
-          {isVoiceStep && !isCounterPersonClicked && (
+          {isVoiceStep && !isCounterPersonClicked && !evaluationDone && (
             <button
               type="button"
               className="supermarket-target-hotspot animate-pulse"
@@ -362,11 +401,11 @@ export default function SupermarketShoppingPage() {
               }}
               onClick={() => {
                 setIsCounterPersonClicked(true);
-                setFeedbackMessage("Ask the counter person where the meat section is!");
+                setFeedbackMessage("Hãy hỏi nhân viên quầy khu vực thịt ở đâu!");
               }}
-              aria-label="Talk to cashier"
+              aria-label="Nói chuyện với nhân viên thu ngân"
             >
-              <span className="supermarket-target-hotspot__hint">💬 Ask Staff</span>
+              <span className="supermarket-target-hotspot__hint">💬 Hỏi nhân viên</span>
             </button>
           )}
 
@@ -386,9 +425,9 @@ export default function SupermarketShoppingPage() {
               }}
               onClick={() => {
                 setIsCounterVisible(true);
-                setFeedbackMessage("Here is the meat counter! Let's get chicken, beef, and pork.");
+                setFeedbackMessage("Đây là quầy thịt! Hãy lấy chicken, beef và pork.");
               }}
-              aria-label="Approach Meat Counter"
+              aria-label="Đến gần quầy thịt"
             >
               <span style={{ fontSize: '32px', display: 'inline-block', animation: 'sm-bounce-left 0.8s infinite alternate' }}>⬅️</span>
             </button>
@@ -410,7 +449,7 @@ export default function SupermarketShoppingPage() {
           )}
 
           {/* Voice mission panel (acts as modal popup with return button) */}
-          {isVoiceStep && isCounterPersonClicked && (
+          {isVoiceStep && isCounterPersonClicked && !evaluationDone && (
             <div className="sm-voice-panel">
               <button
                 type="button"
@@ -418,28 +457,29 @@ export default function SupermarketShoppingPage() {
                 onClick={() => setIsCounterPersonClicked(false)}
                 style={{ top: '15px', left: '15px' }}
               >
-                Return to Supermarket ↩️
+                Quay lại siêu thị ↩️
               </button>
               <div className="sm-voice-panel__header" style={{ marginTop: '20px' }}>
                 <span className="sm-voice-panel__icon">🗣️</span>
-                <h2 className="sm-voice-panel__title">Ask for Directions</h2>
+                <h2 className="sm-voice-panel__title">Hỏi đường đi</h2>
               </div>
               <VoiceMission
                 expectedSentence="excuse me, where is the meat counter"
                 onSuccess={handleVoiceSuccess}
                 onFail={handleVoiceFail}
+                onEvaluate={handleEvaluateFeedback}
                 disabled={gameState !== 'shopping'}
               />
             </div>
+            
           )}
-
           {/* Checklist sidebar (only when counter is open) */}
           {isCollectStep && isCounterVisible && (
             <div className="sm-checklist-wrapper">
               <ShoppingChecklist
                 items={checklistItems}
                 collectedIds={collectedIds}
-                title="🛒 Shopping List"
+                title="🛒 Danh sách mua sắm"
               />
             </div>
           )}
@@ -453,7 +493,7 @@ export default function SupermarketShoppingPage() {
           onClick={() => setMissionPanelVisible((p) => !p)}
           type="button"
         >
-          {missionPanelVisible ? 'Hide Mission Panel' : 'Show Mission Panel'}
+          {missionPanelVisible ? 'Ẩn bảng nhiệm vụ' : 'Hiện bảng nhiệm vụ'}
         </button>
       </div>
 
@@ -466,7 +506,7 @@ export default function SupermarketShoppingPage() {
                 ? 'completed'
                 : 'idle-at-table'
           }
-          title={scenario?.title || 'Supermarket Shopping'}
+          title={scenario?.title || 'Mua sắm siêu thị'}
           description={scenario?.description}
           onStartMission={handleStartMission}
           instruction={getMissionInstruction()}
@@ -476,8 +516,26 @@ export default function SupermarketShoppingPage() {
         />
       )}
 
+      {/* ── Evaluation feedback panel ── */}
+      {evaluationDone && feedbackMessage && (
+        <div className="sm-evaluation-panel">
+          <div className="sm-evaluation-feedback">
+            {feedbackMessage.split('\n').map((line, i) => (
+              <p key={i} className="sm-evaluation-line">{line}</p>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="sm-evaluation-close-btn"
+            onClick={handleDismissEvaluation}
+          >
+            Đóng phản hồi
+          </button>
+        </div>
+      )}
+
       {/* ── Speech bubble ── */}
-      {gameState !== 'not-started' && (
+      {gameState !== 'not-started' && !evaluationDone && (
         <SpeechBubble
           gameState={gameState === 'completed' ? 'completed' : 'idle-at-table'}
           message={feedbackMessage}
@@ -492,7 +550,7 @@ export default function SupermarketShoppingPage() {
         onClick={() => navigate('/adventure/food-forest')}
         type="button"
       >
-        Back to Map
+        Quay lại bản đồ
       </button>
 
       {/* ── Reward Popup ── */}

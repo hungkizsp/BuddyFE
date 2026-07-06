@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { assessSpeech } from '../services/speechService';
+import axiosClient from '../../../shared/api/axiosClient';
 
 // ─── Score pill colour helper ─────────────────────────────────────────────────
 function scoreColour(value) {
@@ -24,12 +25,14 @@ function scoreColour(value) {
  *  expectedSentence  – string from activeStep
  *  onSuccess()       – advance to next step (called when Return is clicked)
  *  onFail(transcript)– callback on failure (can be used to update parent/buddy text)
+ *  onEvaluate(data)  – callback when evaluation completes successfully
  *  disabled          – freeze interaction
  */
 export default function VoiceMission({
   expectedSentence = '',
   onSuccess,
   onFail,
+  onEvaluate,
   disabled = false,
 }) {
   const [status, setStatus] = useState('idle'); // 'idle' | 'listening' | 'processing' | 'result' | 'error'
@@ -37,6 +40,12 @@ export default function VoiceMission({
   const [scores, setScores] = useState(null); // { pronunciationScore, accuracyScore, fluencyScore, completenessScore }
   const [errorMsg, setErrorMsg] = useState('');
   const [passed, setPassed] = useState(false);
+  const [assessmentResult, setAssessmentResult] = useState(null); // full result from assessSpeech
+
+  // Evaluate states
+  const [evaluateStatus, setEvaluateStatus] = useState('idle'); // 'idle' | 'loading' | 'done' | 'error'
+  const [evaluateFeedback, setEvaluateFeedback] = useState(null);
+  const [evaluateError, setEvaluateError] = useState('');
 
   // Track whether a recognition session is in flight so we never start two
   const busyRef = useRef(false);
@@ -59,12 +68,17 @@ export default function VoiceMission({
     setErrorMsg('');
     setPassed(false);
     setStatus('listening');
+    setAssessmentResult(null);
+    setEvaluateStatus('idle');
+    setEvaluateFeedback(null);
+    setEvaluateError('');
 
     try {
       const result = await assessSpeech(expectedSentence);
       // console.log(JSON.stringify(result, null, 2));
       if (abortRef.current) return; // component unmounted mid-flight
 
+      setAssessmentResult(result);
       setTranscript(result.transcript);
       setScores({
         pronunciationScore: result.pronunciationScore,
@@ -96,6 +110,35 @@ export default function VoiceMission({
 
   const handleRetry = () => {
     handleStart();
+  };
+
+  const handleEvaluate = async () => {
+    if (!assessmentResult) return;
+    setEvaluateStatus('loading');
+    setEvaluateFeedback(null);
+    setEvaluateError('');
+
+    try {
+      const res = await axiosClient.post('/speech/evaluate', {
+        expectedSentence,
+        assessment: {
+          transcript: assessmentResult.transcript,
+          pronunciationScore: assessmentResult.pronunciationScore,
+          accuracyScore: assessmentResult.accuracyScore,
+          fluencyScore: assessmentResult.fluencyScore,
+          completenessScore: assessmentResult.completenessScore,
+          prosodyScore: assessmentResult.prosodyScore,
+          words: assessmentResult.words,
+        },
+      });
+      const feedbackData = res.data?.data || res.data;
+      setEvaluateFeedback(feedbackData);
+      setEvaluateStatus('done');
+      onEvaluate?.(feedbackData);
+    } catch (err) {
+      setEvaluateError(err.message || 'Evaluation failed');
+      setEvaluateStatus('error');
+    }
   };
 
   const isListening = status === 'listening';
@@ -219,6 +262,42 @@ export default function VoiceMission({
             </div>
           )}
 
+          {/* Evaluate section */}
+          {evaluateStatus === 'done' && evaluateFeedback ? (
+            <div className="voice-mission__evaluate-feedback">
+              {typeof evaluateFeedback === 'string'
+                ? evaluateFeedback
+                : evaluateFeedback.feedback || evaluateFeedback.message || JSON.stringify(evaluateFeedback, null, 2)}
+            </div>
+          ) : evaluateStatus === 'error' ? (
+            <div className="voice-mission__evaluate-error">
+              <span>{evaluateError}</span>
+              <button
+                type="button"
+                className="voice-mission__evaluate-retry-btn"
+                onClick={handleEvaluate}
+              >
+                Retry
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="voice-mission__evaluate-btn"
+              onClick={handleEvaluate}
+              disabled={evaluateStatus === 'loading' || !assessmentResult}
+            >
+              {evaluateStatus === 'loading' ? (
+                <>
+                  <span className="voice-mission__evaluate-spinner" />
+                  Evaluating...
+                </>
+              ) : (
+                'Evaluate'
+              )}
+            </button>
+          )}
+
           <div className="voice-mission__actions">
             {/* If failed, allow Retry without leaving */}
             {!passed && (
@@ -245,4 +324,3 @@ export default function VoiceMission({
     </div>
   );
 }
-
