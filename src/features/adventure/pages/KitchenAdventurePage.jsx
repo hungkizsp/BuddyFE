@@ -114,7 +114,7 @@ export default function KitchenAdventurePage() {
         if (!ignore) setScenario(data);
       } catch (err) {
         if (!ignore)
-          setScenarioError(err.message || "Unable to load scenario.");
+          setScenarioError(err.message || "Không thể tải kịch bản.");
       } finally {
         if (!ignore) setScenarioLoading(false);
       }
@@ -208,7 +208,7 @@ export default function KitchenAdventurePage() {
     setFeedbackMessage(
       scenarioSteps[0]?.buddyMessage ||
       scenario?.description ||
-      "Buddy is ready for this mission.",
+      "Buddy đã sẵn sàng cho nhiệm vụ này.",
     );
     setShowRewards(false);
   };
@@ -220,7 +220,7 @@ export default function KitchenAdventurePage() {
       setFeedbackMessage(
         scenarioSteps[0]?.buddyMessage ||
         scenario?.description ||
-        "Buddy is walking to the kitchen table.",
+        "Buddy đang đi đến bàn bếp.",
       );
     }
   };
@@ -250,20 +250,20 @@ export default function KitchenAdventurePage() {
             ? prev
             : [...prev, appleItem];
         });
-        setFeedbackMessage("Great! Apple is exactly what I want.");
+        setFeedbackMessage("Tuyệt vời! Apple đúng là thứ mình muốn.");
       }
       return;
     }
 
     const fruitReplies = {
-      banana: "Bananas are delicious, but today I'd like an apple.",
-      orange: "Orange is refreshing, but I'm craving an apple.",
-      pear: "Pears are sweet, but I'd rather have an apple.",
-      grapes: "Grapes look tasty, but I want an apple today.",
+      banana: "Bananas ngon đấy, nhưng hôm nay mình muốn một quả Apple.",
+      orange: "Orange rất tươi mát, nhưng mình đang thèm một quả Apple.",
+      pear: "Pears ngọt đấy, nhưng mình muốn một quả Apple hơn.",
+      grapes: "Grapes trông ngon, nhưng hôm nay mình muốn một quả Apple.",
     };
 
     setFeedbackMessage(
-      fruitReplies[fruitId] || "I'd rather have an apple today.",
+      fruitReplies[fruitId] || "Hôm nay mình muốn một quả Apple hơn.",
     );
   };
 
@@ -277,7 +277,7 @@ export default function KitchenAdventurePage() {
     if (itemId === BREAD_ID || itemId === EGG_ID) {
       setFeedbackMessage(
         activeStep?.failResponse ||
-        `Buddy wants ${itemsByWord.eggOnToast?.label || "the prepared food"}, not ${word} alone.`,
+        `Buddy muốn ${itemsByWord.eggOnToast?.label || "món đã chuẩn bị"}, không chỉ mỗi ${word}.`,
       );
       return;
     }
@@ -288,7 +288,7 @@ export default function KitchenAdventurePage() {
         setFeedbackMessage(
           activeStep.successResponse ||
           activeStep.buddyMessage ||
-          "Mission complete.",
+          "Hoàn thành nhiệm vụ.",
         );
         setShowRewards(true);
         return;
@@ -305,7 +305,7 @@ export default function KitchenAdventurePage() {
 
         if (itemId === itemsByWord.milk?.id) {
           setFeedbackMessage(
-            "Great! Now please open the Fruit Basket and find an Apple.",
+            "Tuyệt vời! Hãy mở Giỏ trái cây và tìm một quả Apple.",
           );
         } else {
           setFeedbackMessage(
@@ -318,7 +318,7 @@ export default function KitchenAdventurePage() {
           setFeedbackMessage(
             nextStep?.successResponse ||
             activeStep?.successResponse ||
-            "Mission complete.",
+            "Hoàn thành nhiệm vụ.",
           );
           setXp((prev) => prev + 20);
           setCoins((prev) => prev + 10);
@@ -330,7 +330,7 @@ export default function KitchenAdventurePage() {
 
     setFeedbackMessage(
       activeStep?.failResponse ||
-      `${word} is not the item Buddy needs right now.`,
+      `${word} không phải là thứ Buddy cần lúc này.`,
     );
   };
 
@@ -338,14 +338,14 @@ export default function KitchenAdventurePage() {
     if (gameState !== "idle-at-table") return false;
 
     if (preparedEggOnToast) {
-      setFeedbackMessage("You already cooked Egg on Toast.");
+      setFeedbackMessage("Bạn đã nấu Egg on Toast rồi.");
       return false;
     }
 
     const pair = new Set([draggedId, targetId]);
 
     if (!pair.has(BREAD_ID) || !pair.has(EGG_ID)) {
-      setFeedbackMessage("Try combining Bread and Egg.");
+      setFeedbackMessage("Hãy thử kết hợp Bread và Egg.");
       return false;
     }
 
@@ -356,7 +356,7 @@ export default function KitchenAdventurePage() {
       itemsByWord.eggOnToast,
     ]);
 
-    setFeedbackMessage("Egg on Toast is ready.");
+    setFeedbackMessage("Egg on Toast đã sẵn sàng.");
 
     return true;
   };
@@ -365,12 +365,12 @@ export default function KitchenAdventurePage() {
     if (gameState !== "idle-at-table") return false;
 
     if (itemId !== BREAD_ID && itemId !== EGG_ID) {
-      setFeedbackMessage("Only Bread and Egg can go into the pot.");
+      setFeedbackMessage("Chỉ Bread và Egg mới có thể cho vào nồi.");
       return false;
     }
 
     if (potContents.includes(itemId)) {
-      setFeedbackMessage("That item is already in the pot.");
+      setFeedbackMessage("Món đó đã ở trong nồi rồi.");
       return false;
     }
 
@@ -387,29 +387,29 @@ export default function KitchenAdventurePage() {
 
       setTableItems((prev) => [...prev, itemsByWord.eggOnToast]);
 
-      setFeedbackMessage("Egg on Toast is ready. Drag it to Buddy.");
+      setFeedbackMessage("Egg on Toast đã sẵn sàng. Kéo nó đến chỗ Buddy.");
 
       return true;
     }
 
-    setFeedbackMessage("Great! Add the other ingredient.");
+    setFeedbackMessage("Tuyệt! Thêm nguyên liệu còn lại nào.");
 
     return true;
   };
 
   const getMissionInstruction = () => {
     if (scenarioLoading || vocabularyLoading || stepsLoading)
-      return "Loading mission data...";
+      return "Đang tải dữ liệu nhiệm vụ...";
     if (scenarioError || vocabularyError || stepsError)
       return scenarioError || vocabularyError || stepsError;
-    if (!scenarioId) return "Choose a scenario from Food Forest to begin.";
+    if (!scenarioId) return "Chọn một kịch bản từ Food Forest để bắt đầu.";
     if (gameState === "not-started")
-      return scenario?.description || "Click 'Start Mission' to begin.";
+      return scenario?.description || "Nhấn 'Bắt đầu nhiệm vụ' để bắt đầu.";
     if (gameState === "walking-to-table")
-      return "Buddy is walking to the table...";
+      return "Buddy đang đi đến bàn...";
     if (gameState === "idle-at-table")
-      return activeStep?.buddyMessage || "Complete the current mission step.";
-    return "Mission complete. Buddy is happy and full.";
+      return activeStep?.buddyMessage || "Hoàn thành bước nhiệm vụ hiện tại.";
+    return "Hoàn thành nhiệm vụ. Buddy rất vui và no bụng.";
   };
 
   const handleBuddyPointerDown = (e) => {
@@ -483,21 +483,21 @@ export default function KitchenAdventurePage() {
         disabled={!canOpenBasket}
         onClick={() => {
           if (!canOpenBasket) {
-            setFeedbackMessage("Buddy hasn't asked for fruit yet.");
+            setFeedbackMessage("Buddy chưa yêu cầu trái cây.");
             return;
           }
 
           setShowFruitBasket(true);
         }}
       >
-        <span>Fruit Basket</span>
-        <img src={fruitBasketImg} alt="Fruit Basket" />
+        <span>Giỏ trái cây</span>
+        <img src={fruitBasketImg} alt="Giỏ trái cây" />
       </button>
 
       {gameState === "idle-at-table" && (
         <>
           <div className="pot-drop-zone" aria-label="Pot area">
-            <span>Pot</span>
+            <span>Nồi</span>
           </div>
           <div
             className="buddy-drop-target"
@@ -512,7 +512,7 @@ export default function KitchenAdventurePage() {
             onPointerCancel={handleBuddyPointerUp}
             type="button"
           >
-            Drag Buddy
+            Kéo Buddy
           </button>
         </>
       )}
@@ -537,7 +537,7 @@ export default function KitchenAdventurePage() {
             {scenario?.worldName || "Food Forest"}
           </span>
           <span className="hud-title-level">
-            {scenario?.title || "Kitchen Adventure"}
+            {scenario?.title || "Phiêu lưu nhà bếp"}
           </span>
         </div>
 
@@ -546,7 +546,7 @@ export default function KitchenAdventurePage() {
             <span>XP: {xp}</span>
           </div>
           <div className="stat-card">
-            <span>Coins: {coins}</span>
+            <span>Xu: {coins}</span>
           </div>
         </div>
       </header>
@@ -557,7 +557,7 @@ export default function KitchenAdventurePage() {
           onClick={() => setMissionPanelVisible((prev) => !prev)}
           type="button"
         >
-          {missionPanelVisible ? "Hide Mission Panel" : "Show Mission Panel"}
+          {missionPanelVisible ? "Ẩn bảng nhiệm vụ" : "Hiện bảng nhiệm vụ"}
         </button>
       </div>
 
@@ -579,7 +579,7 @@ export default function KitchenAdventurePage() {
         onClick={() => navigate("/adventure/food-forest")}
         type="button"
       >
-        Back to Map
+        Quay lại bản đồ
       </button>
 
       {gameState !== "not-started" && (
