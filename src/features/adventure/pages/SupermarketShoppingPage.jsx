@@ -125,6 +125,7 @@ export default function SupermarketShoppingPage() {
   const [coins] = useState(20);
   const [isCounterVisible, setIsCounterVisible] = useState(false);
   const [isCounterPersonClicked, setIsCounterPersonClicked] = useState(false);
+  const [evaluationDone, setEvaluationDone] = useState(false);
 
   // ── Reset counter visibility on step change ──
   useEffect(() => {
@@ -226,6 +227,44 @@ export default function SupermarketShoppingPage() {
     setFeedbackMessage(
       activeStep?.failResponse || "Try saying: 'Excuse me, where is the meat counter?'",
     );
+  };
+
+  const handleEvaluateFeedback = (data) => {
+    const parts = []
+    if (data.overallFeedback) parts.push(data.overallFeedback)
+    if (data.strengths?.length) {
+      parts.push('\n💪 Strengths:')
+      data.strengths.forEach((s) => parts.push(`  • ${s}`))
+    }
+    if (data.weaknesses?.length) {
+      parts.push('\n🎯 Areas to improve:')
+      data.weaknesses.forEach((w) => parts.push(`  • ${w}`))
+    }
+    if (data.improvementTips?.length) {
+      parts.push('\n📝 Tips:')
+      data.improvementTips.forEach((t) => parts.push(`  • ${t}`))
+    }
+    if (data.wordFeedback?.length) {
+      parts.push('\n📖 Word by word:')
+      data.wordFeedback.forEach((w) => {
+        parts.push(`  • "${w.word}": ${w.problem}`)
+        if (w.tip) parts.push(`    Tip: ${w.tip}`)
+      })
+    }
+
+    const nextStep = scenarioSteps[missionStage + 1];
+    if (nextStep) {
+      setCollectedIds(new Set());
+      setMissionStage((prev) => prev + 1);
+    }
+
+    setFeedbackMessage(parts.join('\n'))
+    setEvaluationDone(true)
+  };
+
+  const handleDismissEvaluation = () => {
+    setEvaluationDone(false);
+    setFeedbackMessage('');
   };
 
   // ── Step-type detection helpers ──
@@ -346,7 +385,7 @@ export default function SupermarketShoppingPage() {
           )}
 
           {/* Step 3: Click counter person to talk */}
-          {isVoiceStep && !isCounterPersonClicked && (
+          {isVoiceStep && !isCounterPersonClicked && !evaluationDone && (
             <button
               type="button"
               className="supermarket-target-hotspot animate-pulse"
@@ -410,7 +449,7 @@ export default function SupermarketShoppingPage() {
           )}
 
           {/* Voice mission panel (acts as modal popup with return button) */}
-          {isVoiceStep && isCounterPersonClicked && (
+          {isVoiceStep && isCounterPersonClicked && !evaluationDone && (
             <div className="sm-voice-panel">
               <button
                 type="button"
@@ -428,11 +467,12 @@ export default function SupermarketShoppingPage() {
                 expectedSentence="excuse me, where is the meat counter"
                 onSuccess={handleVoiceSuccess}
                 onFail={handleVoiceFail}
+                onEvaluate={handleEvaluateFeedback}
                 disabled={gameState !== 'shopping'}
               />
             </div>
+            
           )}
-
           {/* Checklist sidebar (only when counter is open) */}
           {isCollectStep && isCounterVisible && (
             <div className="sm-checklist-wrapper">
@@ -476,8 +516,26 @@ export default function SupermarketShoppingPage() {
         />
       )}
 
+      {/* ── Evaluation feedback panel ── */}
+      {evaluationDone && feedbackMessage && (
+        <div className="sm-evaluation-panel">
+          <div className="sm-evaluation-feedback">
+            {feedbackMessage.split('\n').map((line, i) => (
+              <p key={i} className="sm-evaluation-line">{line}</p>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="sm-evaluation-close-btn"
+            onClick={handleDismissEvaluation}
+          >
+            Close Feedback
+          </button>
+        </div>
+      )}
+
       {/* ── Speech bubble ── */}
-      {gameState !== 'not-started' && (
+      {gameState !== 'not-started' && !evaluationDone && (
         <SpeechBubble
           gameState={gameState === 'completed' ? 'completed' : 'idle-at-table'}
           message={feedbackMessage}

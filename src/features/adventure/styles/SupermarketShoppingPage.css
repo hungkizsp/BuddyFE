@@ -288,13 +288,15 @@
 /* floats in the top-right corner on top of the scene image.              */
 .sm-checklist-wrapper {
   position: absolute;
-  top: 88px;   /* below HUD header */
-  right: 20px;
+  top: 15%;
+  /* right: 20px; */
+  left:5%;
   z-index: 8;  /* above scene (6) but below speech bubble (10) */
   pointer-events: auto;
 }
 
 .shopping-checklist {
+  position: absolute;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
   border-radius: 22px;
@@ -862,6 +864,167 @@
     font-size: 11px;
     padding: 3px 8px;
   }
+}
+
+/* ─── Pronunciation Evaluate Button ──────────────────────────── */
+.voice-mission__evaluate-btn {
+  width: 100%;
+  font-family: var(--font-game);
+  font-size: 15px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #3730a3;
+  transition: all 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.voice-mission__evaluate-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #3730a3;
+}
+
+.voice-mission__evaluate-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #3730a3;
+}
+
+.voice-mission__evaluate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.voice-mission__evaluate-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: pron-spin 0.6s linear infinite;
+}
+
+@keyframes pron-spin {
+  to { transform: rotate(360deg); }
+}
+
+.voice-mission__evaluate-feedback {
+  width: 100%;
+  padding: 14px 18px;
+  background: #eef2ff;
+  border: 2px solid #c7d2fe;
+  border-radius: 14px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: #312e81;
+  line-height: 1.5;
+  text-align: center;
+  animation: sm-slide-up 0.25s ease both;
+}
+
+.voice-mission__evaluate-error {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 14px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: #991b1b;
+  line-height: 1.4;
+}
+
+.voice-mission__evaluate-error span {
+  flex: 1;
+  font-weight: 700;
+}
+
+.voice-mission__evaluate-retry-btn {
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: #fee2e2;
+  border: 2px solid #fca5a5;
+  color: #dc2626;
+  font-family: var(--font-game);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  white-space: nowrap;
+}
+
+.voice-mission__evaluate-retry-btn:hover {
+  background: #fecaca;
+}
+
+/* ─── Evaluation Feedback Panel ─────────────────────────── */
+.sm-evaluation-panel {
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  width: min(600px, 90vw);
+  max-height: 70vh;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.3);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: sm-slide-up 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  overflow-y: auto;
+  pointer-events: auto;
+}
+
+.sm-evaluation-feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sm-evaluation-line {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1e293b;
+  white-space: pre-wrap;
+}
+
+.sm-evaluation-close-btn {
+  align-self: center;
+  font-family: var(--font-game);
+  font-size: 14px;
+  background: linear-gradient(135deg, #64748b, #475569);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 10px 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #334155;
+  transition: all 0.1s ease;
+}
+
+.sm-evaluation-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #334155;
+}
+
+.sm-evaluation-close-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #334155;
 }
 
 /* Left pointing arrow animation */
