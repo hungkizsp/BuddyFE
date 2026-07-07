@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import SignupPage from "../features/auth/pages/SignupPage";
+import LandingPage from "../features/home/pages/LandingPage";
 import HomePage from "../features/home/pages/HomePage";
 
 import AdventurePage from "../features/adventure/pages/AdventurePage";
@@ -17,8 +18,9 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Redirect root to /home */}
-        <Route path="/" element={<Navigate to="/home" replace />} />
+        {/* Redirect root to the new landing page */}
+        <Route path="/" element={<Navigate to="/landing" replace />} />
+        <Route path="/landing" element={<LandingPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
