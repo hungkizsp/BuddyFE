@@ -252,10 +252,12 @@ export default function SupermarketShoppingPage() {
       })
     }
 
-    const nextStep = scenarioSteps[missionStage + 1];
-    if (nextStep) {
-      setCollectedIds(new Set());
-      setMissionStage((prev) => prev + 1);
+    if (data.matched) {
+      const nextStep = scenarioSteps[missionStage + 1];
+      if (nextStep) {
+        setCollectedIds(new Set());
+        setMissionStage((prev) => prev + 1);
+      }
     }
 
     setFeedbackMessage(parts.join('\n'))
@@ -275,6 +277,7 @@ export default function SupermarketShoppingPage() {
   const isVoiceStep =
     activeStep?.expectedIntent === 'ASK_LOCATION' &&
     activeStep?.expectedEntity === ENTITY_MEAT_COUNTER;
+
 
   // const isMissionComplete = activeStep?.expectedIntent === INTENT_MISSION_COMPLETE;
 
@@ -306,8 +309,8 @@ export default function SupermarketShoppingPage() {
     scenarioSteps.length === 0;
 
   // ── Buddy 3D position (fixed in corner for supermarket) ──
-  const buddyPosition = { left: '70%', top: '65%' };
-  const buddy3DPosition = [1.5, -1.2, 1.5];
+  const buddyPosition = { left: '70%', top: '56%' };
+  const buddy3DPosition = [1.3, -1.2, 1.5];
 
   return (
     <div className="supermarket-container">
@@ -405,7 +408,7 @@ export default function SupermarketShoppingPage() {
               }}
               aria-label="Nói chuyện với nhân viên thu ngân"
             >
-              <span className="supermarket-target-hotspot__hint">💬 Hỏi nhân viên</span>
+              {/* <span className="supermarket-target-hotspot__hint">💬 Hỏi nhân viên</span> */}
             </button>
           )}
 
@@ -465,6 +468,8 @@ export default function SupermarketShoppingPage() {
               </div>
               <VoiceMission
                 expectedSentence="excuse me, where is the meat counter"
+                scenarioId={scenarioId}
+                stepOrder={activeStep?.stepOrder}
                 onSuccess={handleVoiceSuccess}
                 onFail={handleVoiceFail}
                 onEvaluate={handleEvaluateFeedback}

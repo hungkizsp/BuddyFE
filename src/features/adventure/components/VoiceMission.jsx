@@ -30,10 +30,14 @@ function scoreColour(value) {
  */
 export default function VoiceMission({
   expectedSentence = '',
+  scenarioId,
+  stepOrder,
   onSuccess,
   onFail,
   onEvaluate,
   disabled = false,
+  returnLabel = '← Return to Supermarket',
+  successHint = 'Ah! the meat counter is on the left side',
 }) {
   const [status, setStatus] = useState('idle'); // 'idle' | 'listening' | 'processing' | 'result' | 'error'
   const [transcript, setTranscript] = useState('');
@@ -59,6 +63,15 @@ export default function VoiceMission({
     };
   }, []);
 
+  const handleRecognize = async (transcript) => {
+    const res = await axiosClient.post('/speech/recognize', {
+      scenarioId: Number(scenarioId),
+      stepOrder: Number(stepOrder),
+      transcript,
+    });
+
+    return res.data.data || res.data;
+  };
   const handleStart = useCallback(async () => {
     if (disabled || busyRef.current) return;
 
@@ -74,24 +87,43 @@ export default function VoiceMission({
     setEvaluateError('');
 
     try {
-      const result = await assessSpeech(expectedSentence);
+      const result = await assessSpeech();
       // console.log(JSON.stringify(result, null, 2));
       if (abortRef.current) return; // component unmounted mid-flight
-
       setAssessmentResult(result);
+
       setTranscript(result.transcript);
+
       setScores({
         pronunciationScore: result.pronunciationScore,
         accuracyScore: result.accuracyScore,
         fluencyScore: result.fluencyScore,
         completenessScore: result.completenessScore,
       });
-      setPassed(result.passed);
-      setStatus('result');
+      if (Number(scenarioId) === 3) {
 
-      if (!result.passed) {
-        onFail?.(result.transcript);
+        const recognize = await handleRecognize(result.transcript);
+
+        const matched = recognize.matched;
+
+        setPassed(matched);
+
+        if (!matched) {
+          setErrorMsg(recognize.feedback || "That's not the correct order.");
+          onFail?.(result.transcript);
+        }
+
+      } else {
+
+        // Các scene khác vẫn dùng pronunciation
+        setPassed(result.passed);
+
+        if (!result.passed) {
+          onFail?.(result.transcript);
+        }
       }
+
+      setStatus('result');
     } catch (err) {
       if (abortRef.current) return;
 
@@ -102,7 +134,7 @@ export default function VoiceMission({
     } finally {
       busyRef.current = false;
     }
-  }, [disabled, expectedSentence, onFail]);
+  }, [disabled, onFail]);
 
   const handleReturn = () => {
     onSuccess?.();
@@ -111,7 +143,6 @@ export default function VoiceMission({
   const handleRetry = () => {
     handleStart();
   };
-
   const handleEvaluate = async () => {
     if (!assessmentResult) return;
     setEvaluateStatus('loading');
@@ -130,8 +161,19 @@ export default function VoiceMission({
           prosodyScore: assessmentResult.prosodyScore,
           words: assessmentResult.words,
         },
+        // transcript: assessmentResult.transcript,
+        // scenarioId: Number(scenarioId),
+        // stepOrder: Number(stepOrder),
       });
       const feedbackData = res.data?.data || res.data;
+
+      // Update passed state based on backend semantic match
+      if (feedbackData.matched) {
+        setPassed(true);
+      } else {
+        setPassed(false);
+      }
+
       setEvaluateFeedback(feedbackData);
       setEvaluateStatus('done');
       onEvaluate?.(feedbackData);
@@ -211,113 +253,179 @@ export default function VoiceMission({
       {/* Result state (Duolingo card style results) */}
       {status === 'result' && (
         <div className="voice-mission__result-card">
-          <div className="voice-mission__result-header">
-            {passed ? (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                <div className="voice-mission__badge voice-mission__badge--success">
-                  <span className="voice-mission__badge-icon">✅</span>
-                  <span className="voice-mission__badge-text">Success! Great job!</span>
+          <div className="voice-mission__result-columns">
+            {/* Left column: badge, transcript, scores, actions */}
+            <div className="voice-mission__result-left">
+              <div className="voice-mission__result-header">
+                {passed ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                    <div className="voice-mission__badge voice-mission__badge--success">
+                      <span className="voice-mission__badge-icon">✅</span>
+                      <span className="voice-mission__badge-text">Success! Great job!</span>
+                    </div>
+                    {successHint ? (
+                      <p className="voice-mission__success-hint" style={{ margin: '4px 0 0 0', fontFamily: 'var(--font-game)', fontSize: '15px', color: '#16a34a', textAlign: 'center', fontWeight: 'bold' }}>
+                        {successHint}
+                      </p>
+                    ) : null}
+                  </div>
+                ) : (
+                  <div className="voice-mission__badge voice-mission__badge--fail">
+                    <span className="voice-mission__badge-icon">❌</span>
+                    <span className="voice-mission__badge-text">Keep practicing!</span>
+                  </div>
+                )}
+              </div>
+
+              {transcript && (
+                <div
+                  className={`voice-mission__transcript ${passed ? 'voice-mission__transcript--success' : 'voice-mission__transcript--fail'
+                    }`}
+                >
+                  <span className="voice-mission__transcript-label">You said:</span>
+                  <p>"{transcript}"</p>
                 </div>
-                <p className="voice-mission__success-hint" style={{ margin: '4px 0 0 0', fontFamily: 'var(--font-game)', fontSize: '15px', color: '#16a34a', textAlign: 'center', fontWeight: 'bold' }}>
-                  Ah! the meat counter is on the left side
-                </p>
-              </div>
-            ) : (
-              <div className="voice-mission__badge voice-mission__badge--fail">
-                <span className="voice-mission__badge-icon">❌</span>
-                <span className="voice-mission__badge-text">Keep practicing!</span>
-              </div>
-
-            )}
-          </div>
-
-          {transcript && (
-            <div
-              className={`voice-mission__transcript ${passed ? 'voice-mission__transcript--success' : 'voice-mission__transcript--fail'
-                }`}
-            >
-              <span className="voice-mission__transcript-label">You said:</span>
-              <p>"{transcript}"</p>
-            </div>
-          )}
-
-          {scores && (
-            <div className="voice-mission__scores" aria-label="Pronunciation scores">
-              <div className={`voice-mission__score-pill ${scoreColour(scores.pronunciationScore)}`}>
-                <span className="voice-mission__score-pill-label">Pronunciation</span>
-                <span className="voice-mission__score-pill-value">{scores.pronunciationScore}</span>
-              </div>
-              <div className={`voice-mission__score-pill ${scoreColour(scores.accuracyScore)}`}>
-                <span className="voice-mission__score-pill-label">Accuracy</span>
-                <span className="voice-mission__score-pill-value">{scores.accuracyScore}</span>
-              </div>
-              <div className={`voice-mission__score-pill ${scoreColour(scores.fluencyScore)}`}>
-                <span className="voice-mission__score-pill-label">Fluency</span>
-                <span className="voice-mission__score-pill-value">{scores.fluencyScore}</span>
-              </div>
-              <div className={`voice-mission__score-pill ${scoreColour(scores.completenessScore)}`}>
-                <span className="voice-mission__score-pill-label">Completeness</span>
-                <span className="voice-mission__score-pill-value">{scores.completenessScore}</span>
-              </div>
-            </div>
-          )}
-
-          {/* Evaluate section */}
-          {evaluateStatus === 'done' && evaluateFeedback ? (
-            <div className="voice-mission__evaluate-feedback">
-              {typeof evaluateFeedback === 'string'
-                ? evaluateFeedback
-                : evaluateFeedback.feedback || evaluateFeedback.message || JSON.stringify(evaluateFeedback, null, 2)}
-            </div>
-          ) : evaluateStatus === 'error' ? (
-            <div className="voice-mission__evaluate-error">
-              <span>{evaluateError}</span>
-              <button
-                type="button"
-                className="voice-mission__evaluate-retry-btn"
-                onClick={handleEvaluate}
-              >
-                Retry
-              </button>
-            </div>
-          ) : (
-            <button
-              type="button"
-              className="voice-mission__evaluate-btn"
-              onClick={handleEvaluate}
-              disabled={evaluateStatus === 'loading' || !assessmentResult}
-            >
-              {evaluateStatus === 'loading' ? (
-                <>
-                  <span className="voice-mission__evaluate-spinner" />
-                  Evaluating...
-                </>
-              ) : (
-                'Evaluate'
               )}
-            </button>
-          )}
+              {Number(scenarioId) === 3 && errorMsg && !passed && (
+                <div className="voice-mission__semantic-error">
+                  {errorMsg}
+                </div>
+              )}
 
-          <div className="voice-mission__actions">
-            {/* If failed, allow Retry without leaving */}
-            {!passed && (
-              <button
-                type="button"
-                className="voice-mission__retry-btn"
-                onClick={handleRetry}
-              >
-                🔄 Try Again
-              </button>
-            )}
+              {scores && (
+                <div className="voice-mission__scores" aria-label="Pronunciation scores">
+                  <div className={`voice-mission__score-pill ${scoreColour(scores.pronunciationScore)}`}>
+                    <span className="voice-mission__score-pill-label">Pronunciation</span>
+                    <span className="voice-mission__score-pill-value">{scores.pronunciationScore}</span>
+                  </div>
+                  <div className={`voice-mission__score-pill ${scoreColour(scores.accuracyScore)}`}>
+                    <span className="voice-mission__score-pill-label">Accuracy</span>
+                    <span className="voice-mission__score-pill-value">{scores.accuracyScore}</span>
+                  </div>
+                  <div className={`voice-mission__score-pill ${scoreColour(scores.fluencyScore)}`}>
+                    <span className="voice-mission__score-pill-label">Fluency</span>
+                    <span className="voice-mission__score-pill-value">{scores.fluencyScore}</span>
+                  </div>
+                  <div className={`voice-mission__score-pill ${scoreColour(scores.completenessScore)}`}>
+                    <span className="voice-mission__score-pill-label">Completeness</span>
+                    <span className="voice-mission__score-pill-value">{scores.completenessScore}</span>
+                  </div>
+                </div>
+              )}
 
-            {/* Always allow returning to supermarket (which advances state on pass or closes on fail/completed) */}
-            <button
-              type="button"
-              className={`voice-mission__return-btn ${passed ? 'voice-mission__return-btn--pass' : ''}`}
-              onClick={handleReturn}
-            >
-              ← Return to Supermarket
-            </button>
+              <div className="voice-mission__actions">
+                {!passed && (
+                  <button
+                    type="button"
+                    className="voice-mission__retry-btn"
+                    onClick={handleRetry}
+                  >
+                    🔄 Try Again
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className={`voice-mission__return-btn ${passed ? 'voice-mission__return-btn--pass' : ''}`}
+                  onClick={handleReturn}
+                  disabled={!passed}
+                >
+                  {returnLabel}
+                </button>
+              </div>
+            </div>
+
+            {/* Right column: evaluate feedback */}
+            <div className="voice-mission__result-right">
+              {evaluateStatus === 'done' && evaluateFeedback ? (
+                <div className="voice-mission__evaluate-feedback">
+                  {typeof evaluateFeedback === 'string' ? (
+                    evaluateFeedback
+                  ) : evaluateFeedback.overallFeedback ? (
+                    <>
+                      <div className="evaluate-overall">
+                        <span className="evaluate-overall__icon">📊</span>
+                        <p className="evaluate-overall__text">{evaluateFeedback.overallFeedback}</p>
+                      </div>
+
+                      {evaluateFeedback.strengths?.length > 0 && (
+                        <div className="evaluate-section">
+                          <h4 className="evaluate-section__title evaluate-section__title--strength">💪 Điểm mạnh</h4>
+                          <ul className="evaluate-list">
+                            {evaluateFeedback.strengths.map((s, i) => (
+                              <li key={i} className="evaluate-list__item evaluate-list__item--strength">{s}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {evaluateFeedback.weaknesses?.length > 0 && (
+                        <div className="evaluate-section">
+                          <h4 className="evaluate-section__title evaluate-section__title--weakness">🎯 Cần cải thiện</h4>
+                          <ul className="evaluate-list">
+                            {evaluateFeedback.weaknesses.map((w, i) => (
+                              <li key={i} className="evaluate-list__item evaluate-list__item--weakness">{w}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {evaluateFeedback.improvementTips?.length > 0 && (
+                        <div className="evaluate-section">
+                          <h4 className="evaluate-section__title evaluate-section__title--tip">📝 Mẹo</h4>
+                          <ul className="evaluate-list">
+                            {evaluateFeedback.improvementTips.map((t, i) => (
+                              <li key={i} className="evaluate-list__item evaluate-list__item--tip">{t}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {evaluateFeedback.wordFeedback?.length > 0 && (
+                        <div className="evaluate-section">
+                          <h4 className="evaluate-section__title evaluate-section__title--word">📖 Từng từ</h4>
+                          {evaluateFeedback.wordFeedback.map((wf, i) => (
+                            <div key={i} className="evaluate-word-card">
+                              <span className="evaluate-word-card__word">"{wf.word}"</span>
+                              <p className="evaluate-word-card__problem">{wf.problem}</p>
+                              {wf.tip && <p className="evaluate-word-card__tip">💡 {wf.tip}</p>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <p>{evaluateFeedback.feedback || evaluateFeedback.message || JSON.stringify(evaluateFeedback, null, 2)}</p>
+                  )}
+                </div>
+              ) : evaluateStatus === 'error' ? (
+                <div className="voice-mission__evaluate-error">
+                  <span>{evaluateError}</span>
+                  <button
+                    type="button"
+                    className="voice-mission__evaluate-retry-btn"
+                    onClick={handleEvaluate}
+                  >
+                    Retry
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="voice-mission__evaluate-btn"
+                  onClick={handleEvaluate}
+                  disabled={evaluateStatus === 'loading' || !assessmentResult}
+                >
+                  {evaluateStatus === 'loading' ? (
+                    <>
+                      <span className="voice-mission__evaluate-spinner" />
+                      Evaluating...
+                    </>
+                  ) : (
+                    'Evaluate'
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -702,11 +702,34 @@
 /* ─── Duolingo Result Card UI ─────────────────────────────────────── */
 .voice-mission__result-card {
   width: 100%;
+  animation: sm-slide-up 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.voice-mission__result-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.voice-mission__result-left {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  animation: sm-slide-up 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  gap: 14px;
+}
+
+.voice-mission__result-right {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .voice-mission__result-columns {
+    grid-template-columns: 1fr;
+  }
 }
 
 .voice-mission__result-header {
@@ -916,7 +939,7 @@
 
 .voice-mission__evaluate-feedback {
   width: 100%;
-  padding: 14px 18px;
+  padding: 16px 18px;
   background: #eef2ff;
   border: 2px solid #c7d2fe;
   border-radius: 14px;
@@ -924,8 +947,92 @@
   font-size: 14px;
   color: #312e81;
   line-height: 1.5;
-  text-align: center;
+  text-align: left;
   animation: sm-slide-up 0.25s ease both;
+}
+
+.evaluate-overall {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #c7d2fe;
+}
+.evaluate-overall__icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.evaluate-overall__text {
+  margin: 0;
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.evaluate-section {
+  margin-bottom: 14px;
+}
+.evaluate-section__title {
+  margin: 0 0 8px;
+  font-family: var(--font-game);
+  font-size: 13px;
+}
+.evaluate-section__title--strength { color: #16a34a; }
+.evaluate-section__title--weakness { color: #dc2626; }
+.evaluate-section__title--tip { color: #d97706; }
+.evaluate-section__title--word { color: #6366f1; }
+
+.evaluate-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.evaluate-list__item {
+  position: relative;
+  padding-left: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.evaluate-list__item::before {
+  content: '•';
+  position: absolute;
+  left: 2px;
+  font-weight: 800;
+}
+.evaluate-list__item--strength { color: #15803d; }
+.evaluate-list__item--weakness { color: #dc2626; }
+.evaluate-list__item--tip { color: #92400e; }
+
+.evaluate-word-card {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #c7d2fe;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+.evaluate-word-card__word {
+  font-family: var(--font-game);
+  font-size: 14px;
+  color: #4338ca;
+  display: block;
+  margin-bottom: 4px;
+}
+.evaluate-word-card__problem {
+  margin: 0 0 4px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1e293b;
+}
+.evaluate-word-card__tip {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #92400e;
 }
 
 .voice-mission__evaluate-error {

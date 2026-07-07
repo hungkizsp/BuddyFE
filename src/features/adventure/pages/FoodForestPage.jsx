@@ -140,6 +140,10 @@ export default function FoodForestPage() {
         path = "/adventure/food-forest/supermarket-shopping";
         break;
 
+      case "Family Restaurant":
+        path = "/adventure/food-forest/family-restaurant";
+        break;
+
       case "Breakfast Trouble":
         path = "/adventure/food-forest/kitchen-adventure";
         break;
