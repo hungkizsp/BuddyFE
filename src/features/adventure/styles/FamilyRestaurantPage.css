@@ -1,0 +1,379 @@
+/* =========================================================
+   Family Restaurant Page CSS
+   Food Forest World – warm kid-friendly restaurant scene
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap');
+
+:root {
+  --rest-cream: #fff7ed;
+  --rest-orange: #f97316;
+  --rest-orange-dark: #c2410c;
+  --rest-brown: #78350f;
+  --rest-green: #16a34a;
+  --rest-green-light: #dcfce7;
+  --rest-red: #ef4444;
+  --rest-shadow: rgba(120, 53, 15, 0.18);
+}
+
+.restaurant-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Nunito', sans-serif;
+  background-image: url('../../../assets/restaurant.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  user-select: none;
+}
+
+.restaurant-container .canvas-container {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.restaurant-container .canvas-container canvas {
+  background: transparent !important;
+}
+
+.restaurant-container .speech-bubble-wrapper {
+  pointer-events: auto !important;
+}
+
+.rest-step-badge {
+  background: linear-gradient(135deg, #f97316, #ea580c) !important;
+  color: white !important;
+  border-color: #c2410c !important;
+  font-size: 14px !important;
+}
+
+/* ─── Always-visible scene elements ─────────────────────── */
+.rest-scene-elements {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* ─── Gameplay area (after start mission) ───────────────── */
+.rest-gameplay-area {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.rest-counter {
+  position: absolute;
+  left: 10%;
+  top: 11%;
+  width: min(180px, 18vw);
+  z-index: 7;
+  pointer-events: none;
+}
+
+
+.rest-waiter-img {
+  position: relative;
+  width: 250%;
+  height: 250%;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.2));
+  animation: rest-float 3s ease-in-out infinite;
+}
+
+.rest-waiter-hotspot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250%;
+  height: 100%;
+  z-index: 8;
+  pointer-events: auto;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  transition: box-shadow 0.2s ease;
+   border: 3px dashed var(--sm-orange);
+}
+.rest-waiter-hotspot:hover {
+  box-shadow: 0 0 24px 10px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes rest-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.rest-dining-table {
+  position: absolute;
+  left: 18%;
+  bottom: 18%;
+  width: min(280px, 30vw);
+  height: 120px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.rest-table-top {
+  position: absolute;
+  inset: 0 0 24px;
+  background: linear-gradient(180deg, #d97706, #b45309);
+  border-radius: 18px;
+  border: 4px solid #92400e;
+  box-shadow: 0 16px 30px var(--rest-shadow);
+}
+
+.rest-table-leg {
+  position: absolute;
+  bottom: 0;
+  width: 18px;
+  height: 28px;
+  background: #78350f;
+  border-radius: 4px;
+}
+
+.rest-table-leg--left { left: 16%; }
+.rest-table-leg--right { right: 16%; }
+
+/* ─── Progress ──────────────────────────────────────────── */
+.restaurant-progress {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  pointer-events: auto;
+}
+
+.restaurant-progress__list {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 10px 14px;
+  background: rgba(255, 247, 237, 0.92);
+  border: 3px solid #fed7aa;
+  border-radius: 999px;
+  box-shadow: 0 10px 28px var(--rest-shadow);
+}
+
+.restaurant-progress__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: 'Fredoka One', 'Nunito', sans-serif;
+  font-size: 12px;
+  color: #9a3412;
+  background: rgba(255, 255, 255, 0.65);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.restaurant-progress__item--current {
+  background: linear-gradient(135deg, #fdba74, #fb923c);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
+}
+
+.restaurant-progress__item--done {
+  background: var(--rest-green-light);
+  color: var(--rest-green);
+}
+
+.restaurant-progress__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+}
+
+/* ─── Menu panel ──────────────────────────────────────── */
+.rest-menu-panel {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  z-index: 8;
+  pointer-events: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px var(--rest-shadow);
+}
+
+.rest-menu-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ─── Voice panel ─────────────────────────────────────── */
+.rest-voice-panel {
+  position: absolute;
+  left: 20%;
+  /* bottom: 1%; */
+  top:50%;
+  width: min(600px, 34vw);
+  background: rgba(255, 255, 255, 0.94);
+  border: 3px solid #fed7aa;
+  border-radius: 24px;
+  padding: 18px 20px 22px;
+  box-shadow: 0 16px 40px var(--rest-shadow);
+  pointer-events: auto;
+  z-index: 9;
+  animation: rest-slide-up 0.4s ease both;
+}
+
+.rest-voice-panel__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.rest-voice-panel__icon {
+  font-size: 34px;
+}
+
+.rest-voice-panel__title {
+  margin: 0;
+  font-family: 'Fredoka One', 'Nunito', sans-serif;
+  font-size: 18px;
+  color: var(--rest-brown);
+}
+
+.rest-voice-panel .voice-btn {
+  width: 110px;
+  height: 110px;
+}
+
+.rest-voice-panel .voice-mission__expected {
+  font-size: 15px;
+}
+
+/* ─── Feedback popup ──────────────────────────────────── */
+.order-feedback-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(67, 20, 7, 0.28);
+  z-index: 100;
+  pointer-events: auto;
+  animation: rest-fade-in 0.2s ease both;
+}
+
+.order-feedback-card {
+  min-width: min(360px, 88vw);
+  padding: 28px 32px;
+  border-radius: 28px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  animation: rest-pop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.order-feedback-card--success {
+  background: linear-gradient(180deg, #dcfce7, #bbf7d0);
+  border: 4px solid #86efac;
+}
+
+.order-feedback-card--failure {
+  background: linear-gradient(180deg, #fef2f2, #fee2e2);
+  border: 4px solid #fca5a5;
+}
+
+.order-feedback-card__icon {
+  display: block;
+  font-size: 52px;
+  margin-bottom: 10px;
+}
+
+.order-feedback-card__message {
+  margin: 0;
+  font-family: 'Fredoka One', 'Nunito', sans-serif;
+  font-size: 18px;
+  color: #431407;
+  line-height: 1.4;
+}
+
+.order-feedback-card__close {
+  margin-top: 16px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  font-family: 'Fredoka One', 'Nunito', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #c2410c;
+}
+
+/* ─── Animations ──────────────────────────────────────── */
+@keyframes rest-slide-up {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 24px)); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@keyframes rest-pop {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes rest-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+@keyframes rest-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 900px) {
+  .restaurant-progress__label {
+    display: none;
+  }
+
+  .rest-voice-panel {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(420px, 92vw);
+    bottom: 4%;
+  }
+
+  .rest-menu-panel {
+    left: 56%;
+    top: 44%;
+    width: min(200px, 40vw);
+  }
+
+  .rest-counter {
+    left: 70%;
+    top: 12%;
+    width: 100px;
+  }
+
+  .rest-dining-table {
+    left: 8%;
+    bottom: 12%;
+    width: min(160px, 24vw);
+    height: 80px;
+  }
+}

@@ -8,110 +8,20 @@ const SPEECH_LANG = import.meta.env.VITE_AZURE_SPEECH_LANGUAGE ?? 'en-US';
 
 // Pass thresholds (configurable via env)
 const ACCURACY_THRESHOLD = Number(import.meta.env.VITE_ACCURACY_THRESHOLD ?? 80);
-const COMPLETENESS_THRESHOLD = Number(import.meta.env.VITE_COMPLETENESS_THRESHOLD ?? 80);
+const FLUENCY_THRESHOLD = Number(import.meta.env.VITE_FLUENCY_THRESHOLD ?? 80);
 const SIMILARITY_THRESHOLD = Number(import.meta.env.VITE_SIMILARITY_THRESHOLD ?? 0.75);
+const COVERAGE_THRESHOLD = Number(import.meta.env.VITE_COVERAGE_THRESHOLD ?? 0.8);
 
 // Timeout (ms) if user doesn't speak
 const SPEECH_TIMEOUT_MS = 7_000;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Normalise a sentence for similarity comparison:
- * - lowercase
- * - expand common contractions
- * - strip punctuation
- * - strip common filler articles that shouldn't affect pass/fail
- */
-function normalise(text) {
-  if (!text) return '';
-  return text
-    .toLowerCase()
-    // expand contractions
-    .replace(/where's/g, 'where is')
-    .replace(/what's/g, 'what is')
-    .replace(/there's/g, 'there is')
-    .replace(/that's/g, 'that is')
-    .replace(/it's/g, 'it is')
-    .replace(/i'm/g, 'i am')
-    .replace(/i've/g, 'i have')
-    .replace(/i'll/g, 'i will')
-    .replace(/i'd/g, 'i would')
-    .replace(/you're/g, 'you are')
-    .replace(/you've/g, 'you have')
-    .replace(/you'll/g, 'you will')
-    .replace(/you'd/g, 'you would')
-    .replace(/don't/g, 'do not')
-    .replace(/doesn't/g, 'does not')
-    .replace(/didn't/g, 'did not')
-    .replace(/won't/g, 'will not')
-    .replace(/can't/g, 'cannot')
-    .replace(/couldn't/g, 'could not')
-    .replace(/wouldn't/g, 'would not')
-    .replace(/shouldn't/g, 'should not')
-    .replace(/isn't/g, 'is not')
-    .replace(/aren't/g, 'are not')
-    .replace(/wasn't/g, 'was not')
-    .replace(/weren't/g, 'were not')
-    .replace(/haven't/g, 'have not')
-    .replace(/hasn't/g, 'has not')
-    // strip punctuation
-    .replace(/[.,!?;:'"()\-–—]/g, ' ')
-    // collapse whitespace
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-/**
- * Compute word-overlap Jaccard similarity between two sentences.
- * Ignores filler words like "the", "a", "an".
- */
-const FILLER_WORDS = new Set(['the', 'a', 'an', 'to', 'of', 'and', 'or', 'in', 'at', 'on', 'is', 'be']);
-
-function wordSimilarity(a, b) {
-  const wordsA = new Set(
-    normalise(a).split(' ').filter(w => w && !FILLER_WORDS.has(w))
-  );
-  const wordsB = new Set(
-    normalise(b).split(' ').filter(w => w && !FILLER_WORDS.has(w))
-  );
-
-  if (wordsA.size === 0 && wordsB.size === 0) return 1;
-  if (wordsA.size === 0 || wordsB.size === 0) return 0;
-
-  let intersection = 0;
-  for (const w of wordsA) {
-    if (wordsB.has(w)) intersection++;
-  }
-  const union = wordsA.size + wordsB.size - intersection;
-  return intersection / union;
-}
-
-/**
- * Determine pass/fail from pronunciation scores + word similarity.
- *
- * PASS if:
- *   (accuracyScore >= threshold AND completenessScore >= threshold)
- *   OR wordSimilarity(transcript, expectedSentence) >= similarity_threshold
- */
-function computePassed(scores, transcript, expectedSentence) {
-  const { accuracyScore, completenessScore } = scores;
-  const scorePass =
-    accuracyScore >= ACCURACY_THRESHOLD &&
-    completenessScore >= COMPLETENESS_THRESHOLD;
-
-  const simPass =
-    wordSimilarity(transcript, expectedSentence) >= SIMILARITY_THRESHOLD;
-
-  return scorePass || simPass;
-}
-
 // ─── Core function ────────────────────────────────────────────────────────────
 
 /**
- * Run Azure pronunciation assessment for one utterance.
+ * Run Azure pronunciation assessment for one utterance (unscripted/freeform).
  *
- * @param {string} expectedSentence  The sentence the learner should speak.
  * @returns {Promise<AssessmentResult>}
  * @throws {Error} with `.code` set to one of:
  *   'NO_KEY'         — VITE_AZURE_SPEECH_KEY not configured
@@ -120,7 +30,7 @@ function computePassed(scores, transcript, expectedSentence) {
  *   'NO_MATCH'       — speech detected but couldn't be recognised
  *   'CANCELLED'      — recognizer was cancelled (network / auth error)
  */
-export async function assessSpeech(expectedSentence) {
+export async function assessSpeech() {
   if (!SPEECH_KEY) {
     const err = new Error('Azure Speech key is not configured. Set VITE_AZURE_SPEECH_KEY in .env.local');
     err.code = 'NO_KEY';
@@ -144,101 +54,110 @@ export async function assessSpeech(expectedSentence) {
     const audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
 
     const pronConfig = new SpeechSDK.PronunciationAssessmentConfig(
-      expectedSentence,
+      "",
       SpeechSDK.PronunciationAssessmentGradingSystem.HundredMark,
       SpeechSDK.PronunciationAssessmentGranularity.Phoneme,
-      /* enableMiscue */ true,
+      /* enableMiscue */ false,
     );
     pronConfig.enableProsodyAssessment = true;
-
     pronConfig.phonemeAlphabet = "IPA";
-
     pronConfig.nBestPhonemeCount = 5;
 
     const recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
     pronConfig.applyTo(recognizer);
 
-    // ── Timeout guard ────────────────────────────────────────────────────────
+    console.log("SpeechSDK Version:", SpeechSDK.Version);
+
     let resolved = false;
     const timeoutId = setTimeout(() => {
       if (!resolved) {
         resolved = true;
-        recognizer.stopContinuousRecognitionAsync();
         recognizer.close();
-        const err = new Error('No speech detected within 10 seconds. Please try again.');
+        const err = new Error(`No speech detected within ${SPEECH_TIMEOUT_MS / 1000} seconds.`);
         err.code = 'TIMEOUT';
         reject(err);
       }
     }, SPEECH_TIMEOUT_MS);
 
     // ── Event handlers ───────────────────────────────────────────────────────
+    recognizer.recognizing = (_, e) => {
+      console.log("📝 Recognizing:", e.result.text);
+    };
+
+    // ✅ QUAN TRỌNG: Xử lý kết quả trong recognized event
     recognizer.recognized = (_, event) => {
       if (resolved) return;
 
-      if (event.result.reason === SpeechSDK.ResultReason.RecognizedSpeech) {
+      console.log("✅ Recognized");
+      console.log("Reason:", event.result.reason);
+      console.log("Text:", event.result.text);
+
+      try {
+        if (event.result.reason === SpeechSDK.ResultReason.RecognizedSpeech) {
+          resolved = true;
+          clearTimeout(timeoutId);
+
+          const pronResult = SpeechSDK.PronunciationAssessmentResult.fromResult(event.result);
+          const transcript = event.result.text || '';
+          const rawJsonString = event.result.properties.getProperty(
+            SpeechSDK.PropertyId.SpeechServiceResponse_JsonResult
+          );
+
+          const rawJson = rawJsonString ? JSON.parse(rawJsonString) : null;
+          console.log("Raw json: ", rawJson);
+          const scores = {
+            pronunciationScore: Math.round(pronResult.pronunciationScore ?? 0),
+            accuracyScore: Math.round(pronResult.accuracyScore ?? 0),
+            fluencyScore: Math.round(pronResult.fluencyScore ?? 0),
+            completenessScore: Math.round(pronResult.completenessScore ?? 0),
+          };
+
+          const passed =
+            scores.accuracyScore >= ACCURACY_THRESHOLD &&
+            scores.fluencyScore >= FLUENCY_THRESHOLD;
+
+          const assessment = rawJson?.NBest?.[0];
+          const words = assessment?.Words?.map(word => ({
+            word: word.Word,
+            accuracy: word.PronunciationAssessment?.AccuracyScore ?? null,
+            errorType: word.PronunciationAssessment?.ErrorType ?? "None",
+            phonemes: word.Phonemes?.map(p => ({
+              phoneme: p.Phoneme,
+              accuracy: p.PronunciationAssessment?.AccuracyScore ?? null,
+            })) ?? [],
+          })) ?? [];
+
+          const prosodyScore = Math.round(
+            assessment?.PronunciationAssessment?.ProsodyScore ?? 0
+          );
+
+          // ✅ Đóng recognizer SAU KHI đã lấy hết dữ liệu
+          recognizer.close();
+
+          resolve({
+            transcript,
+            ...scores,
+            prosodyScore,
+            passed,
+            words,
+            rawJson,
+          });
+
+        } else if (event.result.reason === SpeechSDK.ResultReason.NoMatch) {
+          resolved = true;
+          clearTimeout(timeoutId);
+          recognizer.close();
+          const err = new Error("Speech was detected but couldn't be recognised.");
+          err.code = 'NO_MATCH';
+          reject(err);
+        }
+      } catch (processingErr) {
+        console.error("Error processing recognition result:", processingErr);
         resolved = true;
         clearTimeout(timeoutId);
-
-        const pronResult = SpeechSDK.PronunciationAssessmentResult.fromResult(event.result);
-        const transcript = event.result.text || '';
-        const rawJsonString = event.result.properties.getProperty(
-          SpeechSDK.PropertyId.SpeechServiceResponse_JsonResult
-        );
-
-        const rawJson = rawJsonString ? JSON.parse(rawJsonString) : null;
-
-        // console.log(rawJson);
-        // const json = JSON.stringify(rawJson, null, 2);
-
-        // const blob = new Blob([json], { type: "application/json" });
-        // const url = URL.createObjectURL(blob);
-
-        // const a = document.createElement("a");
-        // a.href = url;
-        // a.download = "assessment.json";
-        // a.click();
-
-        // URL.revokeObjectURL(url);
-        const scores = {
-          pronunciationScore: Math.round(pronResult.pronunciationScore ?? 0),
-          accuracyScore: Math.round(pronResult.accuracyScore ?? 0),
-          fluencyScore: Math.round(pronResult.fluencyScore ?? 0),
-          completenessScore: Math.round(pronResult.completenessScore ?? 0),
-        };
-
-        const passed = computePassed(scores, transcript, expectedSentence);
-
-        recognizer.stopContinuousRecognitionAsync(() => recognizer.close());
-        const assessment = rawJson?.NBest?.[0];
-
-        const words = assessment?.Words?.map(word => ({
-          word: word.Word,
-          accuracy: word.PronunciationAssessment?.AccuracyScore ?? null,
-          errorType: word.PronunciationAssessment?.ErrorType ?? "None",
-          phonemes: word.Phonemes?.map(p => ({
-            phoneme: p.Phoneme,
-            accuracy: p.PronunciationAssessment?.AccuracyScore ?? null,
-          })) ?? [],
-        })) ?? [];
-
-        const prosodyScore = Math.round(
-          assessment?.PronunciationAssessment?.ProsodyScore ?? 0
-        );
-        resolve({
-          transcript,
-          ...scores,
-          prosodyScore,
-          passed,
-          words,
-          rawJson,
-        });
-
-      } else if (event.result.reason === SpeechSDK.ResultReason.NoMatch) {
-        resolved = true;
-        clearTimeout(timeoutId);
-        recognizer.stopContinuousRecognitionAsync(() => recognizer.close());
-        const err = new Error("Speech was detected but couldn't be recognised. Please speak clearly.");
-        err.code = 'NO_MATCH';
+        try { recognizer.close(); } catch { }
+        const err = new Error('Failed to process the recognition result.');
+        err.code = 'PROCESSING_ERROR';
         reject(err);
       }
     };
@@ -255,7 +174,7 @@ export async function assessSpeech(expectedSentence) {
 
       if (event.errorCode === SpeechSDK.CancellationErrorCode.AuthenticationFailure) {
         code = 'AUTH_FAILURE';
-        msg = 'Azure Speech authentication failed. Check your VITE_AZURE_SPEECH_KEY and VITE_AZURE_SPEECH_REGION.';
+        msg = 'Azure Speech authentication failed.';
       }
 
       const err = new Error(msg);
@@ -263,9 +182,12 @@ export async function assessSpeech(expectedSentence) {
       reject(err);
     };
 
-    // ── Start ────────────────────────────────────────────────────────────────
+    // ✅ SỬA: Sử dụng startContinuousRecognitionAsync thay vì recognizeOnceAsync
+    // và chỉ gọi stopContinuousRecognitionAsync sau khi có kết quả
     recognizer.startContinuousRecognitionAsync(
-      () => { /* started successfully */ },
+      () => {
+        console.log("🟢 Continuous recognition started");
+      },
       (err) => {
         if (!resolved) {
           resolved = true;
@@ -275,7 +197,13 @@ export async function assessSpeech(expectedSentence) {
           error.code = 'START_FAILED';
           reject(error);
         }
-      },
+      }
     );
+
+    // ⚠️ Quan trọng: Thêm handler cho sessionStopped để cleanup
+    recognizer.sessionStopped = (_, e) => {
+      console.log("🔴 Session Stopped", e);
+      // Không đóng recognizer ở đây vì đã đóng trong recognized/canceled
+    };
   });
 }
