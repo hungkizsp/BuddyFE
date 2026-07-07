@@ -4,6 +4,10 @@ import { useAuthStore } from '../../auth/store/authStore'
 import { useNotificationStore } from '../../notification/store/notificationStore'
 import { useNotificationSSE } from '../../notification/hooks/useNotificationSSE'
 import axiosClient from '../../../shared/api/axiosClient'
+import { Suspense } from 'react'
+import { Canvas } from '@react-three/fiber'
+import { Environment, OrbitControls, ContactShadows } from '@react-three/drei'
+import BuddyModel from '../../../shared/components/BuddyModel'
 import './HomePage.css'
 
 const QUICK_PHRASES = [
@@ -15,18 +19,17 @@ const QUICK_PHRASES = [
 ]
 
 function BuddyAvatar({ mood = 'HAPPY', isTyping = false }) {
-  const moodEmoji = {
-    HAPPY: '😊',
-    EXCITED: '🤩',
-    CURIOUS: '🤔',
-    PROUD: '😎',
-    SLEEPY: '😴',
-    SAD: '😢',
-  }
-
   return (
-    <div className={`buddy-avatar ${isTyping ? 'buddy-typing' : ''}`}>
-      <div className="buddy-face">{moodEmoji[mood] || '😊'}</div>
+    <div className={`buddy-avatar ${isTyping ? 'buddy-typing' : ''}`} style={{ width: '64px', height: '64px', padding: 0, overflow: 'hidden' }}>
+      <Canvas camera={{ position: [0, 1.2, 3.5], fov: 50 }} style={{ width: '100%', height: '100%' }}>
+        <ambientLight intensity={0.7} />
+        <directionalLight position={[10, 10, 10]} intensity={1} />
+        <Environment preset="city" />
+        <Suspense fallback={null}>
+          <BuddyModel scale={[1.5, 1.5, 1.5]} position={[0, -1.5, 0]} />
+        </Suspense>
+        <OrbitControls enableZoom={false} enablePan={false} />
+      </Canvas>
       {isTyping && (
         <div className="typing-dots">
           <span /><span /><span />
