@@ -10,6 +10,28 @@
   color: #fff;
 }
 
+.adv-back-home {
+  position: absolute;
+  top: 70px;
+  left: 16px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+.adv-back-home:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
 .adv-bg-glow {
   position: absolute;
   top: 40%;
