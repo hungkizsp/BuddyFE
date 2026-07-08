@@ -8,6 +8,7 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls, ContactShadows } from '@react-three/drei'
 import BuddyModel from '../../../shared/components/BuddyModel'
+import TopBar from '../../../shared/components/TopBar'
 import './HomePage.css'
 
 const QUICK_PHRASES = [
@@ -224,6 +225,7 @@ export default function HomePage() {
 
       {/* ── Main Chat Area ── */}
       <main className="chat-main">
+        <TopBar theme="dark" />
         <header className="chat-header">
           <BuddyAvatar mood={buddyMood} isTyping={isSending} />
           <div className="chat-header-info">
