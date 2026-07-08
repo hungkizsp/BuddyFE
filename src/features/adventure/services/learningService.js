@@ -33,6 +33,11 @@ const learningService = {
     })
     return unwrap(response)
   },
+
+  async getWorldProgressById(worldId) {
+    const response = await axiosClient.get(`/progress/worlds/${worldId}`)
+    return unwrap(response)
+  },
 }
 
 export default learningService
