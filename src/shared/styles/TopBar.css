@@ -1,0 +1,172 @@
+/* ── TopBar Styling ──────────────────────────────────────────────────────── */
+
+.topbar-header {
+  background: var(--topbar-bg);
+  border-bottom: 1.5px solid var(--topbar-border);
+  color: var(--topbar-text);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.topbar-container {
+  position: relative;
+  width: auto;
+}
+
+.topbar-profile-trigger {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.topbar-profile-trigger:hover {
+  background-color: var(--topbar-hover-bg);
+}
+
+.topbar-profile-trigger:active {
+  transform: scale(0.97);
+}
+
+/* ── Center Stats Hover Effects ── */
+.topbar-stat-pill {
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.topbar-stat-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.topbar-action-btn {
+  color: var(--topbar-icon);
+  transition: all 0.2s ease;
+}
+
+.topbar-action-btn:hover {
+  background-color: var(--topbar-hover-bg);
+}
+
+/* ── Dropdown Popover ── */
+.profile-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 280px;
+  background: var(--popover-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--popover-border);
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.15), 0 4px 12px -5px rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  z-index: 1000;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--popover-text);
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.profile-popover-header {
+  border-bottom: 1px solid var(--popover-card-border);
+  padding-bottom: 10px;
+}
+
+.profile-popover-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--popover-text);
+  margin-bottom: 2px;
+}
+
+.profile-popover-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--popover-sub);
+}
+
+/* Popover Row Card */
+.popover-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--popover-card-bg);
+  border: 1px solid var(--popover-card-border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  transition: all 0.2s ease;
+}
+
+.popover-stat-card:hover {
+  background: var(--popover-card-hover);
+  border-color: var(--popover-card-hover);
+}
+
+.popover-stat-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--popover-icon-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--popover-card-border);
+}
+
+.popover-stat-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.popover-stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--popover-sub);
+}
+
+.popover-stat-value {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--popover-text);
+}
+
+.popover-logout-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  border: 1px solid #fee2e2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.popover-logout-btn:hover {
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+.popover-logout-btn:active {
+  transform: scale(0.98);
+}

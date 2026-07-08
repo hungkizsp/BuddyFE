@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import TopBar from '../../../shared/components/TopBar'
 import '../styles/AdventurePage.css'
 
 /* ─── Data ──────────────────────────────────────────────── */
@@ -166,6 +167,7 @@ export default function AdventurePage() {
 
   return (
     <div className="adv-page">
+      <TopBar theme="light" />
 
       {/* ══════════════════════════════════════════
           DIV 1 — Header / Title section
