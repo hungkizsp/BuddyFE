@@ -29,7 +29,6 @@ export default function AppRouter() {
 
         {/* Adventure Hub */}
         <Route path="/adventure" element={<AdventurePage />} />
-        
         {/* Food Forest World */}
         <Route path="/adventure/food-forest" element={<FoodForestPage />} />
 

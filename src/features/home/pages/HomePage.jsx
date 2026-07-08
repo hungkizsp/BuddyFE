@@ -198,7 +198,7 @@ export default function HomePage() {
           <a href="#" className="nav-item">
             <span>📚</span> Vocabulary
           </a>
-          <a href="#" className="nav-item">
+          <a href="/adventure" className="nav-item">
             <span>🗺️</span> Adventures
           </a>
           <a href="#" className="nav-item">
@@ -328,7 +328,7 @@ export default function HomePage() {
                             borderRadius: '50%', background: 'rgba(255,255,255,0.07)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                           }}>
-                            {{ ACHIEVEMENT:'🏆', MISSION:'🎯', REWARD:'🎁', STREAK:'🔥', LEARNING:'📚' }[n.type] || '🔔'}
+                            {{ ACHIEVEMENT: '🏆', MISSION: '🎯', REWARD: '🎁', STREAK: '🔥', LEARNING: '📚' }[n.type] || '🔔'}
                           </span>
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <p style={{
