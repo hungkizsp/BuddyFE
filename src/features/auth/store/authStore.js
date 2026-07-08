@@ -41,7 +41,7 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoading: true, error: null })
 
     try {
-      const user = await authService.signup({ username, email, password })
+      const user = await authService.signup({ nickname: username, email, password })
       set({
         currentUser: user,
         isAuthenticated: true,
