@@ -471,7 +471,7 @@ export default function KitchenAdventurePage() {
 
   const canOpenBasket = activeStep?.expectedEntity === "APPLE";
   return (
-    <div className="kitchen-adv-container">
+    <div className="kitchen-adv-container app-shell">
       <AdventureScene
         gameState={gameState}
         onArrivedAtTable={handleArrivedAtTable}

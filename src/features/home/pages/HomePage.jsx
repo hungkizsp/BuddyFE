@@ -9,6 +9,7 @@ import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls, ContactShadows } from '@react-three/drei'
 import BuddyModel from '../../../shared/components/BuddyModel'
 import TopBar from '../../../shared/components/TopBar'
+import Button from '../../../shared/components/ui/Button'
 import './HomePage.css'
 
 const QUICK_PHRASES = [
@@ -145,7 +146,8 @@ export default function HomePage() {
   const user = currentUser || {}
 
   return (
-    <div className="home-root">
+    <div className="home-root app-shell">
+      <div className="noise-overlay" aria-hidden="true" />
       {/* ── Sidebar ── */}
       <aside className="sidebar">
         <div className="sidebar-brand">
@@ -193,13 +195,13 @@ export default function HomePage() {
          * below into that global component instead of keeping them here.
          */}
         <nav className="sidebar-nav">
-          <a href="#" className="nav-item active">
+          <a href="/home" className="nav-item active" onClick={(e) => { e.preventDefault() }}>
             <span>💬</span> Chat with Buddy
           </a>
-          <a href="#" className="nav-item">
+          <a href="/vocabulary" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/vocabulary') }}>
             <span>📚</span> Vocabulary
           </a>
-          <a href="/adventure" className="nav-item">
+          <a href="/adventure" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/adventure') }}>
             <span>🗺️</span> Adventures
           </a>
           <a href="#" className="nav-item">
@@ -208,19 +210,14 @@ export default function HomePage() {
           <a href="#" className="nav-item">
             <span>🛒</span> Shop
           </a>
-          {/* Link tới trang Notifications đầy đủ */}
-          <a
-            href="/notifications"
-            className="nav-item"
-            onClick={(e) => { e.preventDefault(); navigate('/notifications') }}
-          >
+          <a href="/notifications" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/notifications') }}>
             <span>🔔</span> Notifications
           </a>
         </nav>
 
-        <button className="logout-btn" onClick={handleLogout}>
+        <Button variant="secondary" className="logout-btn" onClick={handleLogout}>
           <span>🚪</span> Logout
-        </button>
+        </Button>
       </aside>
 
       {/* ── Main Chat Area ── */}
@@ -364,7 +361,8 @@ export default function HomePage() {
                 </div>
               )}
             </div>
-            <button
+            <Button
+              variant="secondary"
               className="reset-btn"
               title="Reset conversation"
               onClick={async () => {
@@ -373,7 +371,7 @@ export default function HomePage() {
               }}
             >
               🔄 Reset
-            </button>
+            </Button>
           </div>
         </header>
 
@@ -449,13 +447,13 @@ export default function HomePage() {
             disabled={isSending}
             autoFocus
           />
-          <button
+          <Button
             className="send-btn"
             type="submit"
             disabled={isSending || !input.trim()}
           >
             {isSending ? '⏳' : '🚀'}
-          </button>
+          </Button>
         </form>
       </main>
     </div>

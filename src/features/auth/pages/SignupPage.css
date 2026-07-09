@@ -3,10 +3,10 @@
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(420px, 0.92fr);
   background:
-    radial-gradient(circle at 16% 22%, rgba(255, 211, 105, 0.36), transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(83, 196, 255, 0.24), transparent 25%),
-    linear-gradient(135deg, #fff9eb 0%, #eaf8ff 48%, #f8f1ff 100%);
-  color: #243047;
+    radial-gradient(circle at 14% 12%, rgba(111, 255, 0, 0.14), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(99, 179, 237, 0.22), transparent 24%),
+    #010828;
+  color: var(--text-primary);
 }
 
 .signup-hero,
@@ -147,10 +147,10 @@
 .signup-card {
   width: min(100%, 440px);
   padding: 36px;
-  border: 1px solid rgba(58, 91, 122, 0.12);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 28px 70px rgba(43, 87, 116, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-lg);
+  background: rgba(8, 20, 57, 0.88);
+  box-shadow: var(--shadow-strong);
   backdrop-filter: blur(14px);
 }
 
@@ -349,4 +349,47 @@
   .signup-card {
     padding: 28px 22px;
   }
+}
+
+/* Landing-aligned refresh */
+.signup-page {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(111, 255, 0, 0.14), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(99, 179, 237, 0.22), transparent 24%),
+    #010828;
+  color: var(--text-primary);
+}
+
+.signup-hero .brand-mark,
+.signup-hero .mascot-stage::before,
+.signup-card {
+  background: rgba(8, 20, 57, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--text-primary);
+}
+
+.signup-copy h1,
+.signup-card .form-heading h2 {
+  color: var(--text-primary);
+}
+
+.signup-copy p:last-child,
+.signup-card .field,
+.login-line {
+  color: var(--text-secondary);
+}
+
+.signup-card .field input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+}
+
+.signup-card .field input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 4px rgba(99, 179, 237, 0.2);
+}
+
+.login-line a {
+  color: var(--accent-cyan);
 }

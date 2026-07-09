@@ -4,10 +4,13 @@
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(180deg, #0b1a2e 0%, #1a3a2e 40%, #2d5a3e 100%);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(111, 255, 0, 0.16), transparent 35%),
+    radial-gradient(circle at 80% 20%, rgba(99, 179, 237, 0.2), transparent 32%),
+    #010828;
   font-family: 'Nunito', 'Inter', ui-sans-serif, system-ui, sans-serif;
   overflow: hidden;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .adv-back-home {
@@ -39,7 +42,7 @@
   width: 500px;
   height: 500px;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(76, 175, 80, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(111, 255, 0, 0.2) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -53,11 +56,12 @@
 
 .adv-title {
   margin: 0;
-  font-size: 28px;
+  font-size: clamp(1.6rem, 4vw, 2rem);
   font-weight: 900;
-  color: #fff;
-  letter-spacing: -0.3px;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
 
 .adv-subtitle {
@@ -88,7 +92,7 @@
 
 .adv-progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4ade80, #22c55e);
+  background: linear-gradient(90deg, var(--accent-lime), #9afc57);
   border-radius: 99px;
   transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -96,7 +100,7 @@
 .adv-progress-label {
   font-size: 14px;
   font-weight: 800;
-  color: #4ade80;
+  color: var(--accent-lime);
   min-width: 36px;
   text-align: right;
 }
@@ -125,25 +129,26 @@
 }
 
 .adv-enter-btn {
-  background: linear-gradient(135deg, #4ade80, #16a34a);
-  color: #fff;
+  background: linear-gradient(90deg, var(--accent-lime), #9afc57);
+  color: #041139;
   border: none;
-  border-radius: 16px;
+  border-radius: 999px;
   padding: 14px 48px;
   font-size: 16px;
   font-weight: 800;
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
-  box-shadow: 0 6px 0 #15803d, 0 8px 24px rgba(22, 163, 74, 0.35);
-  letter-spacing: 0.3px;
+  box-shadow: 0 8px 22px rgba(111, 255, 0, 0.35);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .adv-enter-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 0 #15803d, 0 12px 32px rgba(22, 163, 74, 0.45);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(111, 255, 0, 0.45);
 }
 
 .adv-enter-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 #15803d, 0 4px 12px rgba(22, 163, 74, 0.3);
+  transform: translateY(1px);
+  box-shadow: 0 4px 12px rgba(111, 255, 0, 0.3);
 }

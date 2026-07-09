@@ -14,6 +14,7 @@ import KitchenAdventurePage from "../features/adventure/pages/KitchenAdventurePa
 import SupermarketShoppingPage from "../features/adventure/pages/SupermarketShoppingPage";
 import FamilyRestaurantPage from "../features/adventure/pages/FamilyRestaurantPage";
 import NotificationPage from "../features/notification/pages/NotificationPage";
+import VocabularyPage from "../features/vocabulary/pages/VocabularyPage";
 
 export default function AppRouter() {
   return (
@@ -25,6 +26,7 @@ export default function AppRouter() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
+        <Route path="/vocabulary" element={<VocabularyPage />} />
         <Route path="/notifications" element={<NotificationPage />} />
 
         {/* Adventure Hub */}

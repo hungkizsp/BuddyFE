@@ -313,7 +313,7 @@ export default function SupermarketShoppingPage() {
   const buddy3DPosition = [1.3, -1.2, 1.5];
 
   return (
-    <div className="supermarket-container">
+    <div className="supermarket-container app-shell">
       {/* ── 3D Buddy character ── */}
       <AdventureScene
         gameState={gameState === 'not-started' ? 'not-started' : 'idle-at-table'}

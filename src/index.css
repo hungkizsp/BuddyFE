@@ -1,43 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Condiment&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ===================== CSS CUSTOM PROPERTIES ===================== */
 :root {
-  font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #EFF4FF;
-  background: #010828;
+  /* Core palette */
+  --color-navy:     #010828;
+  --color-cream:    #F3F4F6;
+  --color-primary:  #3B82F6;
+  --color-accent:   #FFB83F;
+  --color-success:  #6FFF00;
+  --color-danger:   #FF4A5A;
+  --color-surface:  rgba(15, 23, 42, 0.45);
+
+  /* Semantic aliases (used by legacy CSS) */
+  --accent-lime:    #6FFF00;
+  --accent-cyan:    #63b3ed;
+  --accent-violet:  #9f7aea;
+  --bg-surface:     rgba(255, 255, 255, 0.04);
+  --text-primary:   #F3F4F6;
+  --text-secondary: rgba(243, 244, 246, 0.6);
+
+  /* Radii */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+
+  /* Shadows */
+  --shadow-soft:   0 4px 20px rgba(0, 0, 0, 0.25);
+  --shadow-strong: 0 8px 40px rgba(0, 0, 0, 0.45);
+  --shadow-glass:  0 8px 32px rgba(0, 0, 0, 0.5);
+
+  /* Typography base */
+  font-family: 'Nunito', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--color-navy);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ===================== RESET ===================== */
 * { box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
-
 body {
   margin: 0;
   min-width: 320px;
-  background: #010828;
+  background: var(--color-navy);
 }
-
 #root { min-height: 100vh; }
-
-button, input { font: inherit; }
+button, input, select, textarea { font: inherit; }
 p { margin: 0; }
+a { text-decoration: none; color: inherit; }
 
-/* ===================== LIQUID GLASS CSS EFFECT ===================== */
-.liquid-glass {
-  background: rgba(255, 255, 255, 0.01);
+/* ===================== LIQUID GLASS (GLASSMORPHISM) ===================== */
+.liquid-glass,
+.glass {
+  background: rgba(15, 23, 42, 0.45);
   background-blend-mode: luminosity;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: none;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-glass);
   position: relative;
   overflow: hidden;
 }
+
+/* Premium gradient border (used on hero/landing) */
 .liquid-glass::before {
   content: '';
   position: absolute;
@@ -54,6 +89,15 @@ p { margin: 0; }
   pointer-events: none;
 }
 
+/* Simpler glass (no pseudo-border) */
+.glass-simple {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+}
+
 /* ===================== NOISE OVERLAY ===================== */
 .noise-overlay {
   position: fixed;
@@ -61,20 +105,18 @@ p { margin: 0; }
   z-index: 50;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.07; /* Soft noise that is perfect for a dark premium look */
+  opacity: 0.05;
 }
 
 /* ===================== TEXT LEGIBILITY ===================== */
-/* Heavy glow for headings over video */
 .text-glow {
   text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.6);
 }
-/* Lighter glow for body/mono text */
 .text-readable {
   text-shadow: 0 1px 8px rgba(0,0,0,0.85), 0 0 20px rgba(0,0,0,0.5);
 }
 
-/* Dark gradient overlay for video sections */
+/* ===================== VIDEO DARK OVERLAY ===================== */
 .video-darken {
   position: relative;
 }
@@ -91,4 +133,44 @@ p { margin: 0; }
   );
   pointer-events: none;
   z-index: 1;
+}
+
+/* ===================== BACKGROUND GLOW BLOBS ===================== */
+.bg-glow {
+  position: relative;
+}
+.bg-glow::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%);
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-glow::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  right: -10%;
+  width: 45%;
+  height: 45%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.12), transparent 70%);
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===================== SCROLLBAR ===================== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }

@@ -6,6 +6,8 @@ import { ContactShadows } from "@react-three/drei";
 import useWorlds from "../hooks/useWorlds";
 import useWorldProgress from "../hooks/useWorldProgress";
 import FoodForestWorld3D from "../components/FoodForestWorld3D";
+import Button from "../../../shared/components/ui/Button";
+import PageHeader from "../../../shared/components/ui/PageHeader";
 import "../styles/AdventurePage.css";
 
 function FoodForestScene() {
@@ -42,22 +44,23 @@ export default function AdventurePage() {
   const completion = progress?.completionPercentage ?? 0;
 
   return (
-    <div className="adv-page">
+    <div className="adv-page app-shell">
       <TopBar theme="dark" />
 
-      <button className="adv-back-home" onClick={() => navigate('/home')}>
+      <Button variant="secondary" className="adv-back-home" onClick={() => navigate('/home')}>
         ← Back to Home
-      </button>
+      </Button>
 
       <div className="adv-bg-glow" />
 
       <div className="adv-header">
-        <h1 className="adv-title">{foodForest?.name || "Food Forest"}</h1>
-
-        <p className="adv-subtitle">
-          {foodForest?.description ||
-            "Explore and learn English through fun adventures!"}
-        </p>
+        <PageHeader
+          title={foodForest?.name || "Food Forest"}
+          subtitle={
+            foodForest?.description ||
+            "Explore and learn English through fun adventures!"
+          }
+        />
       </div>
 
       <div className="adv-progress-section">
@@ -92,7 +95,7 @@ export default function AdventurePage() {
           className="adv-enter-btn"
           onClick={() => navigate("/adventure/food-forest")}
         >
-          Enter World
+          Enter World →
         </button>
       </div>
     </div>

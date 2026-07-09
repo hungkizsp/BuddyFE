@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Button from '../../../shared/components/ui/Button'
 import '../styles/BreakfastTroublePage.css'
 
 /* ─── Slide data ─────────────────────────────────────────── */
@@ -42,7 +43,7 @@ export default function BreakfastTroublePage() {
 
   return (
     <div
-      className="bt-page bt-page--tappable"
+      className="bt-page bt-page--tappable app-shell"
       onClick={handleTap}
       role="button"
       tabIndex={0}
@@ -106,12 +107,13 @@ export default function BreakfastTroublePage() {
       </div>
 
       {/* Back link — stop propagation so it doesn't advance slide */}
-      <button
+      <Button
+        variant="secondary"
         className="bt-back-link"
         onClick={(e) => { e.stopPropagation(); navigate('/adventure/food-forest') }}
       >
         ← Back to map
-      </button>
+      </Button>
 
     </div>
   )

@@ -262,7 +262,7 @@ export default function FamilyRestaurantPage() {
   const buddy3DPosition = [1.5, -1.2, 1.5];
 
   return (
-    <div className="restaurant-container">
+    <div className="restaurant-container app-shell">
       <AdventureScene
         gameState={gameState === 'not-started' ? 'not-started' : 'idle-at-table'}
         onArrivedAtTable={() => { }}

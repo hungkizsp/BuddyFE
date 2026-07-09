@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GAME_LEVELS } from '../data/gameLevelsData'
+import Button from '../../../shared/components/ui/Button'
 import './GameLevelPage.css'
 
 /* ═══════════════════════════════════════════════════════════
@@ -182,9 +183,9 @@ function WinModal({ level, xp, onBack }) {
         <p className="gl-modal__level">{level.name}</p>
         <p className="gl-modal__sub">{level.buddyWinSpeech}</p>
         <div className="gl-modal__xp">+{xp} XP earned!</div>
-        <button className="gl-modal__btn" id="btn-modal-back" onClick={onBack}>
+        <Button variant="secondary" className="gl-modal__btn" id="btn-modal-back" onClick={onBack}>
           ← Back to Map
-        </button>
+        </Button>
       </div>
     </div>
   )
@@ -239,16 +240,16 @@ export default function GameLevelPage({ levelId }) {
   }, [itemStatus, missions, xp, level.xpPerFood])
 
   return (
-    <div className={`gl-page gl-page--${level.theme}`}>
+    <div className={`gl-page gl-page--${level.theme} app-shell`}>
       {showWin && <WinModal level={level} xp={xp} onBack={() => navigate(level.backRoute)} />}
 
       {/* ══════════════════════════════════════════
           LEFT SIDEBAR
       ══════════════════════════════════════════ */}
       <aside className="gl-sidebar">
-        <button className="gl-sidebar__back" onClick={() => navigate(level.backRoute)}>
+        <Button variant="secondary" className="gl-sidebar__back" onClick={() => navigate(level.backRoute)}>
           ← Map
-        </button>
+        </Button>
 
         {/* Level tag */}
         <div className="gl-level-tag" style={{ '--diff-color': level.difficultyColor }}>

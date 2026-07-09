@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useScenarios from '../hooks/useScenarios'
 import useWorlds from '../hooks/useWorlds'
+import Button from '../../../shared/components/ui/Button'
+import GlassCard from '../../../shared/components/ui/GlassCard'
 import '../styles/FoodForestPage.css'
 
 const TREES = [
@@ -165,12 +167,12 @@ export default function FoodForestPage() {
   const error = worldsError || scenariosError
 
   return (
-    <div className="ff-page">
+    <div className="ff-page app-shell">
       <div className="ff-header-section">
         <div className="ff-breadcrumb-row">
-          <button className="ff-back-btn" onClick={() => navigate('/adventure')} aria-label="Back to worlds" type="button">
+          <Button variant="secondary" className="ff-back-btn" onClick={() => navigate('/adventure')} aria-label="Back to worlds" type="button">
             Back
-          </button>
+          </Button>
           <div className="ff-world-info">
             {foodForest?.thumbnail ? <img className="ff-world-thumb" src={foodForest.thumbnail} alt={foodForest.name} /> : null}
             <div>
@@ -184,14 +186,14 @@ export default function FoodForestPage() {
           </div>
         </div>
 
-        <div className="ff-story-card">
+        <GlassCard className="ff-story-card">
           <div className="ff-story-card__body">
             <p className="ff-story-card__title">{selectedMission?.name || foodForest?.name || 'Adventure'}</p>
             <p className="ff-story-card__text">
               {error || selectedMission?.tooltip || foodForest?.description || 'Choose a scenario to start learning.'}
             </p>
           </div>
-        </div>
+        </GlassCard>
       </div>
 
       <div className="ff-map-section">
