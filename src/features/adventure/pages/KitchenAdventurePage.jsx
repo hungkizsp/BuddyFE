@@ -112,8 +112,8 @@ export default function KitchenAdventurePage() {
         const currentXp = childProfile?.xp ?? 0;
         const currentCoins = childProfile?.coins ?? 0;
         await profileService.updateChildProfile({
-          xp: currentXp + 20,
-          coins: currentCoins + 10,
+          xp: currentXp + xp,
+          coins: currentCoins + coins,
         });
         await loadChildProfile();
       } catch (err) {

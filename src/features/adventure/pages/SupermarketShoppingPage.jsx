@@ -12,6 +12,8 @@ import VoiceMission from '../components/VoiceMission';
 import useScenarioSteps from '../hooks/useScenarioSteps';
 import useScenarioVocabulary from '../hooks/useScenarioVocabulary';
 import learningService from '../services/learningService';
+import profileService from '../services/profileService';
+import { useAuthStore } from '../../auth/store/authStore';
 import '../styles/SupermarketShoppingPage.css';
 import supamarket2 from '../../../assets/supamarket2.png';
 import fridge from '../../../assets/fridge.png';
@@ -124,8 +126,30 @@ export default function SupermarketShoppingPage() {
   const [xp] = useState(80);
   const [coins] = useState(20);
   const [isCounterVisible, setIsCounterVisible] = useState(false);
+  const { childProfile, loadChildProfile } = useAuthStore();
   const [isCounterPersonClicked, setIsCounterPersonClicked] = useState(false);
   const [evaluationDone, setEvaluationDone] = useState(false);
+
+  // ── Update profile when reward is shown (stage completed) ──
+  useEffect(() => {
+    if (!showReward) return;
+
+    const updateProfile = async () => {
+      try {
+        const currentXp = childProfile?.xp ?? 0;
+        const currentCoins = childProfile?.coins ?? 0;
+        await profileService.updateChildProfile({
+          xp: currentXp + xp,
+          coins: currentCoins + coins,
+        });
+        await loadChildProfile();
+      } catch (err) {
+        console.error('Failed to update XP:', err);
+      }
+    };
+
+    updateProfile();
+  }, [showReward]);
 
   // ── Reset counter visibility on step change ──
   useEffect(() => {
