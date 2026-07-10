@@ -168,11 +168,7 @@ export default function VoiceMission({
       const feedbackData = res.data?.data || res.data;
 
       // Update passed state based on backend semantic match
-      if (feedbackData.matched) {
-        setPassed(true);
-      } else {
-        setPassed(false);
-      }
+        // setPassed(true);
 
       setEvaluateFeedback(feedbackData);
       setEvaluateStatus('done');
