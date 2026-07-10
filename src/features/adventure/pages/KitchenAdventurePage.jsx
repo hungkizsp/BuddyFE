@@ -9,6 +9,8 @@ import FruitBasketPopup from "../components/FruitBasketPopup";
 import useScenarioSteps from "../hooks/useScenarioSteps";
 import useScenarioVocabulary from "../hooks/useScenarioVocabulary";
 import learningService from "../services/learningService";
+import profileService from "../services/profileService";
+import { useAuthStore } from "../../auth/store/authStore";
 import "../styles/KitchenAdventurePage.css";
 import fruitBasketImg from "../../../assets/fruit-basket.png";
 
@@ -99,7 +101,28 @@ export default function KitchenAdventurePage() {
   const [showRewards, setShowRewards] = useState(false);
   const [showFruitBasket, setShowFruitBasket] = useState(false);
   const [hasAppleFromBasket, setHasAppleFromBasket] = useState(false);
+  const { childProfile, loadChildProfile } = useAuthStore();
   const buddyDragStartRef = useRef({ x: 0, y: 0, left: 0, top: 0 });
+
+  useEffect(() => {
+    if (!showRewards) return;
+
+    const updateProfile = async () => {
+      try {
+        const currentXp = childProfile?.xp ?? 0;
+        const currentCoins = childProfile?.coins ?? 0;
+        await profileService.updateChildProfile({
+          xp: currentXp + 20,
+          coins: currentCoins + 10,
+        });
+        await loadChildProfile();
+      } catch (err) {
+        console.error("Failed to update XP:", err);
+      }
+    };
+
+    updateProfile();
+  }, [showRewards]);
 
   useEffect(() => {
     if (routeScenario || !scenarioId) return undefined;
