@@ -13,6 +13,7 @@ import useScenarioSteps from '../hooks/useScenarioSteps';
 import useScenarioVocabulary from '../hooks/useScenarioVocabulary';
 import learningService from '../services/learningService';
 import profileService from '../services/profileService';
+import progressService from '../services/progressService';
 import { useAuthStore } from '../../auth/store/authStore';
 import '../styles/SupermarketShoppingPage.css';
 import supamarket2 from '../../../assets/supamarket2.png';
@@ -123,8 +124,8 @@ export default function SupermarketShoppingPage() {
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [showReward, setShowReward] = useState(false);
   const [missionPanelVisible, setMissionPanelVisible] = useState(true);
-  const [xp] = useState(80);
-  const [coins] = useState(20);
+  const [xp, setXp] = useState(80);
+  const [coins, setCoins] = useState(20);
   const [isCounterVisible, setIsCounterVisible] = useState(false);
   const { childProfile, loadChildProfile } = useAuthStore();
   const [isCounterPersonClicked, setIsCounterPersonClicked] = useState(false);
@@ -133,23 +134,36 @@ export default function SupermarketShoppingPage() {
 
   // ── Update profile when reward is shown (stage completed) ──
   useEffect(() => {
-    if (!showReward) return;
+    if (!showReward || !childProfile?.id || !scenarioId) return;
 
-    const updateProfile = async () => {
+    const completeAndReward = async () => {
       try {
-        const currentXp = childProfile?.xp ?? 0;
-        const currentCoins = childProfile?.coins ?? 0;
-        await profileService.updateChildProfile({
-          xp: currentXp + xp,
-          coins: currentCoins + coins,
+        const vocabIds = vocabularies.map((v) => v.vocabularyId).filter(Boolean);
+        const progressRes = await progressService.completeScenario({
+          childId: childProfile.id,
+          scenarioId: parseInt(scenarioId, 10),
+          score: 100,
+          vocabularyIds: vocabIds,
         });
-        await loadChildProfile();
+
+        if (!progressRes.alreadyCompleted) {
+          const currentXp = childProfile?.xp ?? 0;
+          const currentCoins = childProfile?.coins ?? 0;
+          await profileService.updateChildProfile({
+            xp: currentXp + xp,
+            coins: currentCoins + coins,
+          });
+          await loadChildProfile();
+        } else {
+          setXp(0);
+          setCoins(0);
+        }
       } catch (err) {
-        console.error('Failed to update XP:', err);
+        console.error('Failed to complete scenario or update profile:', err);
       }
     };
 
-    updateProfile();
+    completeAndReward();
   }, [showReward]);
 
   // ── Reset counter visibility on step change ──
@@ -506,7 +520,7 @@ export default function SupermarketShoppingPage() {
                 disabled={gameState !== 'shopping'}
               />
             </div>
-            
+
           )}
           {/* Checklist sidebar (only when counter is open) */}
           {isCollectStep && isCounterVisible && (

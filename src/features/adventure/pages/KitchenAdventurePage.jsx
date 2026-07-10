@@ -10,6 +10,7 @@ import useScenarioSteps from "../hooks/useScenarioSteps";
 import useScenarioVocabulary from "../hooks/useScenarioVocabulary";
 import learningService from "../services/learningService";
 import profileService from "../services/profileService";
+import progressService from "../services/progressService";
 import { useAuthStore } from "../../auth/store/authStore";
 import "../styles/KitchenAdventurePage.css";
 import fruitBasketImg from "../../../assets/fruit-basket.png";
@@ -105,23 +106,37 @@ export default function KitchenAdventurePage() {
   const buddyDragStartRef = useRef({ x: 0, y: 0, left: 0, top: 0 });
 
   useEffect(() => {
-    if (!showRewards) return;
+    if (!showRewards || !childProfile?.id || !scenarioId) return;
 
-    const updateProfile = async () => {
+    const completeAndReward = async () => {
       try {
-        const currentXp = childProfile?.xp ?? 0;
-        const currentCoins = childProfile?.coins ?? 0;
-        await profileService.updateChildProfile({
-          xp: currentXp + xp,
-          coins: currentCoins + coins,
+        const vocabIds = vocabularies.map((v) => v.vocabularyId).filter(Boolean);
+        const progressRes = await progressService.completeScenario({
+          childId: childProfile.id,
+          scenarioId: parseInt(scenarioId, 10),
+          score: 100, // standard complete score
+          vocabularyIds: vocabIds,
         });
-        await loadChildProfile();
+
+        if (!progressRes.alreadyCompleted) {
+          const currentXp = childProfile?.xp ?? 0;
+          const currentCoins = childProfile?.coins ?? 0;
+          await profileService.updateChildProfile({
+            xp: currentXp + xp,
+            coins: currentCoins + coins,
+          });
+          await loadChildProfile();
+        } else {
+          // Zero rewards out if already completed so the pop-up shows 0 rewards correctly.
+          setXp(0);
+          setCoins(0);
+        }
       } catch (err) {
-        console.error("Failed to update XP:", err);
+        console.error("Failed to complete scenario or update profile:", err);
       }
     };
 
-    updateProfile();
+    completeAndReward();
   }, [showRewards]);
 
   useEffect(() => {
