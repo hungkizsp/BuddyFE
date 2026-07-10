@@ -129,6 +129,7 @@ export default function SupermarketShoppingPage() {
   const { childProfile, loadChildProfile } = useAuthStore();
   const [isCounterPersonClicked, setIsCounterPersonClicked] = useState(false);
   const [evaluationDone, setEvaluationDone] = useState(false);
+  const [voiceMatched, setVoiceMatched] = useState(false);
 
   // ── Update profile when reward is shown (stage completed) ──
   useEffect(() => {
@@ -276,21 +277,26 @@ export default function SupermarketShoppingPage() {
       })
     }
 
-    if (data.matched) {
-      const nextStep = scenarioSteps[missionStage + 1];
-      if (nextStep) {
-        setCollectedIds(new Set());
-        setMissionStage((prev) => prev + 1);
-      }
-    }
-
+    setVoiceMatched(!!data.matched)
     setFeedbackMessage(parts.join('\n'))
     setEvaluationDone(true)
   };
 
-  const handleDismissEvaluation = () => {
+  const handleRetry = () => {
     setEvaluationDone(false);
+    setVoiceMatched(false);
     setFeedbackMessage('');
+  };
+
+  const handleContinue = () => {
+    setEvaluationDone(false);
+    setVoiceMatched(false);
+    setFeedbackMessage('');
+    const nextStep = scenarioSteps[missionStage + 1];
+    if (nextStep) {
+      setCollectedIds(new Set());
+      setMissionStage((prev) => prev + 1);
+    }
   };
 
   // ── Step-type detection helpers ──
@@ -553,13 +559,24 @@ export default function SupermarketShoppingPage() {
               <p key={i} className="sm-evaluation-line">{line}</p>
             ))}
           </div>
-          <button
-            type="button"
-            className="sm-evaluation-close-btn"
-            onClick={handleDismissEvaluation}
-          >
-            Đóng phản hồi
-          </button>
+          <div className="sm-evaluation-actions">
+            {!voiceMatched && (
+              <button
+                type="button"
+                className="sm-evaluation-btn sm-evaluation-btn--retry"
+                onClick={handleRetry}
+              >
+                Thử lại
+              </button>
+            )}
+            <button
+              type="button"
+              className="sm-evaluation-btn sm-evaluation-btn--continue"
+              onClick={handleContinue}
+            >
+              {voiceMatched ? 'Tiếp tục' : 'Bỏ qua'}
+            </button>
+          </div>
         </div>
       )}
 
