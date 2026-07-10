@@ -12,6 +12,8 @@ import OrderFeedbackPopup from '../components/OrderFeedbackPopup';
 import useScenarioSteps from '../hooks/useScenarioSteps';
 import useScenarioVocabulary from '../hooks/useScenarioVocabulary';
 import learningService from '../services/learningService';
+import profileService from '../services/profileService';
+import { useAuthStore } from '../../auth/store/authStore';
 import { toMenuItem } from '../utils/vocabularyUtils';
 import {
   getCorrectMenuItem,
@@ -50,6 +52,7 @@ export default function FamilyRestaurantPage() {
   const [missionPanelVisible, setMissionPanelVisible] = useState(true);
   const [xp] = useState(90);
   const [coins] = useState(25);
+  const { childProfile, loadChildProfile } = useAuthStore();
 
   const [selectedId, setSelectedId] = useState(null);
   const [correctId, setCorrectId] = useState(null);
@@ -84,6 +87,27 @@ export default function FamilyRestaurantPage() {
       ignore = true;
     };
   }, [routeScenario, scenarioId]);
+
+  // ── Update profile when reward is shown (stage completed) ──
+  useEffect(() => {
+    if (!showReward) return;
+
+    const updateProfile = async () => {
+      try {
+        const currentXp = childProfile?.xp ?? 0;
+        const currentCoins = childProfile?.coins ?? 0;
+        await profileService.updateChildProfile({
+          xp: currentXp + xp,
+          coins: currentCoins + coins,
+        });
+        await loadChildProfile();
+      } catch (err) {
+        console.error('Failed to update XP:', err);
+      }
+    };
+
+    updateProfile();
+  }, [showReward]);
 
   useEffect(
     () => () => {
