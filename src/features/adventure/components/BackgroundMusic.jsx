@@ -1,19 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
+
+// Create a global singleton audio element outside the component
+// This ensures it persists across route changes and unmounts
+const globalAudio = new Audio();
+globalAudio.loop = true;
 
 const BackgroundMusic = ({ src, volume = 0.3 }) => {
-    const audioRef = useRef(null);
-
     useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.volume = volume;
+        globalAudio.volume = volume;
 
+        const currentSrcKey = globalAudio.dataset.currentSrc;
+        
+        // If the requested src is different from what's currently playing
+        if (currentSrcKey !== src) {
+            globalAudio.src = src;
+            globalAudio.dataset.currentSrc = src;
+            
             const playAudio = () => {
-                audioRef.current?.play().catch(error => {
+                globalAudio.play().catch(error => {
                     console.warn("Autoplay prevented. Waiting for user interaction.", error);
                     const playOnInteraction = () => {
-                        if (audioRef.current) {
-                            audioRef.current.play().catch(err => console.error(err));
-                        }
+                        globalAudio.play().catch(err => console.error(err));
                         document.removeEventListener('click', playOnInteraction);
                     };
                     document.addEventListener('click', playOnInteraction);
@@ -21,15 +28,20 @@ const BackgroundMusic = ({ src, volume = 0.3 }) => {
             };
             
             playAudio();
+        } else if (globalAudio.paused) {
+             // If it's the same track but paused, ensure it plays
+             globalAudio.play().catch(error => console.warn("Autoplay prevented.", error));
         }
-    }, [volume]);
 
-    return (
-        <audio ref={audioRef} loop>
-            <source src={src} type="audio/mpeg" />
-            Trình duyệt của bạn không hỗ trợ thẻ audio.
-        </audio>
-    );
+        // We do not stop the music on unmount to allow seamless transition between pages
+    }, [src, volume]);
+
+    return null; // Render nothing, handled globally
+};
+
+export const stopBackgroundMusic = () => {
+    globalAudio.pause();
+    globalAudio.currentTime = 0;
 };
 
 export default BackgroundMusic;
