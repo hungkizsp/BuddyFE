@@ -204,12 +204,12 @@ export default function HomePage() {
           <a href="/adventure" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/adventure') }}>
             <span>🗺️</span> Adventures
           </a>
-          <a href="#" className="nav-item">
+          {/* <a href="#" className="nav-item">
             <span>🎯</span> Missions
           </a>
           <a href="#" className="nav-item">
             <span>🛒</span> Shop
-          </a>
+          </a> */}
           <a href="/notifications" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/notifications') }}>
             <span>🔔</span> Notifications
           </a>

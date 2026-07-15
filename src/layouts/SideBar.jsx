@@ -81,12 +81,12 @@ export default function SideBar() {
         <a href="/adventure" className="nav-item">
           <span>🗺️</span> Adventures
         </a>
-        <a href="#" className="nav-item">
+        {/* <a href="#" className="nav-item">
           <span>🎯</span> Missions
         </a>
         <a href="#" className="nav-item">
           <span>🛒</span> Shop
-        </a>
+        </a> */}
         {/* Link tới trang Notifications đầy đủ */}
         <a
           href="/notifications"
