@@ -6,6 +6,8 @@ import SpeechBubble from "../components/SpeechBubble";
 import MissionPanel from "../components/MissionPanel";
 import RewardPopup from "../components/RewardPopup";
 import FruitBasketPopup from "../components/FruitBasketPopup";
+import BackgroundMusic from "../components/BackgroundMusic";
+import bgMusicSrc from "../../../assets/Music/After_the_Boss_Fight.mp3";
 import useScenarioSteps from "../hooks/useScenarioSteps";
 import useScenarioVocabulary from "../hooks/useScenarioVocabulary";
 import learningService from "../services/learningService";
@@ -510,6 +512,7 @@ export default function KitchenAdventurePage() {
   const canOpenBasket = activeStep?.expectedEntity === "APPLE";
   return (
     <div className="kitchen-adv-container app-shell">
+      <BackgroundMusic src={bgMusicSrc} volume={0.2} />
       <AdventureScene
         gameState={gameState}
         onArrivedAtTable={handleArrivedAtTable}
