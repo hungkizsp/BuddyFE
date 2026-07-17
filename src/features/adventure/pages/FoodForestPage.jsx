@@ -9,6 +9,9 @@ import MissionHeader from '../components/MissionHeader'
 import MissionCarousel from '../components/MissionCarousel'
 import '../styles/FoodForestPage.css'
 import background from '../../../assets/BACKGROUND.png'
+import BackgroundMusic from '../components/BackgroundMusic'
+import bgMusicBoss from '../../../assets/Music/After_the_Boss_Fight.mp3'
+import bgMusicKitchen from '../../../assets/Music/Kitchen_Floor_Carnival.mp3'
 
 export default function FoodForestPage() {
   const navigate = useNavigate()
@@ -73,8 +76,20 @@ export default function FoodForestPage() {
   const loading = worldsLoading || scenariosLoading
   const error = worldsError || scenariosError
 
+  const getMusicForMission = (title) => {
+    switch (title) {
+      case 'Family Restaurant':
+        return bgMusicKitchen;
+      default:
+        return bgMusicBoss;
+    }
+  }
+
+  const selectedMusicSrc = getMusicForMission(selectedMission?.name);
+
   return (
     <div className="ff-page app-shell" style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+      <BackgroundMusic src={selectedMusicSrc} volume={0.2} />
       <div className="canvas-container">
         <Canvas
           camera={{ position: [0, 0, 5], fov: 40 }}

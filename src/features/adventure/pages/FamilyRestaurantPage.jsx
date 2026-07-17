@@ -33,6 +33,8 @@ import '../styles/FamilyRestaurantPage.css';
 import orderPerson from '../../../assets/order_person.png';
 import menuImg from '../../../assets/menu.png';
 import familyResMini from '../../../assets/mini-1/family_restaurant_mini.png'
+import BackgroundMusic from '../components/BackgroundMusic';
+import bgMusicSrc from '../../../assets/Music/Kitchen_Floor_Carnival.mp3';
 
 export default function FamilyRestaurantPage() {
   const navigate = useNavigate();
@@ -302,6 +304,7 @@ export default function FamilyRestaurantPage() {
 
   return (
     <div className="restaurant-container app-shell">
+      <BackgroundMusic src={bgMusicSrc} volume={0.2} />
       <AdventureScene
         gameState={gameState === 'not-started' ? 'not-started' : 'idle-at-table'}
         onArrivedAtTable={() => { }}

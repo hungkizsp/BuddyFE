@@ -8,6 +8,8 @@ import RewardPopup from '../components/RewardPopup';
 import ShoppingCounter from '../components/ShoppingCounter';
 import ShoppingChecklist from '../components/ShoppingChecklist';
 import VoiceMission from '../components/VoiceMission';
+import BackgroundMusic from '../components/BackgroundMusic';
+import bgMusicSrc from '../../../assets/Music/After_the_Boss_Fight.mp3';
 
 import useScenarioSteps from '../hooks/useScenarioSteps';
 import useScenarioVocabulary from '../hooks/useScenarioVocabulary';
@@ -359,6 +361,7 @@ export default function SupermarketShoppingPage() {
 
   return (
     <div className="supermarket-container app-shell">
+      <BackgroundMusic src={bgMusicSrc} volume={0.2} />
       {/* ── 3D Buddy character ── */}
       <AdventureScene
         gameState={gameState === 'not-started' ? 'not-started' : 'idle-at-table'}
