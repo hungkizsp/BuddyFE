@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import EmoteShooter from '../components/EmoteShooter'
 import { GAME_LEVELS } from '../data/gameLevelsData'
 import Button from '../../../shared/components/ui/Button'
 import './GameLevelPage.css'
@@ -175,6 +177,7 @@ function SceneDecorations({ theme }) {
 function WinModal({ level, xp, onBack }) {
   return (
     <div className="gl-modal-overlay" role="dialog" aria-modal="true">
+      <EmoteShooter />
       <div className="gl-modal">
         <div className="gl-modal__confetti">🎊🎉🎊🎉🎊</div>
         <div className="gl-modal__emoji">🏆</div>
