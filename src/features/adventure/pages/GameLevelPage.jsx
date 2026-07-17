@@ -25,6 +25,7 @@ function RoomItem({ item, onClick, status }) {
   )
 }
 
+
 function MissionRow({ mission }) {
   return (
     <div className={`gl-mission ${mission.done ? 'gl-mission--done' : ''}`}>
