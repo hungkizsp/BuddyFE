@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { stopBackgroundMusic } from "../features/adventure/components/BackgroundMusic";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import SignupPage from "../features/auth/pages/SignupPage";
@@ -16,9 +18,22 @@ import FamilyRestaurantPage from "../features/adventure/pages/FamilyRestaurantPa
 import NotificationPage from "../features/notification/pages/NotificationPage";
 import VocabularyPage from "../features/vocabulary/pages/VocabularyPage";
 
+function GlobalMusicController() {
+  const location = useLocation();
+  useEffect(() => {
+    // Only allow music to keep playing if we are DEEP inside /adventure/...
+    // If we are at exactly /adventure, or outside /adventure entirely, stop the music.
+    if (location.pathname === '/adventure' || location.pathname === '/adventure/' || !location.pathname.startsWith('/adventure')) {
+      stopBackgroundMusic();
+    }
+  }, [location.pathname]);
+  return null;
+}
+
 export default function AppRouter() {
   return (
     <BrowserRouter>
+      <GlobalMusicController />
       <Routes>
         {/* Redirect root to the new landing page */}
         <Route path="/" element={<Navigate to="/landing" replace />} />

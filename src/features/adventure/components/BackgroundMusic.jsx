@@ -30,7 +30,14 @@ const BackgroundMusic = ({ src, volume = 0.3 }) => {
             playAudio();
         } else if (globalAudio.paused) {
              // If it's the same track but paused, ensure it plays
-             globalAudio.play().catch(error => console.warn("Autoplay prevented.", error));
+             globalAudio.play().catch(error => {
+                 console.warn("Autoplay prevented on same track. Waiting for user interaction.", error);
+                 const playOnInteraction = () => {
+                     globalAudio.play().catch(err => console.error(err));
+                     document.removeEventListener('click', playOnInteraction);
+                 };
+                 document.addEventListener('click', playOnInteraction);
+             });
         }
 
         // We do not stop the music on unmount to allow seamless transition between pages
