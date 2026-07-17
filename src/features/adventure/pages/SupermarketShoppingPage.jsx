@@ -21,6 +21,7 @@ import fridge from '../../../assets/fridge.png';
 import fruitCounter from '../../../assets/fruit_counter.png';
 import foodCounter from '../../../assets/food_counter.png';
 import counterPerson from '../../../assets/counterperson.png';
+import supermarketMini from '../../../assets/mini-1/supermarket.png';
 
 
 // ─── Image resolution (same pattern as KitchenAdventurePage) ─────────────────
@@ -366,6 +367,44 @@ export default function SupermarketShoppingPage() {
         buddyScale={0.6}
       />
 
+      {/* ── Intro Story Panel (shown before game starts) ── */}
+      {gameState === 'not-started' && (
+        <div className="sm-intro-overlay">
+          <div className="sm-intro-label">
+            <span className="sm-intro-label__icon">🔍</span>
+            <span>Adventure 2 – Supermarket Shopping</span>
+          </div>
+
+          <div className="sm-intro-manga-grid">
+            <img
+              src={supermarketMini}
+              alt="Supermarket story panel"
+              className="sm-intro-manga-panel"
+              draggable={false}
+            />
+          </div>
+
+          <button
+            type="button"
+            className="sm-intro-start-btn"
+            onClick={handleStartMission}
+            disabled={startDisabled}
+          >
+            <span className="sm-intro-start-btn__icon">🛒</span>
+            <span>Let&apos;s Start!</span>
+            <span className="sm-intro-start-btn__arrow">🚀</span>
+          </button>
+
+          <button
+            type="button"
+            className="sm-intro-back-link"
+            onClick={() => navigate('/adventure/food-forest')}
+          >
+            ← Back to map
+          </button>
+        </div>
+      )}
+
       {/* ── HUD Header ── */}
       <header className="hud-header">
         <div className="hud-title-container">
@@ -536,17 +575,19 @@ export default function SupermarketShoppingPage() {
       )}
 
       {/* ── Mission Panel ── */}
-      <div className="mission-panel-toggle-wrapper">
-        <button
-          className="mission-toggle-btn"
-          onClick={() => setMissionPanelVisible((p) => !p)}
-          type="button"
-        >
-          {missionPanelVisible ? 'Ẩn bảng nhiệm vụ' : 'Hiện bảng nhiệm vụ'}
-        </button>
-      </div>
+      {gameState !== 'not-started' && (
+        <div className="mission-panel-toggle-wrapper">
+          <button
+            className="mission-toggle-btn"
+            onClick={() => setMissionPanelVisible((p) => !p)}
+            type="button"
+          >
+            {missionPanelVisible ? 'Ẩn bảng nhiệm vụ' : 'Hiện bảng nhiệm vụ'}
+          </button>
+        </div>
+      )}
 
-      {missionPanelVisible && (
+      {gameState !== 'not-started' && missionPanelVisible && (
         <MissionPanel
           gameState={
             gameState === 'not-started'

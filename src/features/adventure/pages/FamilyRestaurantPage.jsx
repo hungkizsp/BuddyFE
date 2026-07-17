@@ -32,6 +32,7 @@ import '../styles/FamilyRestaurantPage.css';
 
 import orderPerson from '../../../assets/order_person.png';
 import menuImg from '../../../assets/menu.png';
+import familyResMini from '../../../assets/mini-1/family_restaurant_mini.png'
 
 export default function FamilyRestaurantPage() {
   const navigate = useNavigate();
@@ -308,6 +309,44 @@ export default function FamilyRestaurantPage() {
         buddyScale={0.6}
       />
 
+      {/* ── Intro Story Panel (shown before game starts) ── */}
+      {gameState === 'not-started' && (
+        <div className="rest-intro-overlay">
+          <div className="rest-intro-label">
+            <span className="rest-intro-label__icon">🔍</span>
+            <span>Adventure 3 – Family Restaurant</span>
+          </div>
+
+          <div className="rest-intro-manga-grid">
+            <img
+              src={familyResMini}
+              alt="Family Restaurant story panel"
+              className="rest-intro-manga-panel"
+              draggable={false}
+            />
+          </div>
+
+          <button
+            type="button"
+            className="rest-intro-start-btn"
+            onClick={handleStartMission}
+            disabled={startDisabled}
+          >
+            <span className="rest-intro-start-btn__icon">🍽️</span>
+            <span>Let&apos;s Start!</span>
+            <span className="rest-intro-start-btn__arrow">🚀</span>
+          </button>
+
+          <button
+            type="button"
+            className="rest-intro-back-link"
+            onClick={() => navigate('/adventure/food-forest')}
+          >
+            ← Back to map
+          </button>
+        </div>
+      )}
+
       <header className="hud-header">
         <div className="hud-title-container">
           <span className="hud-title-forest">{scenario?.worldName || 'Food Forest'}</span>
@@ -383,17 +422,19 @@ export default function FamilyRestaurantPage() {
         </div>
       )}
 
-      <div className="mission-panel-toggle-wrapper">
-        <button
-          className="mission-toggle-btn"
-          onClick={() => setMissionPanelVisible((prev) => !prev)}
-          type="button"
-        >
-          {missionPanelVisible ? 'Ẩn bảng nhiệm vụ' : 'Hiện bảng nhiệm vụ'}
-        </button>
-      </div>
+      {gameState !== 'not-started' && (
+        <div className="mission-panel-toggle-wrapper">
+          <button
+            className="mission-toggle-btn"
+            onClick={() => setMissionPanelVisible((prev) => !prev)}
+            type="button"
+          >
+            {missionPanelVisible ? 'Ẩn bảng nhiệm vụ' : 'Hiện bảng nhiệm vụ'}
+          </button>
+        </div>
+      )}
 
-      {missionPanelVisible && (
+      {gameState !== 'not-started' && missionPanelVisible && (
         <MissionPanel
           gameState={
             gameState === 'not-started'
