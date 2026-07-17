@@ -40,6 +40,8 @@ export default function FoodForestPage() {
 
   const getScenarioPath = (title) => {
     switch (title) {
+      case 'Breakfast Trouble':
+        return '/adventure/food-forest/breakfast-trouble'
       case 'Supermarket Shopping':
         return '/adventure/food-forest/supermarket-shopping'
       case 'Family Restaurant':

@@ -1,121 +1,75 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../shared/components/ui/Button'
 import '../styles/BreakfastTroublePage.css'
+import breakfast1 from '../../../assets/mini-1/breakfast_1.png'
+import breakfast2 from '../../../assets/mini-1/breakfast_2.png'
+import breakfast3 from '../../../assets/mini-1/breakfast_3.png'
 
-/* ─── Slide data ─────────────────────────────────────────── */
-const SLIDES = [
-  {
-    id: 1,
-    emoji: '😴',
-    zzz: true,
-    text: 'Yaaawn! Good morning…\nOh no! 😱',
-  },
-  {
-    id: 2,
-    emoji: '😋',
-    zzz: false,
-    text: "My stomach is making funny noises!\nGrowl growl growl!\nI'm SO hungry! 😋",
-  },
-  {
-    id: 3,
-    emoji: '🥺',
-    zzz: false,
-    text: 'Can you help me find breakfast?\nI really need your help, best friend! 🙏',
-  },
+const PANELS = [
+  { id: 1, image: breakfast1, alt: 'Breakfast panel 1' },
+  { id: 2, image: breakfast2, alt: 'Breakfast panel 2' },
+  { id: 3, image: breakfast3, alt: 'Breakfast panel 3' },
 ]
 
 export default function BreakfastTroublePage() {
   const navigate = useNavigate()
-  const [current, setCurrent] = useState(0)
+  const location = useLocation()
+  const scenarioId = location.state?.scenario?.id || new URLSearchParams(location.search).get('scenarioId')
+  const scenario = location.state?.scenario
+  const world = location.state?.world
 
-  const slide   = SLIDES[current]
-  const isLast  = current === SLIDES.length - 1   // slide thứ 3
-
-  /* Tap bất kỳ đâu → advance. Lần 3 → vào game luôn */
-  const handleTap = () => {
-    if (isLast) {
-      navigate('/adventure/food-forest/breakfast-trouble/play')
-    } else {
-      setCurrent((prev) => prev + 1)
-    }
+  const handleStart = () => {
+    const qs = scenarioId ? `?scenarioId=${scenarioId}` : ''
+    navigate(`/adventure/food-forest/kitchen-adventure${qs}`, {
+      state: { world, scenario },
+    })
   }
 
   return (
-    <div
-      className="bt-page bt-page--tappable app-shell"
-      onClick={handleTap}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' || e.key === ' ' ? handleTap() : null}
-      aria-label="Tap to continue"
-    >
-
-      {/* ══════════════════════════════════════════
-          Adventure label tag
-      ══════════════════════════════════════════ */}
+    <div className="bt-page app-shell">
       <div className="bt-label">
         <span className="bt-label__icon">🔍</span>
         <span>Adventure 1 – Breakfast Trouble</span>
       </div>
 
-      {/* ══════════════════════════════════════════
-          Character stage
-      ══════════════════════════════════════════ */}
-      <div className="bt-stage">
-        {/* Speech bubble */}
-        <div className="bt-bubble">
-          <p>Time for an<br />adventure?<br />Let&apos;s go!</p>
-          <span className="bt-bubble__icon">📖</span>
-        </div>
-
-        {/* Character */}
-        <div className={`bt-character bt-character--${slide.id}`}>
-          {slide.zzz && <div className="bt-zzz">Z z z</div>}
-          <div className="bt-emoji">{slide.emoji}</div>
-          <div className="bt-bowl" />
-        </div>
+      <div className="bt-manga-grid">
+        <img
+          src={PANELS[0].image}
+          alt={PANELS[0].alt}
+          className="bt-manga-panel bt-manga-panel--top"
+          draggable={false}
+        />
+        <img
+          src={PANELS[1].image}
+          alt={PANELS[1].alt}
+          className="bt-manga-panel bt-manga-panel--top"
+          draggable={false}
+        />
+        <img
+          src={PANELS[2].image}
+          alt={PANELS[2].alt}
+          className="bt-manga-panel bt-manga-panel--bottom"
+          draggable={false}
+        />
       </div>
 
-      {/* Dot indicators */}
-      <div className="bt-dots">
-        {SLIDES.map((_, i) => (
-          <span
-            key={i}
-            className={`bt-dot ${i === current ? 'bt-dot--active' : ''}`}
-            aria-label={`Slide ${i + 1}`}
-          />
-        ))}
-      </div>
+      <Button
+        className="bt-start-btn"
+        onClick={handleStart}
+        type="button"
+      >
+        <span className="bt-start-btn__icon">🍳</span>
+        <span>Let&apos;s Start!</span>
+        <span className="bt-start-btn__arrow">🚀</span>
+      </Button>
 
-      {/* ══════════════════════════════════════════
-          Text card
-      ══════════════════════════════════════════ */}
-      <div className="bt-textcard" key={current}>
-        {slide.text.split('\n').map((line, i) => (
-          <p key={i} className="bt-textcard__line">{line}</p>
-        ))}
-      </div>
-
-      {/* Tap CTA button */}
-      <div className={`bt-tap-btn ${isLast ? 'bt-tap-btn--last' : ''}`}>
-        <span className="bt-tap-btn__icon">{isLast ? '🍳' : '👆'}</span>
-        <span className="bt-tap-btn__text">
-          {isLast ? 'Let\'s Start!' : 'Tap to continue'}
-        </span>
-        <span className="bt-tap-btn__arrow">{isLast ? '🚀' : '→'}</span>
-      </div>
-
-      {/* Back link — stop propagation so it doesn't advance slide */}
       <Button
         variant="secondary"
         className="bt-back-link"
-        onClick={(e) => { e.stopPropagation(); navigate('/adventure/food-forest') }}
+        onClick={() => navigate('/adventure/food-forest')}
       >
         ← Back to map
       </Button>
-
     </div>
   )
 }
-
