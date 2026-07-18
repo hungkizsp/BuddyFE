@@ -207,3 +207,66 @@ export async function assessSpeech() {
     };
   });
 }
+
+/**
+ * Synthesize text to speech using Azure.
+ * @param {string} text - The text to speak.
+ * @returns {Promise<void>}
+ */
+export async function synthesizeSpeech(text) {
+  const SpeechSDK = window.SpeechSDK;
+  if (!SPEECH_KEY) {
+    const err = new Error('Azure Speech key is not configured.');
+    err.code = 'NO_KEY';
+    throw err;
+  }
+
+  return new Promise((resolve, reject) => {
+    const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION);
+    speechConfig.speechSynthesisLanguage = SPEECH_LANG;
+    // Set a natural voice (can be customised based on VITE env later)
+    speechConfig.speechSynthesisVoiceName = 'en-US-JaneNeural'; 
+
+    // We pass null for AudioConfig so the SDK doesn't auto-play.
+    // We will play it manually to detect exactly when playback finishes.
+    const synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig, null);
+
+    synthesizer.speakTextAsync(
+      text,
+      (result) => {
+        synthesizer.close();
+        if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
+          const audioData = result.audioData;
+          if (!audioData || audioData.byteLength === 0) {
+            return resolve(); // No audio data, just resolve
+          }
+          
+          try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            audioContext.decodeAudioData(audioData.slice(0), (buffer) => {
+              const source = audioContext.createBufferSource();
+              source.buffer = buffer;
+              source.connect(audioContext.destination);
+              source.onended = () => {
+                resolve();
+              };
+              source.start(0);
+            }, (decodeErr) => {
+              console.error("Audio decode error:", decodeErr);
+              resolve(); // fallback to immediate resolve if decode fails
+            });
+          } catch (e) {
+            console.error("AudioContext error:", e);
+            resolve(); // fallback
+          }
+        } else {
+          reject(new Error(`Speech synthesis failed: ${result.errorDetails}`));
+        }
+      },
+      (err) => {
+        synthesizer.close();
+        reject(err);
+      }
+    );
+  });
+}
