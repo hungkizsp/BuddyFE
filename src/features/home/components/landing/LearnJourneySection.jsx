@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom'
+
 const WORLDS_DATA = [
   {
     videoUrl: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_053923_22c0a6a5-313c-474c-85ff-3b50d25e944a.mp4',
@@ -25,7 +27,24 @@ const WORLDS_DATA = [
   },
 ]
 
-export default function LearnJourneySection() {
+export default function LearnJourneySection({ currentUser }) {
+  const navigate = useNavigate()
+
+  const handleExploreWorld = (title) => {
+    if (!currentUser) {
+      navigate('/login')
+      return
+    }
+    const normalized = title.toLowerCase()
+    if (normalized.includes('forest')) {
+      navigate('/adventure/food-forest')
+    } else if (normalized.includes('market')) {
+      navigate('/adventure/food-forest/supermarket-shopping')
+    } else {
+      navigate('/adventure')
+    }
+  }
+
   return (
     <section id="worlds" className="relative bg-[#010828] overflow-hidden py-16 lg:py-24 z-10">
       
@@ -47,7 +66,10 @@ export default function LearnJourneySection() {
           </div>
 
           {/* Right: VIEW ALL WORLDS button */}
-          <div className="flex-shrink-0 cursor-pointer group">
+          <div
+            onClick={() => navigate(currentUser ? '/adventure' : '/login')}
+            className="flex-shrink-0 cursor-pointer group"
+          >
             <div className="flex items-center gap-3">
               <span className="font-grotesk text-[32px] sm:text-[60px] uppercase text-cream leading-none">
                 VIEW
@@ -72,7 +94,8 @@ export default function LearnJourneySection() {
           {WORLDS_DATA.map((world, i) => (
             <div
               key={i}
-              className="liquid-glass rounded-[32px] p-[18px] hover:bg-white/10 transition-colors duration-300 group"
+              onClick={() => handleExploreWorld(world.title)}
+              className="liquid-glass rounded-[32px] p-[18px] hover:bg-white/10 transition-colors duration-300 group cursor-pointer"
             >
               {/* Square video container */}
               <div className="relative w-full pb-[100%] rounded-[24px] overflow-hidden mb-4 bg-[#020d3d]">

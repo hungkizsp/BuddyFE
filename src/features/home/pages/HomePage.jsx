@@ -8,6 +8,7 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls, ContactShadows } from '@react-three/drei'
 import BuddyModel from '../../../shared/components/BuddyModel'
+import DynamicBuddyModel from '../../../shared/components/DynamicBuddyModel'
 import TopBar from '../../../shared/components/TopBar'
 import Button from '../../../shared/components/ui/Button'
 import './HomePage.css'
@@ -20,7 +21,7 @@ const QUICK_PHRASES = [
   "Tell me something fun!",
 ]
 
-function BuddyAvatar({ mood = 'HAPPY', isTyping = false }) {
+function BuddyAvatar({ mood = 'HAPPY', isTyping = false, modelPath = null }) {
   return (
     <div className={`buddy-avatar ${isTyping ? 'buddy-typing' : ''}`} style={{ width: '64px', height: '64px', padding: 0, overflow: 'hidden' }}>
       <Canvas camera={{ position: [0, 1.2, 3.5], fov: 50 }} style={{ width: '100%', height: '100%' }}>
@@ -28,7 +29,7 @@ function BuddyAvatar({ mood = 'HAPPY', isTyping = false }) {
         <directionalLight position={[10, 10, 10]} intensity={1} />
         <Environment preset="city" />
         <Suspense fallback={null}>
-          <BuddyModel scale={[1.5, 1.5, 1.5]} position={[0, -1.5, 0]} />
+          <DynamicBuddyModel modelPath={modelPath} scale={1.5} position={[0, -1.2, 0]} />
         </Suspense>
         <OrbitControls enableZoom={false} enablePan={false} />
       </Canvas>
@@ -56,7 +57,7 @@ function XpBar({ xp, level }) {
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { currentUser, logout, loadCurrentUser } = useAuthStore()
+  const { currentUser, logout, loadCurrentUser, childProfile } = useAuthStore()
   const { unreadCount, notifications, markAllAsRead, markAsRead } = useNotificationStore()
   useNotificationSSE(currentUser?.id)
 
@@ -198,18 +199,15 @@ export default function HomePage() {
           <a href="/home" className="nav-item active" onClick={(e) => { e.preventDefault() }}>
             <span>💬</span> Chat with Buddy
           </a>
-          <a href="/vocabulary" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/vocabulary') }}>
-            <span>📚</span> Vocabulary
+          <a href="/study" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/study') }}>
+            <span>📖</span> Study Modes
           </a>
           <a href="/adventure" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/adventure') }}>
             <span>🗺️</span> Adventures
           </a>
-          {/* <a href="#" className="nav-item">
-            <span>🎯</span> Missions
+          <a href="/character-creator" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/character-creator') }}>
+            <span>🎨</span> Create Character
           </a>
-          <a href="#" className="nav-item">
-            <span>🛒</span> Shop
-          </a> */}
           <a href="/notifications" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/notifications') }}>
             <span>🔔</span> Notifications
           </a>
@@ -224,7 +222,7 @@ export default function HomePage() {
       <main className="chat-main">
         <TopBar theme="dark" />
         <header className="chat-header">
-          <BuddyAvatar mood={buddyMood} isTyping={isSending} />
+          <BuddyAvatar mood={buddyMood} isTyping={isSending} modelPath={childProfile?.activeCustomCharacterUrl} />
           <div className="chat-header-info">
             <h1>Buddy</h1>
             <p className={`buddy-status ${isSending ? 'typing' : 'online'}`}>

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 // Inline SVG icons (no external package needed)
 const MailIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -73,8 +75,14 @@ const FAQ_ITEMS = [
   },
 ]
 
-export default function TryBuddySection({ username = 'Hung' }) {
+export default function TryBuddySection({ username = 'Hung', currentUser }) {
   const userInitial = username.charAt(0).toUpperCase()
+
+  const socialLinks = [
+    { Icon: MailIcon, href: "mailto:buddyenglish@fpt.edu.vn", target: "_self" },
+    { Icon: TwitterIcon, href: "https://x.com", target: "_blank" },
+    { Icon: GithubIcon, href: "https://github.com/dagowlol/Exe101_Project", target: "_blank" }
+  ]
 
   return (
     <section className="relative w-full bg-[#010828] overflow-hidden z-10">
@@ -146,12 +154,25 @@ export default function TryBuddySection({ username = 'Hung' }) {
 
               {/* CTA */}
               <div className="mt-6 text-left flex gap-3 flex-wrap">
-                <a href="/login" className="inline-block px-8 py-4 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
-                  Create free account
-                </a>
-                <a href="/login" className="inline-block liquid-glass px-8 py-4 font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
-                  Watch demo
-                </a>
+                {currentUser ? (
+                  <Link to="/home" className="inline-block px-8 py-4 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
+                    Go to Dashboard
+                  </Link>
+                ) : (
+                  <Link to="/register" className="inline-block px-8 py-4 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
+                    Create free account
+                  </Link>
+                )}
+
+                {currentUser ? (
+                  <Link to="/adventure/food-forest/breakfast-trouble" className="inline-block liquid-glass px-8 py-4 font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
+                    Watch demo
+                  </Link>
+                ) : (
+                  <Link to="/login" className="inline-block liquid-glass px-8 py-4 font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
+                    Watch demo
+                  </Link>
+                )}
               </div>
             </div>
 
@@ -161,9 +182,12 @@ export default function TryBuddySection({ username = 'Hung' }) {
         {/* ── SOCIAL ICONS ── */}
         <div className="absolute left-[8%] bottom-[12%] sm:bottom-[15%] lg:bottom-[20%] z-20">
           <div className="liquid-glass rounded-[0.5rem] sm:rounded-[1.25rem] flex flex-col overflow-hidden">
-            {[MailIcon, TwitterIcon, GithubIcon].map((Icon, i, arr) => (
-              <button
+            {socialLinks.map(({ Icon, href, target }, i, arr) => (
+              <a
                 key={i}
+                href={href}
+                target={target}
+                rel={target === '_blank' ? 'noopener noreferrer' : undefined}
                 className={`flex items-center justify-center hover:bg-white/10 transition-all duration-300 text-cream/70 hover:text-cream
                   w-[14vw] sm:w-[14.375rem] md:w-[10.78125rem] lg:w-[16.77rem]
                   h-[14vw] sm:h-[4rem] md:h-[3.5rem] lg:h-[5.5rem]
@@ -171,7 +195,7 @@ export default function TryBuddySection({ username = 'Hung' }) {
                 `}
               >
                 <Icon />
-              </button>
+              </a>
             ))}
           </div>
         </div>
@@ -235,7 +259,9 @@ export default function TryBuddySection({ username = 'Hung' }) {
           {/* Top row */}
           <div className="flex flex-col lg:flex-row justify-between gap-8 mb-8">
             <div className="max-w-[400px]">
-              <span className="font-grotesk text-[22px] uppercase text-cream block mb-3 text-glow">BuddyEnglish</span>
+              <Link to={currentUser ? "/home" : "/landing"} className="font-grotesk text-[22px] uppercase text-cream block mb-3 text-glow hover:text-neon transition-colors duration-200">
+                BuddyEnglish
+              </Link>
               <p className="font-mono text-[12px] uppercase text-cream/50 leading-relaxed text-readable">
                 An AI-powered English speaking companion for Vietnamese children. Built as a capstone project at FPT University (EXE101) to demonstrate that technology can make language learning accessible, safe, and genuinely fun.
               </p>
@@ -251,8 +277,31 @@ export default function TryBuddySection({ username = 'Hung' }) {
             </div>
             <div className="flex flex-col gap-2">
               <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon text-glow font-bold">Links</span>
-              {['GitHub Repository', 'API Documentation', 'FPT University', 'Privacy Policy'].map((link) => (
-                <a key={link} href="#" className="font-mono text-[12px] uppercase text-cream/60 hover:text-cream/90 transition-colors text-readable">{link}</a>
+              {[
+                { name: 'GitHub Repository', href: 'https://github.com/dagowlol/Exe101_Project', isExternal: true },
+                { name: 'API Documentation', href: 'https://github.com/dagowlol/Exe101_Project/blob/main/buddy_english_be/README.md', isExternal: true },
+                { name: 'FPT University', href: 'https://fpt.edu.vn', isExternal: true },
+                { name: 'Privacy Policy', href: '#faq', isExternal: false }
+              ].map((link) => (
+                link.isExternal ? (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[12px] uppercase text-cream/60 hover:text-cream/90 transition-colors text-readable"
+                  >
+                    {link.name}
+                  </a>
+                ) : (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="font-mono text-[12px] uppercase text-cream/60 hover:text-cream/90 transition-colors text-readable"
+                  >
+                    {link.name}
+                  </a>
+                )
               ))}
             </div>
           </div>

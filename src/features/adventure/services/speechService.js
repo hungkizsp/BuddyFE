@@ -225,7 +225,7 @@ export async function synthesizeSpeech(text) {
     const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION);
     speechConfig.speechSynthesisLanguage = SPEECH_LANG;
     // Set a natural voice (can be customised based on VITE env later)
-    speechConfig.speechSynthesisVoiceName = 'en-US-JaneNeural'; 
+    speechConfig.speechSynthesisVoiceName = 'en-US-AnaNeural';
 
     // We pass null for AudioConfig so the SDK doesn't auto-play.
     // We will play it manually to detect exactly when playback finishes.
@@ -240,7 +240,7 @@ export async function synthesizeSpeech(text) {
           if (!audioData || audioData.byteLength === 0) {
             return resolve(); // No audio data, just resolve
           }
-          
+
           try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             audioContext.decodeAudioData(audioData.slice(0), (buffer) => {

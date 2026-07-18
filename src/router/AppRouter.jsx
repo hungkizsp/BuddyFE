@@ -16,7 +16,12 @@ import KitchenAdventurePage from "../features/adventure/pages/KitchenAdventurePa
 import SupermarketShoppingPage from "../features/adventure/pages/SupermarketShoppingPage";
 import FamilyRestaurantPage from "../features/adventure/pages/FamilyRestaurantPage";
 import NotificationPage from "../features/notification/pages/NotificationPage";
-import VocabularyPage from "../features/vocabulary/pages/VocabularyPage";
+import CharacterCreatorPage from "../features/home/pages/CharacterCreatorPage";
+import StudyHubPage from "../features/study/pages/StudyHubPage";
+import FlashcardModePage from "../features/study/pages/FlashcardModePage";
+import LearnModePage from "../features/study/pages/LearnModePage";
+import TestModePage from "../features/study/pages/TestModePage";
+import MatchModePage from "../features/study/pages/MatchModePage";
 
 function GlobalMusicController() {
   const location = useLocation();
@@ -41,8 +46,15 @@ export default function AppRouter() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
-        <Route path="/vocabulary" element={<VocabularyPage />} />
         <Route path="/notifications" element={<NotificationPage />} />
+        <Route path="/character-creator" element={<CharacterCreatorPage />} />
+        
+        {/* Study Mode Routes */}
+        <Route path="/study" element={<StudyHubPage />} />
+        <Route path="/study/:categoryId/flashcards" element={<FlashcardModePage />} />
+        <Route path="/study/:categoryId/learn" element={<LearnModePage />} />
+        <Route path="/study/:categoryId/test" element={<TestModePage />} />
+        <Route path="/study/:categoryId/match" element={<MatchModePage />} />
 
         {/* Adventure Hub */}
         <Route path="/adventure" element={<AdventurePage />} />

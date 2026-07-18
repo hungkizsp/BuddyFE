@@ -2,6 +2,7 @@ import { Suspense, useRef, useEffect, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
+import { Link } from 'react-router-dom'
 import SharedBuddyModel from '../../../../shared/components/BuddyModel'
 
 const MailIcon = () => (
@@ -104,19 +105,33 @@ function BuddyScene({ reaction }) {
 function SocialIcons() {
   return (
     <>
-      {[MailIcon, TwitterIcon, GithubIcon].map((Icon, i) => (
-        <button
-          key={i}
-          className="liquid-glass w-[56px] h-[56px] rounded-[1rem] flex items-center justify-center hover:bg-white/10 transition-all duration-300"
-        >
-          <Icon />
-        </button>
-      ))}
+      <a
+        href="mailto:buddyenglish@fpt.edu.vn"
+        className="liquid-glass w-[56px] h-[56px] rounded-[1rem] flex items-center justify-center hover:bg-white/10 transition-all duration-300 text-cream"
+      >
+        <MailIcon />
+      </a>
+      <a
+        href="https://x.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="liquid-glass w-[56px] h-[56px] rounded-[1rem] flex items-center justify-center hover:bg-white/10 transition-all duration-300 text-cream"
+      >
+        <TwitterIcon />
+      </a>
+      <a
+        href="https://github.com/dagowlol/Exe101_Project"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="liquid-glass w-[56px] h-[56px] rounded-[1rem] flex items-center justify-center hover:bg-white/10 transition-all duration-300 text-cream"
+      >
+        <GithubIcon />
+      </a>
     </>
   )
 }
 
-export default function MeetBuddyHero({ onLearnMore }) {
+export default function MeetBuddyHero({ onLearnMore, currentUser }) {
   const [bubbleText, setBubbleText] = useState("Hi there! I'm Buddy — your AI English speaking companion. I listen, I remember, and I grow with you every day!")
   const [reaction, setReaction] = useState(null)
 
@@ -125,6 +140,16 @@ export default function MeetBuddyHero({ onLearnMore }) {
     setReaction(type)
     setTimeout(() => setReaction(null), 1500)
   }
+
+  const baseLinks = [
+    { name: 'About', href: '#about' },
+    { name: 'Worlds', href: '#worlds' },
+    { name: 'For Parents', href: '#parents' },
+    { name: 'FAQ', href: '#faq' }
+  ]
+  const navLinks = currentUser
+    ? [...baseLinks, { name: 'Dashboard', href: '/home', isRoute: true }]
+    : [...baseLinks, { name: 'Login', href: '/login', isRoute: true }, { name: 'Register', href: '/register', isRoute: true }]
 
   return (
     <section className="relative overflow-hidden min-h-screen rounded-b-[32px] bg-[#010828] z-10 video-darken">
@@ -149,20 +174,30 @@ export default function MeetBuddyHero({ onLearnMore }) {
         {/* ── HEADER ── */}
         <div className="flex items-center justify-between pt-7">
           {/* Logo */}
-          <span className="font-grotesk text-xl uppercase text-cream tracking-widest text-glow">
+          <Link to={currentUser ? "/home" : "/landing"} className="font-grotesk text-xl uppercase text-cream tracking-widest text-glow hover:text-neon transition-colors duration-200">
             BuddyEnglish
-          </span>
+          </Link>
 
           {/* Navigation */}
           <nav className="liquid-glass hidden lg:flex items-center gap-10 rounded-[28px] px-[52px] py-[24px]">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="font-grotesk text-[15px] uppercase text-cream hover:text-neon transition-colors duration-200 text-readable"
-              >
-                {link.name}
-              </a>
+            {navLinks.map((link) => (
+              link.isRoute ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="font-grotesk text-[15px] uppercase text-cream hover:text-neon transition-colors duration-200 text-readable"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="font-grotesk text-[15px] uppercase text-cream hover:text-neon transition-colors duration-200 text-readable"
+                >
+                  {link.name}
+                </a>
+              )
             ))}
           </nav>
 
@@ -193,9 +228,15 @@ export default function MeetBuddyHero({ onLearnMore }) {
 
           {/* CTA buttons */}
           <div className="flex gap-4 mt-8 lg:ml-32">
-            <a href="/login" className="inline-block px-8 py-4 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
-              Try Buddy Free
-            </a>
+            {currentUser ? (
+              <Link to="/home" className="inline-block px-8 py-4 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link to="/register" className="inline-block px-8 py-4 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
+                Try Buddy Free
+              </Link>
+            )}
             <button onClick={onLearnMore} className="liquid-glass px-8 py-4 sm:px-10 sm:py-5 font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
               Learn More
             </button>
