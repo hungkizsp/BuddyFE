@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import './BackgroundMusic.css';
 
 // Create a global singleton audio element outside the component
 // This ensures it persists across route changes and unmounts
@@ -6,6 +7,8 @@ const globalAudio = new Audio();
 globalAudio.loop = true;
 
 const BackgroundMusic = ({ src, volume = 0.3 }) => {
+    const [isMuted, setIsMuted] = useState(globalAudio.muted);
+
     useEffect(() => {
         globalAudio.volume = volume;
 
@@ -43,7 +46,26 @@ const BackgroundMusic = ({ src, volume = 0.3 }) => {
         // We do not stop the music on unmount to allow seamless transition between pages
     }, [src, volume]);
 
-    return null; // Render nothing, handled globally
+    useEffect(() => {
+        const handleVolumeChange = () => setIsMuted(globalAudio.muted);
+        globalAudio.addEventListener('volumechange', handleVolumeChange);
+        return () => globalAudio.removeEventListener('volumechange', handleVolumeChange);
+    }, []);
+
+    const toggleMute = () => {
+        globalAudio.muted = !globalAudio.muted;
+        setIsMuted(globalAudio.muted);
+    };
+
+    return (
+        <button 
+            className="background-music-toggle" 
+            onClick={toggleMute}
+            aria-label={isMuted ? "Bật nhạc nền" : "Tắt nhạc nền"}
+        >
+            {isMuted ? '🔇' : '🔊'}
+        </button>
+    );
 };
 
 export const stopBackgroundMusic = () => {
