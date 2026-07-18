@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { assessSpeech, synthesizeSpeech } from '../services/speechService';
+import { assessSpeech } from '../services/speechService';
 import axiosClient from '../../../shared/api/axiosClient';
 
 // ─── Score pill colour helper ─────────────────────────────────────────────────
@@ -80,19 +80,13 @@ export default function VoiceMission({
     setScores(null);
     setErrorMsg('');
     setPassed(false);
-    setStatus('speaking');
+    setStatus('listening');
     setAssessmentResult(null);
     setEvaluateStatus('idle');
     setEvaluateFeedback(null);
     setEvaluateError('');
 
     try {
-      if (expectedSentence) {
-        await synthesizeSpeech(expectedSentence);
-      }
-      if (abortRef.current) return;
-      
-      setStatus('listening');
       const result = await assessSpeech();
       // console.log(JSON.stringify(result, null, 2));
       if (abortRef.current) return; // component unmounted mid-flight
@@ -187,7 +181,6 @@ export default function VoiceMission({
 
   const isListening = status === 'listening';
   const isProcessing = status === 'processing';
-  const isSpeaking = status === 'speaking';
 
   return (
     <div className="voice-mission">
@@ -212,16 +205,16 @@ export default function VoiceMission({
       )}
 
       {/* Listening or Processing states */}
-      {(isSpeaking || isListening || isProcessing) && (
+      {(isListening || isProcessing) && (
         <div className="voice-mission__listening-container">
           <button
             type="button"
             className="voice-btn voice-btn--listening"
             disabled={true}
-            aria-label={isProcessing ? "Processing…" : isSpeaking ? "Speaking…" : "Listening…"}
+            aria-label={isProcessing ? "Processing…" : "Listening…"}
           >
-            <span className="voice-btn__icon">{isProcessing ? '⏳' : isSpeaking ? '🔊' : '🔴'}</span>
-            <span className="voice-btn__label">{isProcessing ? 'Processing…' : isSpeaking ? 'Speaking…' : 'Listening…'}</span>
+            <span className="voice-btn__icon">{isProcessing ? '⏳' : '🔴'}</span>
+            <span className="voice-btn__label">{isProcessing ? 'Processing…' : 'Listening…'}</span>
           </button>
           {isListening && (
             <div className="voice-mission__waves" aria-hidden="true">

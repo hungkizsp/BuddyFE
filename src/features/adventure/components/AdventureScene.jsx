@@ -1,7 +1,11 @@
 import { Canvas } from '@react-three/fiber';
 import BuddyCharacter from './BuddyCharacter';
+import { useTalkingTom } from '../hooks/useTalkingTom';
 
 export default function AdventureScene({ gameState, onArrivedAtTable, buddyPosition, buddyScale = 1 }) {
+  // Actively listen and echo back in the background (Talking Tom style)
+  useTalkingTom(true);
+
   return (
     <div className="canvas-container">
       <Canvas
