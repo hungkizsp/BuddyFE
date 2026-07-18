@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSpeechRecognition } from '../../../shared/hooks/useSpeechRecognition'
 import { GAME_LEVELS } from '../data/gameLevelsData'
 import Button from '../../../shared/components/ui/Button'
 import './GameLevelPage.css'
@@ -23,6 +24,7 @@ function RoomItem({ item, onClick, status }) {
     </button>
   )
 }
+
 
 function MissionRow({ mission }) {
   return (
@@ -207,6 +209,8 @@ export default function GameLevelPage({ levelId }) {
   const [xp,        setXp]        = useState(0)
   const [showWin,   setShowWin]   = useState(false)
 
+  const { isListening, transcript, startListening, stopListening, isSupported, setTranscript } = useSpeechRecognition()
+
   const allDone = missions.every(m => m.done)
 
   const handleItemClick = useCallback((item) => {
@@ -238,6 +242,25 @@ export default function GameLevelPage({ levelId }) {
       }, 1100)
     }
   }, [itemStatus, missions, xp, level.xpPerFood])
+
+  useEffect(() => {
+    if (transcript) {
+      const lowerTranscript = transcript.toLowerCase();
+      // Find matching item based on label
+      const matchedItem = level.items.find(item => 
+        lowerTranscript.includes(item.label.toLowerCase())
+      );
+      
+      if (matchedItem) {
+        handleItemClick(matchedItem);
+        setTranscript(''); // Reset
+      } else {
+        setFeedback({ text: `🎤 Bạn nói: "${transcript}" (Không đúng đồ vật)`, ok: false });
+        setTimeout(() => setFeedback(null), 2000);
+        setTranscript('');
+      }
+    }
+  }, [transcript, level.items, handleItemClick, setTranscript]);
 
   return (
     <div className={`gl-page gl-page--${level.theme} app-shell`}>
@@ -327,6 +350,23 @@ export default function GameLevelPage({ levelId }) {
               status={itemStatus[item.id]}
             />
           ))}
+
+          {/* Microphone Button */}
+          {isSupported && (
+            <div className="gl-mic-wrapper">
+              <Button 
+                variant="primary"
+                className={isListening ? 'gl-mic-btn--listening' : ''}
+                onClick={() => {
+                  if (isListening) stopListening();
+                  else startListening();
+                }}
+                title="Bấm để đọc tiếng Anh"
+              >
+                {isListening ? '🎙️ Đang nghe...' : '🎤 Bấm để nói'}
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Hint bar */}
