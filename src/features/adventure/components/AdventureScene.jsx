@@ -1,17 +1,17 @@
 import { Canvas } from '@react-three/fiber';
 import BuddyCharacter from './BuddyCharacter';
 
-export default function AdventureScene({ gameState, onArrivedAtTable, buddyPosition }) {
+export default function AdventureScene({ gameState, onArrivedAtTable, buddyPosition, buddyScale = 1 }) {
   return (
     <div className="canvas-container">
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 50 }}
+        camera={{ position: [0, 0, 5], fov: 40 }}
         gl={{ alpha: true, antialias: true, preserveDrawingBuffer: true }}
         shadows
       >
         {/* Soft atmospheric lighting */}
         <ambientLight intensity={1.4} color="#fffbf0" />
-        
+
         {/* Sun-like light from the window/upper-right */}
         <directionalLight
           position={[6, 8, 4]}
@@ -21,19 +21,20 @@ export default function AdventureScene({ gameState, onArrivedAtTable, buddyPosit
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
         />
-        
+
         {/* Fill light from the left side to highlight the mesh */}
-        <directionalLight 
-          position={[-6, 2, 2]} 
-          intensity={0.6} 
-          color="#e0f2fe" 
+        <directionalLight
+          position={[-6, 2, 2]}
+          intensity={0.6}
+          color="#e0f2fe"
         />
 
         {/* Character Node */}
-        <BuddyCharacter 
-          gameState={gameState} 
+        <BuddyCharacter
+          gameState={gameState}
           onArrivedAtTable={onArrivedAtTable}
           position={buddyPosition}
+          scale={buddyScale}
         />
       </Canvas>
     </div>

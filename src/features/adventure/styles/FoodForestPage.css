@@ -1,386 +1,526 @@
-/* =========================================================
-   Food Forest Page – FoodForestPage.css
-   3 sections: ff-header-section | ff-story (inside header) | ff-map-section
-   ========================================================= */
+/* ──────────────────────────────────────────────
+   Food Forest Page – Modern Mission Selection
+   Game-like design, bright & child-friendly
+   ────────────────────────────────────────────── */
 
-/* ---------- Page wrapper ---------- */
+/* ── Page wrapper ── */
 .ff-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Nunito', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Content layer (overlays background) ── */
+.ff-content {
+  position: relative;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #f5f0e8;
-  font-family: 'Nunito', 'Inter', ui-sans-serif, system-ui, sans-serif;
-  overflow: hidden;
+  padding: 20px 32px 32px;
+  gap: 12px;
+  pointer-events: auto;
 }
 
-/* ==========================================================
-   DIV 1 — Header section (breadcrumb + story card)
-   ========================================================== */
-.ff-header-section {
-  flex-shrink: 0;
-  background: #ffffff;
-  border-bottom: 1px solid #ede8df;
-  padding: 0 24px 12px;
+/* ── Back button ── */
+.ff-back-btn {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 2px solid rgba(255, 255, 255, 0.9) !important;
+  color: #1a2e1a !important;
+  font-size: 14px;
+  font-weight: 800 !important;
+  padding: 8px 20px !important;
+  border-radius: 999px !important;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* Breadcrumb row */
-.ff-breadcrumb-row {
+.ff-back-btn:hover {
+  background: rgba(255, 255, 255, 1) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Loading / Error ── */
+.ff-loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 28px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1a2e1a;
+  font-size: 16px;
+  font-weight: 800;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.ff-loading--error {
+  color: #dc2626;
+}
+
+/* ── Mission Header ── */
+.ff-header {
+  text-align: center;
+  padding: 4px 0;
+}
+
+.ff-header__world {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.ff-header__mission {
+  margin: 4px 0 2px;
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ff-header__desc {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* ── Main area (carousel + buddy + actions) ── */
+.ff-main-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  position: relative;
+  min-height: 0;
+}
+
+/* ── Carousel ── */
+.ff-carousel {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 14px 0 10px;
-}
-
-.ff-back-btn {
-  background: none;
-  border: none;
-  color: #5aaa8a;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  padding: 4px 0;
-  white-space: nowrap;
-  transition: color 0.15s;
-}
-.ff-back-btn:hover { color: #3d8a6a; }
-
-.ff-world-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   flex: 1;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.ff-world-icon {
-  font-size: 28px;
-  line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
-}
-
-.ff-world-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 900;
-  color: #1a2e1a;
-  letter-spacing: -0.2px;
-}
-
-.ff-world-sub {
-  margin: 2px 0 0;
-  font-size: 12px;
-  color: #6b7a6b;
-  font-weight: 600;
-}
-
-.ff-adventure-count {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  white-space: nowrap;
-}
-
-.ff-adventure-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: #5aaa8a;
-}
-
-/* Stars */
-.ff-stars { display: flex; gap: 2px; }
-.ff-stars--sm .ff-star { font-size: 10px; }
-.ff-stars--md .ff-star { font-size: 14px; }
-.ff-star { line-height: 1; }
-.ff-star--filled { color: #f59e0b; filter: drop-shadow(0 0 2px #fbbf24); }
-.ff-star--empty  { color: #d1d5db; }
-.ff-star-icon    { font-size: 14px; }
-
-/* ==========================================================
-   DIV 2 — Story card (inside header section)
-   ========================================================== */
-.ff-story-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  background: #f8fdf8;
-  border: 1.5px solid #c6ecd6;
-  border-radius: 14px;
-  padding: 12px 16px;
-}
-
-.ff-story-card__avatar {
-  font-size: 32px;
-  line-height: 1;
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,.1));
-}
-
-.ff-story-card__body {
+/* ── Carousel stage (card wrapper) ── */
+.ff-carousel__stage {
   flex: 1;
+  max-width: 640px;
+  animation: ff-card-enter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-.ff-story-card__title {
-  margin: 0 0 4px;
-  font-size: 14px;
-  font-weight: 800;
-  color: #1a2e1a;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+@keyframes ff-card-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-.ff-story-card__text {
-  margin: 0;
-  font-size: 13px;
-  color: #4b5563;
-  line-height: 1.55;
-}
-
-.ff-highlight {
-  color: #16a34a;
-  font-weight: 700;
-}
-
-/* ==========================================================
-   DIV 3 — Map canvas (platformer style)
-   ========================================================== */
-.ff-map-section {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Sky */
-.ff-sky {
-  position: relative;
-  height: 35%;
-  background: linear-gradient(180deg, #c8eeff 0%, #a8dff5 60%, #8fd4a0 100%);
-  flex-shrink: 0;
-}
-
-/* Sun */
-.ff-sun {
-  position: absolute;
-  right: 8%;
-  top: 15%;
-  font-size: 48px;
-  line-height: 1;
-  filter: drop-shadow(0 0 16px rgba(255, 200, 0, 0.5));
-  animation: ff-sun-bob 6s ease-in-out infinite;
-}
-@keyframes ff-sun-bob {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-6px); }
-}
-
-/* Clouds */
-.ff-cloud {
-  position: absolute;
-  pointer-events: none;
-}
-.ff-cloud__body {
-  display: flex;
-  align-items: flex-end;
-}
-.ff-cloud__puff {
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 50%;
-}
-.ff-cloud__puff--1 { width: 32px; height: 22px; }
-.ff-cloud__puff--2 { width: 44px; height: 28px; margin-left: -8px; margin-bottom: 4px; }
-.ff-cloud__puff--3 { width: 30px; height: 20px; margin-left: -8px; }
-
-@keyframes ff-cloud-float {
-  0%, 100% { transform: translateX(0); }
-  50%       { transform: translateX(10px); }
-}
-.ff-cloud:nth-child(odd)  { animation: ff-cloud-float 10s ease-in-out infinite; }
-.ff-cloud:nth-child(even) { animation: ff-cloud-float 14s ease-in-out infinite reverse; }
-
-/* Ground */
-.ff-ground {
-  position: relative;
-  flex: 1;
-  background: linear-gradient(180deg, #6dc96d 0%, #4eb84e 40%, #3da53d 100%);
-  border-top: 4px solid #5cc25c;
-}
-
-/* Trees */
-.ff-tree {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transform-origin: bottom center;
-  pointer-events: none;
-}
-.ff-tree__top {
-  width: 36px;
-  height: 42px;
-  background: radial-gradient(circle at 40% 35%, #5ad45a, #2e8b2e);
-  border-radius: 50% 50% 40% 40%;
-  box-shadow: inset -4px -4px 8px rgba(0,0,0,0.15);
-}
-.ff-tree__trunk {
-  width: 10px;
-  height: 14px;
-  background: #8B5E3C;
-  border-radius: 2px;
-  margin-top: -2px;
-}
-
-/* Fruits */
-.ff-fruit {
-  position: absolute;
-  font-size: 22px;
-  line-height: 1;
-  pointer-events: none;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,.2));
-  animation: ff-fruit-bob 4s ease-in-out infinite;
-}
-.ff-fruit:nth-child(even) { animation-delay: 1.5s; }
-@keyframes ff-fruit-bob {
-  0%, 100% { transform: translateY(0) rotate(-5deg); }
-  50%       { transform: translateY(-6px) rotate(5deg); }
-}
-
-/* Path SVG */
-.ff-path-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/* Mission node wrapper */
-.ff-node-wrap {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  z-index: 10;
-}
-
-/* Difficulty badge (replaces generic START badge) */
-.ff-diff-badge {
-  background: var(--diff, #ef4444);
-  color: white;
-  font-size: 10px;
-  font-weight: 900;
-  padding: 3px 8px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--diff, #ef4444) 50%, transparent);
-  margin-bottom: 2px;
-  white-space: nowrap;
-  animation: ff-badge-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
-}
-@keyframes ff-badge-pop {
-  from { transform: scale(0.5); opacity: 0; }
-  to   { transform: scale(1);   opacity: 1; }
-}
-
-/* Tooltip bubble */
-.ff-node-tooltip {
-  position: absolute;
-  bottom: calc(100% + 12px);
-  left: 50%;
-  transform: translateX(-20%);
-  background: white;
-  border-radius: 14px;
-  padding: 10px 12px;
-  min-width: 110px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.18);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  animation: ff-tooltip-in 0.25s cubic-bezier(0.34,1.56,0.64,1);
-  z-index: 20;
-}
-.ff-node-tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 25%;
-  border: 7px solid transparent;
-  border-top-color: white;
-}
-@keyframes ff-tooltip-in {
-  from { opacity: 0; transform: translateX(-20%) scale(0.85); }
-  to   { opacity: 1; transform: translateX(-20%) scale(1); }
-}
-.ff-node-tooltip__text {
-  font-size: 12px;
-  font-weight: 700;
-  color: #374151;
-  line-height: 1.4;
-}
-.ff-node-tooltip__emoji {
-  font-size: 18px;
-  line-height: 1;
-}
-
-/* Node circles */
-.ff-node {
+/* ── Arrow Navigation ── */
+.ff-arrow {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  border: none;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a2e1a;
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.ff-arrow:hover {
+  background: #fff;
+  transform: scale(1.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 1);
+}
+
+.ff-arrow:active {
+  transform: scale(0.95);
+}
+
+.ff-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ff-arrow--prev {
+  margin-right: 4px;
+}
+
+.ff-arrow--next {
+  margin-left: 4px;
+}
+
+.ff-arrow__icon {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* ── Mission Card ── */
+.ff-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 320px;
+  max-height: 420px;
+  border-radius: 24px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.ff-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Card background image ── */
+.ff-card__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.4s ease;
+}
+
+.ff-card:hover .ff-card__bg {
+  transform: scale(1.05);
+}
+
+/* ── Dark gradient overlay ── */
+.ff-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.05) 40%,
+    rgba(0, 0, 0, 0.5) 80%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  z-index: 1;
+}
+
+/* ── Card content ── */
+.ff-card__content {
   position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px 28px 20px;
+  color: #fff;
 }
 
-.ff-node--unlocked {
-  background: linear-gradient(145deg, #f97316, #ea580c);
-  box-shadow: 0 4px 0 #c2410c, 0 6px 18px rgba(249,115,22,0.4);
-  color: white;
-}
-.ff-node--unlocked:hover,
-.ff-node--active {
-  transform: scale(1.1);
-  box-shadow: 0 6px 0 #c2410c, 0 10px 24px rgba(249,115,22,0.5);
+.ff-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.ff-node--locked {
-  background: #d1d5db;
-  box-shadow: 0 4px 0 #9ca3af, 0 4px 12px rgba(0,0,0,.15);
-  cursor: default;
-}
-
-.ff-node__num {
-  font-size: 18px;
-  font-weight: 900;
-  color: white;
-  line-height: 1;
-}
-.ff-node__lock {
-  font-size: 20px;
-  line-height: 1;
-  opacity: 0.7;
-}
-
-/* Node label */
-.ff-node__label {
-  font-size: 11px;
-  font-weight: 700;
-  color: #1a2e1a;
-  background: rgba(255,255,255,0.9);
-  padding: 3px 8px;
-  border-radius: 10px;
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+.ff-card__difficulty {
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(4px);
-  max-width: 120px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ff-card__num {
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.ff-card__center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 16px 0;
+}
+
+.ff-card__title {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 900;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ff-card__desc {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.9;
+  max-width: 380px;
+  line-height: 1.5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Completed state ── */
+.ff-card--completed {
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 0 0 3px #22c55e,
+    0 0 20px rgba(34, 197, 94, 0.3);
+}
+
+.ff-card--completed:hover {
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.2),
+    0 0 0 3px #22c55e,
+    0 0 30px rgba(34, 197, 94, 0.4);
+}
+
+.ff-card--completed .ff-card__bg {
+  filter: brightness(1.08) saturate(1.1);
+}
+
+/* ── Completed ribbon ── */
+.ff-card__ribbon {
+  position: absolute;
+  top: 18px;
+  right: -32px;
+  z-index: 10;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 4px 40px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transform: rotate(45deg);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+/* ── Reward Panel ── */
+.ff-reward {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  margin-top: auto;
+}
+
+.ff-reward__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ff-reward__icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.ff-reward__label {
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.ff-reward__value {
+  font-size: 16px;
+  font-weight: 900;
+  color: #facc15;
+  text-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
+}
+
+.ff-reward__divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── 3D Buddy Canvas ── */
+.ff-page .canvas-container {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ff-page .canvas-container canvas {
+  pointer-events: none;
+}
+
+/* ── Actions (Start button area) ── */
+.ff-actions {
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  z-index: 5;
+}
+
+.ff-start-btn {
+  background: linear-gradient(135deg, #f97316, #ea580c) !important;
+  border: none !important;
+  color: #fff !important;
+  font-size: 16px;
+  font-weight: 900 !important;
+  padding: 14px 32px !important;
+  border-radius: 999px !important;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #c2410c, 0 6px 20px rgba(234, 88, 12, 0.3) !important;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ff-start-btn:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 0 #c2410c, 0 10px 28px rgba(234, 88, 12, 0.4) !important;
+}
+
+.ff-start-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 2px 0 #c2410c, 0 4px 12px rgba(234, 88, 12, 0.3) !important;
+}
+
+/* ── Responsive: Tablet ── */
+@media (max-width: 1024px) {
+  .ff-content {
+    padding: 16px 20px 24px;
+  }
+
+  .ff-carousel {
+    max-width: 620px;
+  }
+
+  .ff-card {
+    max-height: 360px;
+    min-height: 260px;
+  }
+
+  .ff-card__title {
+    font-size: 22px;
+  }
+
+  .ff-actions {
+    right: 10px;
+  }
+
+  .ff-start-btn {
+    font-size: 14px;
+    padding: 12px 24px !important;
+  }
+}
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 640px) {
+  .ff-page {
+    overflow-y: auto;
+  }
+
+  .ff-content {
+    padding: 12px 12px 20px;
+    gap: 8px;
+  }
+
+  .ff-header__mission {
+    font-size: 18px;
+  }
+
+  .ff-header__desc {
+    font-size: 12px;
+  }
+
+  .ff-main-area {
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 20px;
+  }
+
+  .ff-carousel {
+    flex-direction: row;
+    max-width: 100%;
+  }
+
+  .ff-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ff-arrow__icon {
+    font-size: 16px;
+  }
+
+  .ff-card {
+    max-height: 280px;
+    min-height: 200px;
+    border-radius: 18px;
+  }
+
+  .ff-card__content {
+    padding: 16px 20px 14px;
+  }
+
+  .ff-card__title {
+    font-size: 18px;
+  }
+
+  .ff-card__desc {
+    font-size: 12px;
+  }
+
+  .ff-reward {
+    gap: 12px;
+    padding: 8px 14px;
+  }
+
+  .ff-reward__value {
+    font-size: 14px;
+  }
+
+  .ff-actions {
+    position: static;
+    display: flex;
+    justify-content: center;
+  }
+
+  .ff-start-btn {
+    font-size: 14px;
+    padding: 12px 28px !important;
+  }
 }

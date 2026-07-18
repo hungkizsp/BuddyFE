@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Button from '../../../shared/components/ui/Button'
 import './GameRoomPage.css'
 
 /* ─── Room items data ────────────────────────────────────── */
@@ -98,7 +99,7 @@ function WinModal({ onBack, xp }) {
         <h2 className="gr-modal__title">Breakfast Found!</h2>
         <p className="gr-modal__sub">Great job! Buddy is happy now 😊</p>
         <div className="gr-modal__xp">+{xp} XP earned!</div>
-        <button className="gr-modal__btn" onClick={onBack}>← Back to Map</button>
+        <Button variant="secondary" className="gr-modal__btn" onClick={onBack}>← Back to Map</Button>
       </div>
     </div>
   )
@@ -157,7 +158,7 @@ export default function GameRoomPage() {
   const allMissionsDone = missions.every(m => m.done)
 
   return (
-    <div className="gr-page">
+    <div className="gr-page app-shell">
       {showWin && <WinModal onBack={() => navigate('/adventure/food-forest')} xp={xp} />}
 
       {/* ══════════════════════════════════════════
@@ -165,9 +166,9 @@ export default function GameRoomPage() {
       ══════════════════════════════════════════ */}
       <aside className="gr-sidebar">
         {/* Back + Level tag */}
-        <button className="gr-sidebar__back" onClick={() => navigate('/adventure/food-forest')}>
+        <Button variant="secondary" className="gr-sidebar__back" onClick={() => navigate('/adventure/food-forest')}>
           ← Map
-        </button>
+        </Button>
         <div className="gr-sidebar__tag">Adventure 1 – Breakfast Trouble</div>
 
         {/* Buddy avatar */}

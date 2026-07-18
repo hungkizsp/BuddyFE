@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-export default function SpeechBubble({ gameState, message, buddyPosition }) {
-  const [isVisible, setIsVisible] = useState(true);
-  const isCompleted = gameState === 'completed';
+export default function SpeechBubble({ gameState, message, buddyPosition, scenarioDescription }) {
+  const [isVisible, setIsVisible] = useState(true)
+  const isCompleted = gameState === 'completed'
 
   const wrapperStyle = {
     left: buddyPosition?.left || '47%',
@@ -11,14 +11,15 @@ export default function SpeechBubble({ gameState, message, buddyPosition }) {
       ? 'left 2.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 0.3s ease'
       : 'left 0.3s ease, top 0.3s ease',
     pointerEvents: 'auto',
-  };
+  }
 
   const toggleVisibility = () => {
-    setIsVisible((prev) => !prev);
-  };
+    setIsVisible((prev) => !prev)
+  }
 
-  const defaultMessage = isCompleted ? 'Yummy!\nThank you!' : "I'm hungry!\nCan you help me with breakfast?";
-  const displayMessage = message || defaultMessage;
+  const defaultMessage = isCompleted ? 'Mission complete.' : scenarioDescription
+  const displayMessage = message || defaultMessage || ''
+  const lines = displayMessage.split('\n')
 
   return (
     <div
@@ -27,8 +28,8 @@ export default function SpeechBubble({ gameState, message, buddyPosition }) {
       onClick={toggleVisibility}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          toggleVisibility();
+          event.preventDefault()
+          toggleVisibility()
         }
       }}
       role="button"
@@ -38,15 +39,15 @@ export default function SpeechBubble({ gameState, message, buddyPosition }) {
       <div className={`speech-bubble ${isVisible ? '' : 'collapsed-bubble'}`}>
         <p className="speech-bubble-text">
           {isVisible
-            ? displayMessage.split('\n').map((line, index) => (
-                <span key={index}>
+            ? lines.map((line, index) => (
+                <span key={line || index}>
                   {line}
-                  {index < displayMessage.split('\n').length - 1 ? <br /> : null}
+                  {index < lines.length - 1 ? <br /> : null}
                 </span>
               ))
-            : '💬'}
+            : '...'}
         </p>
       </div>
     </div>
-  );
+  )
 }

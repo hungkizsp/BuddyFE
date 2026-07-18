@@ -1,0 +1,144 @@
+.fruit-basket-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  padding: 24px;
+}
+
+.fruit-basket-popup-modal {
+  width: min(420px, 100%);
+  max-width: 420px;
+  border-radius: 28px;
+  background: #fffefb;
+  border: 4px solid #1e293b;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.3);
+  overflow: hidden;
+}
+
+.fruit-basket-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+}
+
+.fruit-basket-popup-header h3 {
+  margin: 0;
+  font-family: "Fredoka One", "Nunito", sans-serif;
+  font-size: 1.4rem;
+  color: #1f2937;
+}
+
+.fruit-basket-popup-close {
+  border: none;
+  background: #fde68a;
+  color: #92400e;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.fruit-basket-popup-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+}
+
+.fruit-basket-popup-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 20px;
+}
+
+.fruit-area {
+  position: absolute;
+  border: none;
+  background: rgba(255, 255, 255, 0);
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.fruit-area:hover {
+  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.45);
+  transform: scale(1.02);
+}
+
+/* Adjust this hitbox if image changes */
+.fruit-area-pear {
+  left: 22%;
+  top: 45%;
+  width: 20%;
+  height: 24%;
+}
+
+/* Adjust this hitbox if image changes */
+.fruit-area-banana {
+  left: 42%;
+  top: 32%;
+  width: 16%;
+  height: 24%;
+}
+
+/* Adjust this hitbox if image changes */
+.fruit-area-orange {
+  left: 62%;
+  top: 52%;
+  width: 18%;
+  height: 20%;
+}
+
+/* Adjust this hitbox if image changes */
+.fruit-area-apple {
+  left: 16%;
+  top: 28%;
+  width: 18%;
+  height: 22%;
+}
+
+/* Adjust this hitbox if image changes */
+.fruit-area-grapes {
+  left: 58%;
+  top: 22%;
+  width: 22%;
+  height: 20%;
+}
+
+.fruit-basket-popup-footer {
+  display: flex;
+  justify-content: center;
+  padding: 16px 20px 24px;
+  background: #fdfbf7;
+  border-top: 2px solid #e2e8f0;
+}
+
+.fruit-basket-return-btn {
+  width: 100%;
+  font-family: "Fredoka One", "Nunito", sans-serif;
+  font-size: 16px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #78350f;
+  border: 3px solid #78350f;
+  border-radius: 18px;
+  padding: 12px 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #78350f;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.fruit-basket-return-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #78350f;
+}
+
+.fruit-basket-return-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #78350f;
+}
