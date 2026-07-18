@@ -455,6 +455,58 @@
   line-height: 1.4;
 }
 
+/* ─── Listen / Play Example Button ─────────────────────────── */
+.voice-mission__play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  border: 2px solid #1e40af;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-family: var(--font-game);
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #1e3a8a;
+  transition: all 0.15s ease;
+  margin-top: 4px;
+}
+
+.voice-mission__play-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 #1e3a8a;
+}
+
+.voice-mission__play-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #1e3a8a;
+}
+
+.voice-mission__play-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.voice-mission__play-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.voice-mission__play-icon--playing {
+  animation: play-bounce 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes play-bounce {
+  from { transform: scale(1); }
+  to   { transform: scale(1.2); }
+}
+
+.voice-mission__play-label {
+  font-size: 13px;
+}
+
 /* Voice button */
 .voice-btn {
   display: flex;

@@ -150,7 +150,7 @@ export default function MeetBuddyHero({ onLearnMore }) {
         <div className="flex items-center justify-between pt-7">
           {/* Logo */}
           <span className="font-grotesk text-xl uppercase text-cream tracking-widest text-glow">
-            BuddyEnglish
+            BollyEnglish
           </span>
 
           {/* Navigation */}

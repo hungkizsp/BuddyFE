@@ -48,8 +48,8 @@ const PARENT_FEATURES = [
 
 const FAQ_ITEMS = [
   {
-    q: 'What age is BuddyEnglish designed for?',
-    a: 'BuddyEnglish is optimized for Vietnamese children aged 4–12 who are learning English as a second language. Vocabulary, scenarios, and speaking speed are calibrated for this age range.',
+    q: 'What age is BollyEnglish designed for?',
+    a: 'BollyEnglish is optimized for Vietnamese children aged 4–12 who are learning English as a second language. Vocabulary, scenarios, and speaking speed are calibrated for this age range.',
   },
   {
     q: 'Is it safe for my child to use?',
