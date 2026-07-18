@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { assessSpeech } from '../services/speechService';
+import { assessSpeech, synthesizeSpeech } from '../services/speechService';
 import axiosClient from '../../../shared/api/axiosClient';
 
 // ─── Score pill colour helper ─────────────────────────────────────────────────
@@ -45,6 +45,7 @@ export default function VoiceMission({
   const [errorMsg, setErrorMsg] = useState('');
   const [passed, setPassed] = useState(false);
   const [assessmentResult, setAssessmentResult] = useState(null); // full result from assessSpeech
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Evaluate states
   const [evaluateStatus, setEvaluateStatus] = useState('idle'); // 'idle' | 'loading' | 'done' | 'error'
@@ -143,6 +144,18 @@ export default function VoiceMission({
   const handleRetry = () => {
     handleStart();
   };
+
+  const handlePlayExample = async () => {
+    if (isPlaying || disabled) return;
+    setIsPlaying(true);
+    try {
+      await synthesizeSpeech(expectedSentence);
+    } catch (err) {
+      console.error('Failed to play voice example:', err);
+    } finally {
+      setIsPlaying(false);
+    }
+  };
   const handleEvaluate = async () => {
     if (!assessmentResult) return;
     setEvaluateStatus('loading');
@@ -188,6 +201,20 @@ export default function VoiceMission({
       <div className="voice-mission__prompt">
         <span className="voice-mission__prompt-label">Say:</span>
         <p className="voice-mission__expected">"{expectedSentence}"</p>
+        <button
+          type="button"
+          className="voice-mission__play-btn"
+          onClick={handlePlayExample}
+          disabled={isPlaying || disabled}
+          aria-label="Listen to example"
+        >
+          {isPlaying ? (
+            <span className="voice-mission__play-icon voice-mission__play-icon--playing">🔊</span>
+          ) : (
+            <span className="voice-mission__play-icon">🔈</span>
+          )}
+          <span className="voice-mission__play-label">{isPlaying ? 'Playing…' : 'Listen'}</span>
+        </button>
       </div>
 
       {status === 'idle' && (
