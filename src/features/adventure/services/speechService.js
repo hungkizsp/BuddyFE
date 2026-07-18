@@ -240,7 +240,7 @@ export async function synthesizeSpeech(text) {
           if (!audioData || audioData.byteLength === 0) {
             return resolve(); // No audio data, just resolve
           }
-          
+
           try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             audioContext.decodeAudioData(audioData.slice(0), (buffer) => {

@@ -93,6 +93,7 @@ export default function VocabularyPage() {
       {/* Detail Drawer */}
       <VocabularyDetailDrawer
         vocab={selectedVocab}
+        childId={childId}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />

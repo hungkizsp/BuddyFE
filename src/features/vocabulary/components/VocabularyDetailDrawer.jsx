@@ -1,14 +1,19 @@
 import { useRef } from 'react'
 import Drawer from '../../../shared/components/ui/Drawer'
 import Badge from '../../../shared/components/ui/Badge'
+import useHighlight from '../../study/hooks/useHighlight'
+import HighlightableText from '../../study/components/HighlightableText'
+import { synthesizeSpeech } from '../../adventure/services/speechService'
 
 const FALLBACK_IMG = 'https://placehold.co/400x400/0f172a/6FFF00?text=🦉&font=roboto'
 
 /**
  * VocabularyDetailDrawer – Slide-out panel showing full word detail.
  */
-export default function VocabularyDetailDrawer({ vocab, open, onClose }) {
+export default function VocabularyDetailDrawer({ vocab, childId, open, onClose }) {
   const audioRef = useRef(null)
+
+  const { highlights, saveHighlight } = useHighlight(childId, vocab?.id)
 
   if (!vocab) return null
 
@@ -16,14 +21,26 @@ export default function VocabularyDetailDrawer({ vocab, open, onClose }) {
   const stars = Math.min(Math.max(vocab.masteryLevel || 0, 0), 5)
   const confidence = Math.round((vocab.confidenceScore || 0) * 100)
 
-  const playAudio = () => {
+  const playAudio = async () => {
     if (isLocked) return
-    if (vocab.audioUrl) {
-      if (!audioRef.current) audioRef.current = new Audio(vocab.audioUrl)
-      audioRef.current.currentTime = 0
-      audioRef.current.play().catch(() => {})
+    try {
+      await synthesizeSpeech(vocab.word)
+    } catch (err) {
+      console.warn('Azure TTS failed or not configured, falling back to browser SpeechSynthesis:', err)
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel()
+        const utterance = new SpeechSynthesisUtterance(vocab.word)
+        utterance.lang = 'en-US'
+        utterance.rate = 0.85
+        window.speechSynthesis.speak(utterance)
+      }
     }
   }
+
+  const handleHighlightChange = (newHighlights) => {
+    saveHighlight(newHighlights)
+  }
+
   return (
     <Drawer open={open} onClose={onClose} title="Chi tiết từ vựng">
       {/* Locked warning banner */}
@@ -54,19 +71,17 @@ export default function VocabularyDetailDrawer({ vocab, open, onClose }) {
         <h2 className="font-grotesk text-3xl font-bold uppercase text-cream tracking-wide">
           {vocab.word}
         </h2>
-        {vocab.audioUrl && (
-          <button
-            onClick={playAudio}
-            disabled={isLocked}
-            className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all shadow-glow ${
-              isLocked 
-                ? 'bg-white/5 border border-white/10 text-cream/30 cursor-not-allowed'
-                : 'bg-primary/20 border border-primary/30 text-primary hover:bg-primary/30 hover:scale-110'
-            }`}
-          >
-            {isLocked ? '🔒' : '🔊'}
-          </button>
-        )}
+        <button
+          onClick={playAudio}
+          disabled={isLocked}
+          className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all shadow-glow ${
+            isLocked 
+              ? 'bg-white/5 border border-white/10 text-cream/30 cursor-not-allowed'
+              : 'bg-primary/20 border border-primary/30 text-primary hover:bg-primary/30 hover:scale-110'
+          }`}
+        >
+          {isLocked ? '🔒' : '🔊'}
+        </button>
       </div>
 
       {/* Phonetic */}
@@ -83,20 +98,31 @@ export default function VocabularyDetailDrawer({ vocab, open, onClose }) {
       {/* Meaning */}
       <div className="glass-simple rounded-xl p-4 mb-4">
         <p className="font-mono text-[11px] text-cream/40 uppercase tracking-wider mb-2">Ý nghĩa</p>
-        <p className="font-nunito text-base text-cream leading-relaxed">
-          {vocab.meaning || 'Không có giải nghĩa'}
-        </p>
+        <div className="font-nunito text-base text-cream leading-relaxed">
+          <HighlightableText
+            text={vocab.meaning || 'Không có giải nghĩa'}
+            highlights={highlights}
+            field="meaning"
+            onHighlightChange={handleHighlightChange}
+          />
+        </div>
       </div>
 
       {/* Example Sentence */}
       {vocab.exampleSentence && (
         <div className="glass-simple rounded-xl p-4 mb-4">
           <p className="font-mono text-[11px] text-cream/40 uppercase tracking-wider mb-2">Ví dụ</p>
-          <p className="font-nunito text-base text-cream/90 italic leading-relaxed">
-            "{vocab.exampleSentence}"
-          </p>
+          <div className="font-nunito text-base text-cream/90 italic leading-relaxed">
+            <HighlightableText
+              text={`"${vocab.exampleSentence}"`}
+              highlights={highlights}
+              field="exampleSentence"
+              onHighlightChange={handleHighlightChange}
+            />
+          </div>
         </div>
       )}
+
 
       {/* Mastery & Stats */}
       {isLocked ? (
