@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { stopBackgroundMusic } from "../features/adventure/components/BackgroundMusic";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import SignupPage from "../features/auth/pages/SignupPage";
@@ -14,11 +16,29 @@ import KitchenAdventurePage from "../features/adventure/pages/KitchenAdventurePa
 import SupermarketShoppingPage from "../features/adventure/pages/SupermarketShoppingPage";
 import FamilyRestaurantPage from "../features/adventure/pages/FamilyRestaurantPage";
 import NotificationPage from "../features/notification/pages/NotificationPage";
-import VocabularyPage from "../features/vocabulary/pages/VocabularyPage";
+import CharacterCreatorPage from "../features/home/pages/CharacterCreatorPage";
+import StudyHubPage from "../features/study/pages/StudyHubPage";
+import FlashcardModePage from "../features/study/pages/FlashcardModePage";
+import LearnModePage from "../features/study/pages/LearnModePage";
+import TestModePage from "../features/study/pages/TestModePage";
+import MatchModePage from "../features/study/pages/MatchModePage";
+
+function GlobalMusicController() {
+  const location = useLocation();
+  useEffect(() => {
+    // Only allow music to keep playing if we are DEEP inside /adventure/...
+    // If we are at exactly /adventure, or outside /adventure entirely, stop the music.
+    if (location.pathname === '/adventure' || location.pathname === '/adventure/' || !location.pathname.startsWith('/adventure')) {
+      stopBackgroundMusic();
+    }
+  }, [location.pathname]);
+  return null;
+}
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
+      <GlobalMusicController />
       <Routes>
         {/* Redirect root to the new landing page */}
         <Route path="/" element={<Navigate to="/landing" replace />} />
@@ -26,8 +46,15 @@ export default function AppRouter() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
-        <Route path="/vocabulary" element={<VocabularyPage />} />
         <Route path="/notifications" element={<NotificationPage />} />
+        <Route path="/character-creator" element={<CharacterCreatorPage />} />
+        
+        {/* Study Mode Routes */}
+        <Route path="/study" element={<StudyHubPage />} />
+        <Route path="/study/:categoryId/flashcards" element={<FlashcardModePage />} />
+        <Route path="/study/:categoryId/learn" element={<LearnModePage />} />
+        <Route path="/study/:categoryId/test" element={<TestModePage />} />
+        <Route path="/study/:categoryId/match" element={<MatchModePage />} />
 
         {/* Adventure Hub */}
         <Route path="/adventure" element={<AdventurePage />} />

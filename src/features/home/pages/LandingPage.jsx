@@ -22,12 +22,12 @@ export default function LandingPage() {
   return (
     <div className="bg-[#010828] min-h-screen text-cream overflow-x-hidden relative">
       <div className="noise-overlay" />
-      <MeetBuddyHero onLearnMore={handleLearnMore} />
+      <MeetBuddyHero onLearnMore={handleLearnMore} currentUser={currentUser} />
       <div ref={whyBuddyRef}>
-        <WhyBuddySection username={displayName} />
+        <WhyBuddySection username={displayName} currentUser={currentUser} />
       </div>
-      <LearnJourneySection />
-      <TryBuddySection username={displayName} />
+      <LearnJourneySection currentUser={currentUser} />
+      <TryBuddySection username={displayName} currentUser={currentUser} />
     </div>
   )
 }

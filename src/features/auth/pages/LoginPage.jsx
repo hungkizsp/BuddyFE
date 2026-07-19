@@ -50,7 +50,7 @@ function LoginPage() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-simple border border-white/10 mb-6">
               <span className="text-2xl">🦉</span>
               <span className="font-grotesk text-sm font-bold uppercase tracking-wider text-neon">
-                BuddyEnglish
+                BollyEnglish
               </span>
             </div>
             <h1 className="font-grotesk text-3xl sm:text-4xl font-bold uppercase text-cream tracking-wide mb-2">
@@ -171,7 +171,7 @@ function LoginPage() {
 
             {/* Register link */}
             <p className="text-center font-mono text-sm text-cream/40">
-              New to BuddyEnglish?{' '}
+              New to BollyEnglish?{' '}
               <Link
                 to="/register"
                 className="text-primary font-bold hover:text-primary/80 transition-colors"
