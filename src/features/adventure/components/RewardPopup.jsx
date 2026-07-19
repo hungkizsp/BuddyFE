@@ -1,9 +1,11 @@
+import EmoteShooter from './EmoteShooter';
 
 export default function RewardPopup({ show, xpReward, coinReward, onClose }) {
   if (!show) return null;
 
   return (
     <div className="reward-popup-overlay">
+      <EmoteShooter />
       <div className="reward-card">
         <div className="reward-stars">⭐⭐⭐</div>
         <h2 className="reward-title">Mission Complete!</h2>
