@@ -99,7 +99,7 @@ export default function FoodForestPage() {
           <ambientLight intensity={1.4} color="#fffbf0" />
           <directionalLight position={[6, 8, 4]} intensity={1.8} color="#fff2d1" castShadow />
           <directionalLight position={[-6, 2, 2]} intensity={0.6} color="#e0f2fe" />
-          <BuddyModel position={[-1.6, -1.5, 1.0]} scale={[0.55, 0.55, 0.55]} />
+          <BuddyModel position={[-1.6, -1.0, 1.0]} scale={[0.45, 0.45, 0.35]} />
         </Canvas>
       </div>
 
@@ -111,11 +111,11 @@ export default function FoodForestPage() {
           aria-label="Back to worlds"
           type="button"
         >
-          Back
+          Quay Lại
         </Button>
 
         {loading ? (
-          <div className="ff-loading">Loading adventures...</div>
+          <div className="ff-loading">Đang tải cuộc phiêu lưu...</div>
         ) : error ? (
           <div className="ff-loading ff-loading--error">{error}</div>
         ) : (
@@ -141,7 +141,7 @@ export default function FoodForestPage() {
                   onClick={() => handleMissionClick(selectedMission)}
                   type="button"
                 >
-                  Start Adventure
+                  Bắt Đầu Phiêu Lưu
                 </Button>
               </div>
             </div>

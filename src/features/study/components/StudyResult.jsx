@@ -21,29 +21,29 @@ export default function StudyResult({ results, modeName, onRetry, onReviewWeakWo
       <div className="text-6xl mb-4">🏆</div>
 
       <h1 className="font-grotesk text-3xl md:text-4xl text-cream font-bold mb-2">
-        Session Completed!
+        Hoàn Thành Bài Học! 🎉
       </h1>
       <p className="text-cream/60 text-sm md:text-base font-nunito mb-8">
-        You successfully finished your {modeName} study session.
+        Bé đã hoàn thành xuất sắc buổi học {modeName}!
       </p>
 
       {/* Score and Stats Panel */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
           <div className="text-2xl md:text-3xl font-mono font-bold text-neon">{score}%</div>
-          <div className="text-xs text-cream/40 uppercase font-mono mt-1">Score</div>
+          <div className="text-xs text-cream/40 uppercase font-mono mt-1">Điểm số</div>
         </div>
         <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
           <div className="text-2xl md:text-3xl font-mono font-bold text-primary">
             {correctCount} / {totalWords}
           </div>
-          <div className="text-xs text-cream/40 uppercase font-mono mt-1">Correct</div>
+          <div className="text-xs text-cream/40 uppercase font-mono mt-1">Chính xác</div>
         </div>
         <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
           <div className="text-2xl md:text-3xl font-mono font-bold text-accent">
             {formatTime(durationSeconds)}
           </div>
-          <div className="text-xs text-cream/40 uppercase font-mono mt-1">Time</div>
+          <div className="text-xs text-cream/40 uppercase font-mono mt-1">Thời gian</div>
         </div>
       </div>
 
@@ -51,7 +51,7 @@ export default function StudyResult({ results, modeName, onRetry, onReviewWeakWo
       {weakWords && weakWords.length > 0 && (
         <div className="text-left bg-slate-900/40 border border-slate-800 rounded-2xl p-6 mb-8">
           <h3 className="font-grotesk text-lg font-bold text-danger mb-4 flex items-center gap-2">
-            ⚠️ Words to review ({weakWords.length})
+            ⚠️ Các từ vựng bé cần ôn lại ({weakWords.length})
           </h3>
           <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
             {weakWords.map((vocab) => (
@@ -80,21 +80,21 @@ export default function StudyResult({ results, modeName, onRetry, onReviewWeakWo
           onClick={onRetry}
           className="px-8 py-3 rounded-xl bg-primary hover:bg-blue-600 text-white font-grotesk font-semibold shadow-glow hover:scale-105 transition-all"
         >
-          🔄 Study Again
+          🔄 Học Lại Bài Này
         </button>
         {weakWords && weakWords.length > 0 && onReviewWeakWords && (
           <button
             onClick={() => onReviewWeakWords(weakWords.map((w) => w.id))}
             className="px-8 py-3 rounded-xl bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white font-grotesk font-semibold shadow-glow hover:scale-105 transition-all"
           >
-            ⚠️ Ôn lại từ đã sai
+            ⚠️ Ôn Lại Từ Đã Sai
           </button>
         )}
         <button
           onClick={() => navigate('/study')}
           className="px-8 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-cream font-grotesk font-semibold border border-slate-700 hover:scale-105 transition-all"
         >
-          🏠 Study Hub
+          🏠 Về Góc Học Tập
         </button>
       </div>
     </div>

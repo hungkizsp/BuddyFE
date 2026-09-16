@@ -411,8 +411,8 @@ export default function SupermarketShoppingPage() {
       {/* ── HUD Header ── */}
       <header className="hud-header">
         <div className="hud-title-container">
-          <span className="hud-title-forest">{scenario?.worldName || 'Food Forest'}</span>
-          <span className="hud-title-level">{scenario?.title || 'Mua sắm siêu thị'}</span>
+          <span className="hud-title-forest">{scenario?.worldName === 'Food Forest' ? 'Khu Rừng Thức Ăn' : (scenario?.worldName || 'Khu Rừng Thức Ăn')}</span>
+          <span className="hud-title-level">{scenario?.title === 'Supermarket Shopping' ? 'Đi Siêu Thị Mua Sắm' : (scenario?.title || 'Đi Siêu Thị Mua Sắm')}</span>
         </div>
         <div className="hud-stats-container">
           <div className="stat-card">

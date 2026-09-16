@@ -352,8 +352,8 @@ export default function FamilyRestaurantPage() {
 
       <header className="hud-header">
         <div className="hud-title-container">
-          <span className="hud-title-forest">{scenario?.worldName || 'Food Forest'}</span>
-          <span className="hud-title-level">{scenario?.title || 'Family Restaurant'}</span>
+          <span className="hud-title-forest">{scenario?.worldName === 'Food Forest' ? 'Khu Rừng Thức Ăn' : (scenario?.worldName || 'Khu Rừng Thức Ăn')}</span>
+          <span className="hud-title-level">{scenario?.title === 'Family Restaurant' ? 'Nhà Hàng Gia Đình' : (scenario?.title || 'Nhà Hàng Gia Đình')}</span>
         </div>
         <div className="hud-stats-container">
           <div className="stat-card">
@@ -410,7 +410,7 @@ export default function FamilyRestaurantPage() {
         <div className="rest-voice-panel">
           <div className="rest-voice-panel__header">
             <span className="rest-voice-panel__icon">🗣️</span>
-            <h2 className="rest-voice-panel__title">Order in English</h2>
+            <h2 className="rest-voice-panel__title">Gọi món bằng tiếng Anh</h2>
           </div>
           <VoiceMission
             expectedSentence={expectedSentence}
@@ -419,7 +419,7 @@ export default function FamilyRestaurantPage() {
             onSuccess={handleVoiceSuccess}
             onFail={handleVoiceFail}
             disabled={stepLocked || gameState !== 'ordering'}
-            returnLabel="Continue ordering"
+            returnLabel="Tiếp tục gọi món"
             successHint={activeStep?.successResponse || ''}
           />
         </div>
@@ -446,7 +446,7 @@ export default function FamilyRestaurantPage() {
                 ? 'completed'
                 : 'idle-at-table'
           }
-          title={scenario?.title || 'Family Restaurant'}
+          title={scenario?.title === 'Family Restaurant' ? 'Nhà Hàng Gia Đình' : (scenario?.title || 'Nhà Hàng Gia Đình')}
           description={scenario?.description}
           onStartMission={handleStartMission}
           instruction={getMissionInstruction()}

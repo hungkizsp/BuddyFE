@@ -147,7 +147,7 @@ export default function TopBar({ theme = 'light' }) {
   const profile = childProfile || {}
   const stats = profileStats || { vocabularyCount: 0, achievementCount: 0, buddyLevel: 1 }
 
-  const nickname = profile.nickname || user.nickname || 'Learner'
+  const nickname = profile.nickname || user.nickname || 'Bạn nhỏ'
   const displayLevel = profile.level ?? user.level ?? 1
   const displayXp = profile.xp ?? user.xp ?? 0
   const displayCoins = profile.coins ?? user.coins ?? 0
@@ -225,7 +225,7 @@ export default function TopBar({ theme = 'light' }) {
               {nickname}
             </div>
             <div className="text-[10px] font-semibold mt-0.5" style={{ color: 'var(--topbar-sub)' }}>
-              Level {displayLevel} Explorer
+              Nhà thám hiểm Cấp {displayLevel}
             </div>
           </div>
         </div>
@@ -235,7 +235,7 @@ export default function TopBar({ theme = 'light' }) {
           <div className="profile-popover" style={{ left: 0 }}>
             <div className="profile-popover-header">
               <div className="profile-popover-title">{nickname}</div>
-              <div className="profile-popover-subtitle">Level {displayLevel} Explorer</div>
+              <div className="profile-popover-subtitle">Nhà thám hiểm Cấp {displayLevel}</div>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -300,7 +300,7 @@ export default function TopBar({ theme = 'light' }) {
         >
           <Flame size={12} style={{ color: streakColor }} />
           <span className="text-xs font-extrabold" style={{ color: streakColor }}>
-            {displayStreak} days
+            {displayStreak} ngày
           </span>
         </div>
       </div>
@@ -386,7 +386,7 @@ export default function TopBar({ theme = 'light' }) {
         <button
           className="w-8 h-8 rounded-full flex items-center justify-center transition-colors topbar-action-btn"
           onClick={() => navigate('/notifications')}
-          title="Settings"
+          title="Cài đặt"
         >
           <Settings size={15} style={{ color: 'var(--topbar-icon)' }} />
         </button>

@@ -575,10 +575,10 @@ export default function KitchenAdventurePage() {
       <header className="hud-header">
         <div className="hud-title-container">
           <span className="hud-title-forest">
-            {scenario?.worldName || "Food Forest"}
+            {scenario?.worldName === 'Food Forest' ? 'Khu Rừng Thức Ăn' : (scenario?.worldName || 'Khu Rừng Thức Ăn')}
           </span>
           <span className="hud-title-level">
-            {scenario?.title || "Phiêu lưu nhà bếp"}
+            {scenario?.title === 'Breakfast Trouble' ? 'Bữa Sáng Rắc Rối' : (scenario?.title || 'Phiêu lưu nhà bếp')}
           </span>
         </div>
 

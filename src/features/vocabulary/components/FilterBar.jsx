@@ -15,9 +15,9 @@ export default function FilterBar({
   stats,
 }) {
   const tabItems = [
-    { key: 'all',     label: 'All',     count: stats.total },
-    { key: 'learned', label: 'Learned', count: stats.learned },
-    { key: 'locked',  label: 'Locked',  count: stats.locked },
+    { key: 'all',     label: 'Tất cả',   count: stats.total },
+    { key: 'learned', label: 'Đã thuộc', count: stats.learned },
+    { key: 'locked',  label: 'Chưa mở',  count: stats.locked },
   ]
 
   return (
@@ -25,7 +25,7 @@ export default function FilterBar({
       {/* Top row: Search + Category */}
       <div className="flex flex-col sm:flex-row gap-3">
         <SearchBar
-          placeholder="Search words..."
+          placeholder="Tìm kiếm từ vựng..."
           onSearch={onSearch}
           className="flex-1 max-w-md"
         />
@@ -51,7 +51,7 @@ export default function FilterBar({
             paddingRight: '36px',
           }}
         >
-          <option value="">All Categories</option>
+          <option value="">Tất cả chủ đề</option>
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>
               {cat.name}

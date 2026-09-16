@@ -7,6 +7,7 @@ import FilterBar from '../../vocabulary/components/FilterBar';
 import VocabularyGallery from '../../vocabulary/components/VocabularyGallery';
 import VocabularyDetailDrawer from '../../vocabulary/components/VocabularyDetailDrawer';
 import TopBar from '../../../shared/components/TopBar';
+import SideBar from '../../../layouts/SideBar';
 import Button from '../../../shared/components/ui/Button';
 import ModeSelector from '../components/ModeSelector';
 import '../../home/pages/HomePage.css'; // Reuse sidebar layout styles
@@ -89,69 +90,7 @@ export default function StudyHubPage() {
   return (
     <div className="home-root app-shell">
       <div className="noise-overlay" aria-hidden="true" />
-      
-      {/* ── Sidebar ── */}
-      <aside className="sidebar">
-        <div className="sidebar-brand">
-          <span className="brand-icon">🦉</span>
-          <span className="brand-name">BuddyEnglish</span>
-        </div>
-
-        <div className="profile-card">
-          <div className="profile-avatar">{user.nickname?.[0]?.toUpperCase() || '?'}</div>
-          <div className="profile-info">
-            <p className="profile-name">{user.nickname || 'Learner'}</p>
-            <p className="profile-level">Level {user.level ?? 1} Explorer</p>
-          </div>
-        </div>
-
-        <XpBar xp={user.xp ?? 0} level={user.level ?? 1} />
-
-        <div className="stats-grid">
-          <div className="stat-chip">
-            <span className="stat-icon">🪙</span>
-            <span className="stat-val">{user.coins ?? 0}</span>
-            <span className="stat-lbl">Coins</span>
-          </div>
-          <div className="stat-chip">
-            <span className="stat-icon">⭐</span>
-            <span className="stat-val">{user.xp ?? 0}</span>
-            <span className="stat-lbl">XP</span>
-          </div>
-          <div className="stat-chip">
-            <span className="stat-icon">🔥</span>
-            <span className="stat-val">{user.streakDays ?? 0}</span>
-            <span className="stat-lbl">Streak</span>
-          </div>
-          <div className="stat-chip">
-            <span className="stat-icon">🏆</span>
-            <span className="stat-val">Lv{user.level ?? 1}</span>
-            <span className="stat-lbl">Level</span>
-          </div>
-        </div>
-
-        <nav className="sidebar-nav">
-          <a href="/home" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/home') }}>
-            <span>💬</span> Chat with Buddy
-          </a>
-          <a href="/study" className="nav-item active" onClick={(e) => { e.preventDefault() }}>
-            <span>📖</span> Study Modes
-          </a>
-          <a href="/adventure" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/adventure') }}>
-            <span>🗺️</span> Adventures
-          </a>
-          <a href="/character-creator" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/character-creator') }}>
-            <span>🎨</span> Create Character
-          </a>
-          <a href="/notifications" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/notifications') }}>
-            <span>🔔</span> Notifications
-          </a>
-        </nav>
-
-        <Button variant="secondary" className="logout-btn" onClick={handleLogout}>
-          <span>🚪</span> Logout
-        </Button>
-      </aside>
+      <SideBar />
 
       {/* ── Main content workspace ── */}
       <main className="chat-main" style={{ overflowY: 'auto', paddingBottom: '40px' }}>
@@ -160,7 +99,7 @@ export default function StudyHubPage() {
         <div className="max-w-6xl mx-auto px-6 py-8 space-y-10">
           <div>
             <h1 className="font-grotesk text-3xl font-bold text-cream mb-2 flex items-center gap-3">
-              🧠 Study Modes Hub
+              🧠 Trung Tâm Ôn Tập
             </h1>
             <p className="text-sm text-cream/60 max-w-xl">
               Chọn chủ đề từ vựng bạn muốn ôn tập, xem trước ảnh & nghĩa từ vựng, rồi chọn chế độ học tương ứng để bắt đầu.

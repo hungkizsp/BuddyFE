@@ -49,12 +49,12 @@ export default function VocabularyPage() {
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-8">
         {/* Header */}
         <SectionHeader
-          title="📚 Vocabulary Gallery"
-          subtitle="Your collection of words learned through adventures. Click any card to see details, hear pronunciation, and track your progress."
+          title="📚 Bộ Sưu Tập Từ Vựng"
+          subtitle="Bộ sưu tập từ vựng bé đã học qua các chuyến phiêu lưu. Bấm vào mỗi thẻ để xem chi tiết, nghe phát âm và ghi nhớ nhé!"
           action={
             <div className="flex gap-3">
-              <StatPill icon="📖" value={stats.learned} label="Learned" color="green" />
-              <StatPill icon="🔒" value={stats.locked} label="Locked" color="coral" />
+              <StatPill icon="📖" value={stats.learned} label="Đã thuộc" color="green" />
+              <StatPill icon="🔒" value={stats.locked} label="Chưa mở" color="coral" />
             </div>
           }
         />
@@ -85,7 +85,7 @@ export default function VocabularyPage() {
             onClick={() => navigate('/home')}
             className="font-mono text-sm text-cream/40 hover:text-primary transition-colors uppercase"
           >
-            ← Back to Dashboard
+            ← Quay về Trang chủ
           </button>
         </div>
       </div>

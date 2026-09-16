@@ -38,7 +38,7 @@ export default function LearnQuestion({
       {/* Prompt / Question */}
       <div className="mb-6 text-center">
         <span className="font-mono text-xs text-cream/40 uppercase tracking-widest block mb-2">
-          {questionType === 'mcq' ? 'Choose the correct English word' : 'Write the English translation'}
+          {questionType === 'mcq' ? 'Chọn từ tiếng Anh đúng' : 'Gõ từ tiếng Anh tương ứng'}
         </span>
 
         {/* Optional Image */}
@@ -82,7 +82,7 @@ export default function LearnQuestion({
               autoFocus
               value={typedInput}
               onChange={(e) => setTypedInput(e.target.value)}
-              placeholder="Type your answer here..."
+              placeholder="Gõ câu trả lời của bé vào đây..."
               className="w-full px-5 py-4 rounded-xl bg-slate-950 border border-slate-700 text-cream font-mono text-lg focus:outline-none focus:border-primary transition-colors text-center"
             />
             <button
@@ -90,7 +90,7 @@ export default function LearnQuestion({
               disabled={!typedInput.trim()}
               className="w-full py-4 rounded-xl bg-primary hover:bg-blue-600 disabled:bg-slate-800 disabled:text-cream/30 font-grotesk font-semibold text-white transition-colors"
             >
-              Submit Answer
+              Gửi Câu Trả Lời
             </button>
           </form>
         )
@@ -106,19 +106,19 @@ export default function LearnQuestion({
           >
             <div className="text-xl mb-1">
               {selectedAnswer.toLowerCase() === vocab.word.toLowerCase()
-                ? '🎉 Correct! Excellent job!'
-                : '❌ Incorrect answer'}
+                ? '🎉 Chính xác! Giỏi lắm bé ơi!'
+                : '❌ Chưa đúng rồi nè!'}
             </div>
             {selectedAnswer.toLowerCase() !== vocab.word.toLowerCase() && (
               <p className="text-sm font-nunito text-cream/70">
-                You said: <span className="font-mono text-danger font-semibold">{selectedAnswer || '(empty)'}</span>
+                Bé đã chọn: <span className="font-mono text-danger font-semibold">{selectedAnswer || '(trống)'}</span>
               </p>
             )}
           </div>
 
           <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5">
             <p className="font-mono text-xs text-cream/30 uppercase tracking-widest mb-2">
-              Correct Answer
+              Đáp án đúng là
             </p>
             <p className="font-grotesk text-3xl font-bold text-cream capitalize mb-1">
               {vocab.word}
@@ -135,7 +135,7 @@ export default function LearnQuestion({
             onClick={() => onSubmit(null, null)} // Triggers next card
             className="w-full py-4 rounded-xl bg-primary hover:bg-blue-600 font-grotesk font-semibold text-white shadow-glow transition-all hover:scale-105"
           >
-            Continue →
+            Tiếp tục →
           </button>
         </div>
       )}

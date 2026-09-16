@@ -3,27 +3,27 @@ import { useNavigate } from 'react-router-dom'
 const WORLDS_DATA = [
   {
     videoUrl: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_053923_22c0a6a5-313c-474c-85ff-3b50d25e944a.mp4',
-    title: 'Food Forest',
-    desc: 'Practice ordering food, naming ingredients, and describing meals. Vocabulary includes fruits, vegetables, drinks, and common restaurant phrases.',
-    vocab: '45 Words',
-    scenarios: '6 Scenarios',
-    difficulty: 'Beginner',
+    title: 'Khu Rừng Thức Ăn',
+    desc: 'Luyện tập gọi món ăn, đọc tên các nguyên liệu và mô tả bữa ăn. Từ vựng bao gồm trái cây, rau củ, đồ uống và câu giao tiếp nhà hàng.',
+    vocab: '45 Từ vựng',
+    scenarios: '6 Kịch bản',
+    difficulty: 'Dễ (Cơ bản)',
   },
   {
     videoUrl: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_054411_511c1b7a-fb2f-42ef-bf6c-32c0b1a06e79.mp4',
-    title: 'Animal Kingdom',
-    desc: 'Explore the zoo and farm with Buddy. Learn animal names, describe their features, and practice sentences like "The elephant is big and grey."',
-    vocab: '52 Words',
-    scenarios: '8 Scenarios',
-    difficulty: 'Intermediate',
+    title: 'Vương Quốc Động Vật',
+    desc: 'Khám phá sở thú và trang trại cùng Buddy. Học tên các loài động vật, mô tả đặc điểm và luyện mẫu câu "The elephant is big and grey."',
+    vocab: '52 Từ vựng',
+    scenarios: '8 Kịch bản',
+    difficulty: 'Trung bình',
   },
   {
     videoUrl: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_055427_ac7035b5-9f3b-4289-86fc-941b2432317d.mp4',
-    title: 'Market Adventure',
-    desc: 'Go shopping with Buddy! Practice numbers, colors, sizes, and real-world transactions. "How much is this red shirt?" — learning through play.',
-    vocab: '38 Words',
-    scenarios: '5 Scenarios',
-    difficulty: 'Beginner',
+    title: 'Cuộc Phiêu Lưu Ở Chợ',
+    desc: 'Cùng Buddy đi mua sắm! Luyện tập chữ số, màu sắc, kích cỡ và giao dịch đời thực. "How much is this red shirt?" — vừa học vừa chơi.',
+    vocab: '38 Từ vựng',
+    scenarios: '5 Kịch bản',
+    difficulty: 'Dễ (Cơ bản)',
   },
 ]
 
@@ -36,9 +36,9 @@ export default function LearnJourneySection({ currentUser }) {
       return
     }
     const normalized = title.toLowerCase()
-    if (normalized.includes('forest')) {
+    if (normalized.includes('forest') || normalized.includes('rừng')) {
       navigate('/adventure/food-forest')
-    } else if (normalized.includes('market')) {
+    } else if (normalized.includes('market') || normalized.includes('chợ')) {
       navigate('/adventure/food-forest/supermarket-shopping')
     } else {
       navigate('/adventure')
@@ -57,11 +57,11 @@ export default function LearnJourneySection({ currentUser }) {
           {/* Left: Heading */}
           <div>
             <h2 className="font-grotesk text-[36px] sm:text-[68px] uppercase leading-[1.05] text-cream text-glow">
-              Explore Buddy's
+              Khám phá thế giới
             </h2>
             <div className="ml-12 sm:ml-24 lg:ml-32 flex items-baseline gap-3">
-              <span className="font-condiment text-[40px] sm:text-[76px] text-neon normal-case leading-none -rotate-1 inline-block text-glow">learning</span>
-              <span className="font-grotesk text-[36px] sm:text-[68px] uppercase text-cream leading-tight text-glow">worlds</span>
+              <span className="font-condiment text-[40px] sm:text-[76px] text-neon normal-case leading-none -rotate-1 inline-block text-glow">học tập cùng</span>
+              <span className="font-grotesk text-[36px] sm:text-[68px] uppercase text-cream leading-tight text-glow">Buddy</span>
             </div>
           </div>
 
@@ -72,11 +72,11 @@ export default function LearnJourneySection({ currentUser }) {
           >
             <div className="flex items-center gap-3">
               <span className="font-grotesk text-[32px] sm:text-[60px] uppercase text-cream leading-none">
-                VIEW
+                XEM
               </span>
               <div className="flex flex-col font-grotesk uppercase leading-none">
-                <span className="text-[20px] sm:text-[36px] text-cream/70">ALL</span>
-                <span className="text-[20px] sm:text-[36px] text-cream/70">WORLDS</span>
+                <span className="text-[20px] sm:text-[36px] text-cream/70">TẤT CẢ</span>
+                <span className="text-[20px] sm:text-[36px] text-cream/70">THẾ GIỚI</span>
               </div>
             </div>
             {/* Underbar */}
@@ -86,7 +86,7 @@ export default function LearnJourneySection({ currentUser }) {
 
         {/* Section description */}
         <p className="font-mono text-[14px] lg:text-[16px] uppercase text-cream/90 max-w-[800px] leading-relaxed mb-12 text-readable">
-          Each world is a themed learning environment where children practice English through immersive scenarios. Vocabulary is taught in context — not through flashcards, but through conversation. Buddy guides the child through each scenario step by step, adapting difficulty based on real-time performance.
+          Mỗi thế giới là một môi trường học tập theo chủ đề, nơi các bé thực hành tiếng Anh qua các kịch bản nhập vai sinh động. Từ vựng được tiếp thu tự nhiên qua hội thoại thay vì học vẹt. Buddy sẽ đồng hành hướng dẫn từng bước và điều chỉnh độ khó phù hợp với bé.
         </p>
 
         {/* ── WORLD CARD GRID ── */}
@@ -123,11 +123,11 @@ export default function LearnJourneySection({ currentUser }) {
               <div className="liquid-glass rounded-[20px] px-5 py-4 flex items-center justify-between">
                 <div className="flex gap-4">
                   <div>
-                    <span className="font-mono text-[11px] text-cream/60 uppercase block">Vocabulary</span>
+                    <span className="font-mono text-[11px] text-cream/60 uppercase block">Từ vựng</span>
                     <span className="font-grotesk text-[16px] text-cream text-glow">{world.vocab}</span>
                   </div>
                   <div>
-                    <span className="font-mono text-[11px] text-cream/60 uppercase block">Scenarios</span>
+                    <span className="font-mono text-[11px] text-cream/60 uppercase block">Kịch bản</span>
                     <span className="font-grotesk text-[16px] text-cream text-glow">{world.scenarios}</span>
                   </div>
                 </div>
@@ -146,36 +146,36 @@ export default function LearnJourneySection({ currentUser }) {
         <div className="pt-10 border-t border-white/10">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-12">
             <h3 className="font-grotesk text-[28px] sm:text-[44px] uppercase text-cream tracking-widest text-glow">
-              How a session works
+              Quy trình buổi học
             </h3>
             <p className="font-mono text-[13px] uppercase text-cream/60 max-w-[460px] leading-relaxed text-readable">
-              Every learning session follows a proven 5-step pedagogical flow designed to maximize retention and minimize frustration.
+              Mỗi buổi học theo sát quy trình 5 bước được tối ưu giúp bé nhớ lâu và học tập đầy hứng thú.
             </p>
           </div>
           <div className="relative border-l border-white/10 ml-4 sm:ml-16 lg:ml-32 pl-8 sm:pl-14 space-y-10">
             {[
               {
                 num: '01',
-                title: 'Personalized Greeting',
-                sub: 'Buddy checks your profile, remembers your last session, and sets today\'s learning goal based on your progress history. No two greetings are ever the same. When the session starts, Buddy leverages your historic profile database to craft a uniquely tailored greeting in real-time. If you struggled with specific vowel sounds or animal vocabulary in your last session, Buddy will greet you with a gentle, friendly reminder and a mini-warmup challenge. By checking your current coin balance, streak level, and previous performance metrics, Buddy makes you feel immediately recognized, establishing a supportive, comfortable, and low-stress space before diving into today\'s core lessons.',
+                title: 'Chào hỏi cá nhân hóa',
+                sub: 'Buddy nhận diện hồ sơ của bé, ghi nhớ buổi học trước và thiết lập mục tiêu bài học mới dựa trên tiến trình cá nhân.',
                 color: '#6FFF00',
               },
               {
                 num: '02',
-                title: 'Scenario Immersion',
-                sub: 'You enter a themed world (e.g., Food Forest) and begin a guided conversation. Buddy asks questions, you respond by speaking. The Web Speech API captures your voice in real-time. Instead of memorizing isolated tables or boring grammatical rules, your child enters an interactive 3D universe. They act as explorers, performing contextual tasks like ordering food at a village restaurant, asking directions from a talking rabbit, or purchasing supplies at a market. Buddy acts as the companion in these scenarios, asking questions, offering clues, and prompting answers. Using the Web Speech API integrated in modern web browsers, the voice stream is captured safely and processed locally without recording audio files.',
+                title: 'Nhập vai vào kịch bản',
+                sub: 'Bé bước vào thế giới phiêu lưu (như Khu Rừng Thức Ăn) và trò chuyện trực tiếp cùng Buddy bằng giọng nói.',
                 color: '#b724ff',
               },
               {
                 num: '03',
-                title: 'AI Analysis & Feedback',
-                sub: 'Your speech is converted to text and sent to the Spring Boot backend. Google Gemini AI evaluates pronunciation accuracy, grammar, and vocabulary usage — then generates personalized feedback. The text input is securely routed to our robust Spring Boot backend server, which forwards the request to Google\'s Gemini AI. The AI does not just check spelling; it conducts a semantic analysis of the sentence structure, grammar correctness, and contextual relevance. Within milliseconds, the backend calculates a comprehensive accuracy score. It isolates specific areas of difficulty, highlights mispronounced words, and constructs positive, highly encouraging feedback tailored specifically to a child\'s psychological needs.',
+                title: 'Phân tích AI & Nhận xét',
+                sub: 'Trí tuệ nhân tạo Gemini đánh giá độ chính xác phát âm, ngữ pháp và đưa ra lời khen ngợi, động viên tức thì.',
                 color: '#6FFF00',
               },
               {
                 num: '04',
-                title: 'Rewards & Progress',
-                sub: 'Correct responses earn coins and XP. Complete a full scenario to unlock the next world. Maintain a daily streak to earn bonus rewards. Every milestone is celebrated with Buddy\'s animations. To keep kids excited, our system features a fully integrated gamification engine. Every correct answer earns experience points (XP) and shiny gold coins that accumulate in the profile. When children hit major milestones or complete an entire themed scenario, they receive congratulations from Buddy, accompanied by dynamic 3D celebrations and animations. Daily streaks encourage children to practice regularly, forming a healthy habit. Earned coins can be used to unlock new customization options and companion badges.',
+                title: 'Thưởng xu & Lên cấp',
+                sub: 'Trả lời đúng nhận ngay xu vàng và kinh nghiệm (XP). Hoàn thành kịch bản để mở khóa các thế giới tiếp theo!',
                 color: '#b724ff',
               },
               {

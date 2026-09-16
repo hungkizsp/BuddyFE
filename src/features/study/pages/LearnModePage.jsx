@@ -84,7 +84,7 @@ export default function LearnModePage() {
       <div className="min-h-screen flex items-center justify-center bg-navy text-cream">
         <div className="flex flex-col items-center gap-3">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-          <p className="font-mono text-sm uppercase tracking-wider text-cream/40">Starting Learn Session...</p>
+          <p className="font-mono text-sm uppercase tracking-wider text-cream/40">Đang chuẩn bị bài học...</p>
         </div>
       </div>
     );
@@ -95,13 +95,13 @@ export default function LearnModePage() {
       <div className="min-h-screen flex items-center justify-center bg-navy text-cream px-6">
         <div className="text-center max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-glass">
           <span className="text-4xl">⚠️</span>
-          <h2 className="font-grotesk text-xl font-bold mt-4 mb-2">Failed to start Learn mode</h2>
+          <h2 className="font-grotesk text-xl font-bold mt-4 mb-2">Không thể bắt đầu chế độ học</h2>
           <p className="text-sm text-cream/60 font-nunito mb-6">{error}</p>
           <button
             onClick={() => navigate('/study')}
             className="px-6 py-2.5 rounded-xl bg-primary hover:bg-blue-600 font-grotesk font-semibold text-white transition-all shadow-glow"
           >
-            Back to Study Hub
+            Trở Về Góc Học Tập
           </button>
         </div>
       </div>
@@ -111,7 +111,7 @@ export default function LearnModePage() {
   if (isFinished) {
     return (
       <div className="min-h-screen bg-navy text-cream py-12 px-6">
-        <StudyResult results={results} modeName="Learn" onRetry={startSession} onReviewWeakWords={startSession} />
+        <StudyResult results={results} modeName="Học Từ Mới" onRetry={startSession} onReviewWeakWords={startSession} />
       </div>
     );
   }
@@ -121,7 +121,7 @@ export default function LearnModePage() {
       <StudyProgressBar
         current={currentIndex + (isAnswered ? 1 : 0)}
         total={vocabularies.length}
-        modeName="Learn"
+        modeName="Học Từ Mới"
         onExit={handleExit}
       />
 

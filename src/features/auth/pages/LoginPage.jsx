@@ -50,14 +50,14 @@ function LoginPage() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-simple border border-white/10 mb-6">
               <span className="text-2xl">🦉</span>
               <span className="font-grotesk text-sm font-bold uppercase tracking-wider text-neon">
-                BollyEnglish
+                BuddyEnglish
               </span>
             </div>
             <h1 className="font-grotesk text-3xl sm:text-4xl font-bold uppercase text-cream tracking-wide mb-2">
-              Welcome back
+              Chào mừng bé quay lại!
             </h1>
             <p className="font-mono text-sm text-cream/50 uppercase">
-              Log in to continue your adventure
+              Đăng nhập để tiếp tục chuyến phiêu lưu
             </p>
           </div>
 
@@ -65,7 +65,7 @@ function LoginPage() {
             {/* Email */}
             <label className="block">
               <span className="font-mono text-xs text-cream/50 uppercase tracking-wider mb-2 block">
-                Email
+                Địa chỉ Email
               </span>
               <input
                 type="email"
@@ -89,7 +89,7 @@ function LoginPage() {
             {/* Password */}
             <label className="block">
               <span className="font-mono text-xs text-cream/50 uppercase tracking-wider mb-2 block">
-                Password
+                Mật khẩu
               </span>
               <div className="relative">
                 <input
@@ -97,7 +97,7 @@ function LoginPage() {
                   name="password"
                   value={form.password}
                   onChange={handleChange}
-                  placeholder="Enter your password"
+                  placeholder="Nhập mật khẩu của bé"
                   autoComplete="current-password"
                   required
                   className="
@@ -129,13 +129,13 @@ function LoginPage() {
                   onChange={handleChange}
                   className="w-4 h-4 accent-primary rounded"
                 />
-                <span className="font-mono text-xs uppercase">Remember me</span>
+                <span className="font-mono text-xs uppercase">Ghi nhớ đăng nhập</span>
               </label>
               <Link
                 to="/forgot-password"
                 className="font-mono text-xs text-primary/70 hover:text-primary uppercase transition-colors"
               >
-                Forgot password?
+                Quên mật khẩu?
               </Link>
             </div>
 
@@ -164,19 +164,19 @@ function LoginPage() {
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                  Logging in...
+                  Đang đăng nhập...
                 </span>
-              ) : 'Login'}
+              ) : 'Đăng Nhập 🚀'}
             </button>
 
             {/* Register link */}
             <p className="text-center font-mono text-sm text-cream/40">
-              New to BollyEnglish?{' '}
+              Bé chưa có tài khoản?{' '}
               <Link
                 to="/register"
                 className="text-primary font-bold hover:text-primary/80 transition-colors"
               >
-                Create account
+                Đăng ký ngay
               </Link>
             </p>
           </form>

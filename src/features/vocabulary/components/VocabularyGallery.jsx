@@ -21,7 +21,7 @@ export default function VocabularyGallery({ items, loading, error, onCardClick }
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4">
         <span className="text-5xl">😵</span>
-        <p className="font-grotesk text-xl text-cream/70 uppercase">Something went wrong</p>
+        <p className="font-grotesk text-xl text-cream/70 uppercase">Có lỗi xảy ra rồi</p>
         <p className="font-mono text-sm text-cream/40">{error}</p>
       </div>
     )
@@ -32,9 +32,9 @@ export default function VocabularyGallery({ items, loading, error, onCardClick }
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4">
         <span className="text-5xl animate-float">📚</span>
-        <p className="font-grotesk text-xl text-cream/70 uppercase">No words found</p>
+        <p className="font-grotesk text-xl text-cream/70 uppercase">Không tìm thấy từ vựng nào</p>
         <p className="font-mono text-sm text-cream/40">
-          Try a different filter or start an adventure to unlock vocabulary!
+          Hãy thử bộ lọc khác hoặc bắt đầu chuyến phiêu lưu để mở khóa từ vựng nhé!
         </p>
       </div>
     )

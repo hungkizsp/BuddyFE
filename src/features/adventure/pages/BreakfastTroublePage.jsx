@@ -29,7 +29,7 @@ export default function BreakfastTroublePage() {
     <div className="bt-page app-shell">
       <div className="bt-label">
         <span className="bt-label__icon">🔍</span>
-        <span>Adventure 1 – Breakfast Trouble</span>
+        <span>Phiêu lưu 1 – Bữa Sáng Rắc Rối</span>
       </div>
 
       <div className="bt-manga-grid">
@@ -59,7 +59,7 @@ export default function BreakfastTroublePage() {
         type="button"
       >
         <span className="bt-start-btn__icon">🍳</span>
-        <span>Let&apos;s Start!</span>
+        <span>Bắt Đầu Ngay!</span>
         <span className="bt-start-btn__arrow">🚀</span>
       </Button>
 
@@ -68,7 +68,7 @@ export default function BreakfastTroublePage() {
         className="bt-back-link"
         onClick={() => navigate('/adventure/food-forest')}
       >
-        ← Back to map
+        ← Trở về bản đồ
       </Button>
     </div>
   )

@@ -1,6 +1,7 @@
 import { Suspense, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import TopBar from "../../../shared/components/TopBar";
+import SideBar from "../../../layouts/SideBar";
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei";
 import useWorlds from "../hooks/useWorlds";
@@ -8,6 +9,7 @@ import useWorldProgress from "../hooks/useWorldProgress";
 import FoodForestWorld3D from "../components/FoodForestWorld3D";
 import Button from "../../../shared/components/ui/Button";
 import PageHeader from "../../../shared/components/ui/PageHeader";
+import "../../home/pages/HomePage.css";
 import "../styles/AdventurePage.css";
 
 function FoodForestScene() {
@@ -39,65 +41,64 @@ export default function AdventurePage() {
   const { progress, loading: progressLoading } = useWorldProgress(
     foodForest?.id,
   );
-  console.log("progresss{}", progress);
   const loading = worldsLoading || progressLoading;
   const completion = progress?.completionPercentage ?? 0;
 
   return (
-    <div className="adv-page app-shell">
-      <TopBar theme="dark" />
+    <div className="home-root app-shell">
+      <SideBar />
 
-      <Button variant="secondary" className="adv-back-home" onClick={() => navigate('/home')}>
-        ← Back to Home
-      </Button>
+      <main className="chat-main adv-page" style={{ position: 'relative', overflowY: 'auto', padding: 0 }}>
+        <TopBar theme="dark" />
 
-      <div className="adv-bg-glow" />
+        <div className="adv-bg-glow" />
 
-      <div className="adv-header">
-        <PageHeader
-          title={foodForest?.name || "Food Forest"}
-          subtitle={
-            foodForest?.description ||
-            "Explore and learn English through fun adventures!"
-          }
-        />
-      </div>
-
-      <div className="adv-progress-section">
-        <div className="adv-progress-bar-track">
-          <div
-            className="adv-progress-bar-fill"
-            style={{ width: `${completion}%` }}
+        <div className="adv-header">
+          <PageHeader
+            title={foodForest?.name || "Khu Rừng Thức Ăn"}
+            subtitle={
+              foodForest?.description ||
+              "Khám phá và học từ vựng tiếng Anh qua các cuộc phiêu lưu kì thú!"
+            }
           />
         </div>
 
-        <span className="adv-progress-label">{completion}%</span>
-      </div>
+        <div className="adv-progress-section">
+          <div className="adv-progress-bar-track">
+            <div
+              className="adv-progress-bar-fill"
+              style={{ width: `${completion}%` }}
+            />
+          </div>
 
-      <div className="adv-model-section">
-        {loading ? (
-          <div className="adv-loading">Loading world...</div>
-        ) : (
-          <Canvas
-            camera={{ position: [0, 0, 4], fov: 40 }}
-            gl={{ alpha: true, antialias: true }}
-            style={{ width: "100%", height: "100%" }}
+          <span className="adv-progress-label">{completion}%</span>
+        </div>
+
+        <div className="adv-model-section">
+          {loading ? (
+            <div className="adv-loading">Đang tải thế giới...</div>
+          ) : (
+            <Canvas
+              camera={{ position: [0, 0, 4], fov: 40 }}
+              gl={{ alpha: true, antialias: true }}
+              style={{ width: "100%", height: "100%" }}
+            >
+              <Suspense fallback={null}>
+                <FoodForestScene />
+              </Suspense>
+            </Canvas>
+          )}
+        </div>
+
+        <div className="adv-footer">
+          <button
+            className="adv-enter-btn"
+            onClick={() => navigate("/adventure/food-forest")}
           >
-            <Suspense fallback={null}>
-              <FoodForestScene />
-            </Suspense>
-          </Canvas>
-        )}
-      </div>
-
-      <div className="adv-footer">
-        <button
-          className="adv-enter-btn"
-          onClick={() => navigate("/adventure/food-forest")}
-        >
-          Enter World →
-        </button>
-      </div>
+            Vào Thế Giới Phiêu Lưu →
+          </button>
+        </div>
+      </main>
     </div>
   );
 }
