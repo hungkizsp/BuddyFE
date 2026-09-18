@@ -7,9 +7,10 @@ export default function SpeechBubble({ gameState, message, buddyPosition, scenar
   const wrapperStyle = {
     left: buddyPosition?.left || '47%',
     top: buddyPosition?.top ? `calc(${buddyPosition.top} - 18%)` : '20%',
+    transform: isVisible ? 'translateX(0)' : 'translateX(80px)',
     transition: gameState === 'walking-to-table'
-      ? 'left 2.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 0.3s ease'
-      : 'left 0.3s ease, top 0.3s ease',
+      ? 'left 2.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 0.3s ease, transform 0.3s ease'
+      : 'left 0.3s ease, top 0.3s ease, transform 0.3s ease',
     pointerEvents: 'auto',
   }
 
@@ -40,11 +41,11 @@ export default function SpeechBubble({ gameState, message, buddyPosition, scenar
         <p className="speech-bubble-text">
           {isVisible
             ? lines.map((line, index) => (
-                <span key={line || index}>
-                  {line}
-                  {index < lines.length - 1 ? <br /> : null}
-                </span>
-              ))
+              <span key={line || index}>
+                {line}
+                {index < lines.length - 1 ? <br /> : null}
+              </span>
+            ))
             : '...'}
         </p>
       </div>

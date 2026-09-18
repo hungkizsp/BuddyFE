@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const EMOTES = ['🎉', '🏆', '⭐', '🎊', '🥳', '💖', '👍'];
 
@@ -7,66 +7,65 @@ export default function EmoteShooter() {
   const [particles, setParticles] = useState([]);
 
   useEffect(() => {
-    let idCounter = 0;
-    // Spawn initial burst
-    const initialParticles = Array.from({ length: 5 }).map(() => ({
-      id: idCounter++,
-      emoji: EMOTES[Math.floor(Math.random() * EMOTES.length)],
-      left: 10 + Math.random() * 80,
-      duration: 3 + Math.random() * 2,
-      scale: 1 + Math.random() * 1.5,
-      wiggle: (Math.random() - 0.5) * 150 
+    // Generate a fixed burst of 16 lightweight particles for smooth 60fps animation
+    const burst = Array.from({ length: 16 }).map((_, index) => ({
+      id: index,
+      emoji: EMOTES[index % EMOTES.length],
+      left: 5 + Math.random() * 90,
+      duration: 2.2 + Math.random() * 1.5,
+      delay: Math.random() * 0.6,
+      scale: 0.9 + Math.random() * 0.8,
+      xMove: (Math.random() - 0.5) * 80
     }));
-    setParticles(initialParticles);
 
-    // Continuous spawn
-    const interval = setInterval(() => {
-      setParticles(prev => [
-        ...prev,
-        ...Array.from({ length: 3 }).map(() => ({
-          id: idCounter++,
-          emoji: EMOTES[Math.floor(Math.random() * EMOTES.length)],
-          left: 10 + Math.random() * 80,
-          duration: 3 + Math.random() * 2,
-          scale: 1 + Math.random() * 1.5,
-          wiggle: (Math.random() - 0.5) * 150 
-        }))
-      ]);
-    }, 300);
+    setParticles(burst);
 
-    // Stop after 4 seconds
-    setTimeout(() => clearInterval(interval), 4000);
-    return () => clearInterval(interval);
+    const timer = setTimeout(() => {
+      setParticles([]);
+    }, 4500);
+
+    return () => clearTimeout(timer);
   }, []);
 
+  if (particles.length === 0) return null;
+
   return (
-    <div style={{ position: 'fixed', bottom: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 99999 }}>
-      <AnimatePresence>
-        {particles.map((p) => (
-          <motion.div
-            key={p.id}
-            initial={{ bottom: '-10vh', opacity: 1, scale: p.scale }}
-            animate={{
-              bottom: '110vh',
-              x: [0, p.wiggle, -p.wiggle, 0],
-              opacity: [1, 1, 0.8, 0]
-            }}
-            transition={{
-              duration: p.duration,
-              ease: "easeOut",
-              x: {
-                repeat: Infinity,
-                repeatType: "mirror",
-                duration: 1.5
-              }
-            }}
-            onAnimationComplete={() => setParticles(prev => prev.filter(item => item.id !== p.id))}
-            style={{ position: 'absolute', left: `${p.left}vw`, fontSize: '2.5rem' }}
-          >
-            {p.emoji}
-          </motion.div>
-        ))}
-      </AnimatePresence>
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        pointerEvents: 'none',
+        zIndex: 99999,
+        overflow: 'hidden'
+      }}
+    >
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          initial={{ y: '100vh', x: 0, opacity: 0, scale: 0.5 }}
+          animate={{
+            y: '-10vh',
+            x: p.xMove,
+            opacity: [0, 1, 1, 0],
+            scale: [0.5, p.scale, p.scale, 0.8]
+          }}
+          transition={{
+            duration: p.duration,
+            delay: p.delay,
+            ease: 'easeOut',
+            times: [0, 0.15, 0.8, 1]
+          }}
+          style={{
+            position: 'absolute',
+            left: `${p.left}%`,
+            bottom: 0,
+            fontSize: '2rem',
+            willChange: 'transform, opacity'
+          }}
+        >
+          {p.emoji}
+        </motion.div>
+      ))}
     </div>
   );
 }

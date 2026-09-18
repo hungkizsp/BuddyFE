@@ -48,8 +48,11 @@ const ITEM_POSITIONS = [
   { left: "74%", top: "60%" },
 ];
 
-const findVocabulary = (items, expectedWord) =>
-  items.find((item) => item.id === normalizeWord(expectedWord));
+const findVocabulary = (items, ...expectedWords) =>
+  items.find((item) => {
+    const itemId = normalizeWord(item.id || item.label || "");
+    return expectedWords.some((w) => normalizeWord(w) === itemId);
+  });
 
 const entityToItemId = (entity = "") =>
   normalizeWord(entity.replaceAll("_", " "));
@@ -180,27 +183,47 @@ export default function KitchenAdventurePage() {
       milk: findVocabulary(vocabularyItems, "milk"),
       banana: findVocabulary(vocabularyItems, "banana"),
       toast: findVocabulary(vocabularyItems, "toast"),
-      eggOnToast: findVocabulary(vocabularyItems, "egg on toast"),
+      eggOnToast: findVocabulary(
+        vocabularyItems,
+        "egg sandwich",
+        "egg-sandwich",
+        "egg on toast",
+        "egg-on-toast"
+      ),
     }),
     [vocabularyItems],
   );
 
+  const eggDishItem = useMemo(() => {
+    if (itemsByWord.eggOnToast) return itemsByWord.eggOnToast;
+    return {
+      id: "egg-sandwich",
+      label: "Egg Sandwich",
+      meaning: "Bánh mì kẹp trứng",
+      image: resolveVocabularyImage("/images/vocabulary/egg-sandwich.png"),
+      alt: "Egg Sandwich",
+      exampleSentence: "Buddy is eating an egg sandwich.",
+      vocabulary: null,
+    };
+  }, [itemsByWord.eggOnToast]);
+
   const BREAD_ID = "bread";
   const EGG_ID = "egg";
-  const EGG_ON_TOAST_ID = "egg-on-toast";
+  const EGG_ON_TOAST_ID = eggDishItem.id;
   const activeStep = scenarioSteps[missionStage];
   const nextStep = scenarioSteps[missionStage + 1];
 
   const initialTableItems = useMemo(
     () =>
       vocabularyItems.filter((item) => {
-        const id = normalizeWord(item.label);
+        const id = normalizeWord(item.label || item.id || "");
+        const isExcluded =
+          ["apple", "orange", "pear", "grapes", "egg-on-toast", "egg-sandwich"].includes(id) ||
+          id === eggDishItem.id;
 
-        return !["apple", "orange", "pear", "grapes", "egg-on-toast"].includes(
-          id,
-        );
+        return !isExcluded;
       }),
-    [vocabularyItems],
+    [vocabularyItems, eggDishItem],
   );
 
   const getFruitImage = (filename) =>
@@ -296,10 +319,10 @@ export default function KitchenAdventurePage() {
     }
 
     const fruitReplies = {
-      banana: "Bananas ngon đấy, nhưng hôm nay mình muốn một quả Apple.",
-      orange: "Orange rất tươi mát, nhưng mình đang thèm một quả Apple.",
-      pear: "Pears ngọt đấy, nhưng mình muốn một quả Apple hơn.",
-      grapes: "Grapes trông ngon, nhưng hôm nay mình muốn một quả Apple.",
+      banana: "Đó là banana, nó ngon đấy nhưng hôm nay mình muốn một quả Apple.",
+      orange: "Hmm hình như đó là Orange, nó rất tươi mát nhưng mình đang thèm một quả Apple.",
+      pear: "Ồ, đó là Pear! Ngọt lắm đấy, nhưng hôm nay mình muốn có một quả Apple.",
+      grapes: "Wow, Grapes nhìn hấp dẫn ghê! Nhưng hôm nay mình chỉ muốn một quả Apple thôi."
     };
 
     setFeedbackMessage(
@@ -310,19 +333,23 @@ export default function KitchenAdventurePage() {
   const handleDropOnBuddy = (itemId) => {
     if (gameState !== "idle-at-table") return;
 
-    const item = tableItems.find((tableItem) => tableItem.id === itemId);
+    const item = tableItems.find((tableItem) => tableItem?.id === itemId);
     const word = item?.label || itemId;
     const expectedItemId = entityToItemId(activeStep?.expectedEntity);
 
     if (itemId === BREAD_ID || itemId === EGG_ID) {
       setFeedbackMessage(
         activeStep?.failResponse ||
-        `Buddy muốn ${itemsByWord.eggOnToast?.label || "món đã chuẩn bị"}, không chỉ mỗi ${word}.`,
+        `Buddy muốn ${eggDishItem.label || "món đã chuẩn bị"}, không chỉ mỗi ${word}.`,
       );
       return;
     }
 
-    if (itemId === expectedItemId) {
+    const isEggDishMatch =
+      (itemId === "egg-sandwich" || itemId === "egg-on-toast" || itemId === eggDishItem.id) &&
+      (expectedItemId === "egg-sandwich" || expectedItemId === "egg-on-toast");
+
+    if (itemId === expectedItemId || isEggDishMatch) {
       if (activeStep?.expectedIntent === "MISSION_COMPLETE") {
         setGameState("completed");
         setFeedbackMessage(
@@ -336,6 +363,9 @@ export default function KitchenAdventurePage() {
 
       if (
         itemId === EGG_ON_TOAST_ID ||
+        itemId === eggDishItem.id ||
+        itemId === "egg-sandwich" ||
+        itemId === "egg-on-toast" ||
         itemId === itemsByWord.milk?.id ||
         itemId === itemsByWord.apple?.id
       ) {
@@ -378,7 +408,7 @@ export default function KitchenAdventurePage() {
     if (gameState !== "idle-at-table") return false;
 
     if (preparedEggOnToast) {
-      setFeedbackMessage("Bạn đã nấu Egg on Toast rồi.");
+      setFeedbackMessage(`Bạn đã nấu ${eggDishItem.label} rồi.`);
       return false;
     }
 
@@ -392,11 +422,11 @@ export default function KitchenAdventurePage() {
     setPreparedEggOnToast(true);
 
     setTableItems((prev) => [
-      ...prev.filter((item) => item.id !== BREAD_ID && item.id !== EGG_ID),
-      itemsByWord.eggOnToast,
+      ...prev.filter((item) => item?.id !== BREAD_ID && item?.id !== EGG_ID),
+      eggDishItem,
     ]);
 
-    setFeedbackMessage("Egg on Toast đã sẵn sàng.");
+    setFeedbackMessage(`${eggDishItem.label} đã sẵn sàng.`);
 
     return true;
   };
@@ -425,9 +455,9 @@ export default function KitchenAdventurePage() {
 
       setPotContents([]);
 
-      setTableItems((prev) => [...prev, itemsByWord.eggOnToast]);
+      setTableItems((prev) => [...prev, eggDishItem]);
 
-      setFeedbackMessage("Egg on Toast đã sẵn sàng. Kéo nó đến chỗ Buddy.");
+      setFeedbackMessage(`${eggDishItem.label} đã sẵn sàng. Kéo nó đến chỗ Buddy.`);
 
       return true;
     }
@@ -506,8 +536,9 @@ export default function KitchenAdventurePage() {
     !scenarioId ||
     initialTableItems.length === 0 ||
     scenarioSteps.length === 0;
-  const visibleTableItems =
-    gameState === "not-started" ? initialTableItems : tableItems;
+  const visibleTableItems = (
+    gameState === "not-started" ? initialTableItems : tableItems
+  ).filter(Boolean);
 
   const canOpenBasket = activeStep?.expectedEntity === "APPLE";
   return (

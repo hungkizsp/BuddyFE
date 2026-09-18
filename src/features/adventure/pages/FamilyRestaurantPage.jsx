@@ -316,8 +316,7 @@ export default function FamilyRestaurantPage() {
       {gameState === 'not-started' && (
         <div className="rest-intro-overlay">
           <div className="rest-intro-label">
-            <span className="rest-intro-label__icon">🔍</span>
-            <span>Adventure 3 – Family Restaurant</span>
+            <span>Tình huống 3 – Family Restaurant</span>
           </div>
 
           <div className="rest-intro-manga-grid">
@@ -335,9 +334,9 @@ export default function FamilyRestaurantPage() {
             onClick={handleStartMission}
             disabled={startDisabled}
           >
-            <span className="rest-intro-start-btn__icon">🍽️</span>
-            <span>Let&apos;s Start!</span>
-            <span className="rest-intro-start-btn__arrow">🚀</span>
+            <span className="rest-intro-start-btn__icon"></span>
+            <span>Bắt đầu!</span>
+            <span className="rest-intro-start-btn__arrow"></span>
           </button>
 
           <button
@@ -346,7 +345,7 @@ export default function FamilyRestaurantPage() {
             onClick={() => navigate('/adventure/food-forest')}
           >
             ← Back to map
-          </button>
+          </button>u
         </div>
       )}
 

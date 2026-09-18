@@ -13,13 +13,13 @@ export const SCENE_HOTSPOTS = {
   // ── Step 1: Vegetable Counter (fruit_counter.png / fruitCounter) ───────────
   VEGETABLES: {
     broccoli: { left: '15%', top: '22%', width: '15%', height: '20%' },
-    cucumber: { left: '40%', top: '19%', width: '17%', height: '20%' },
-    potato: { left: '67%', top: '18%', width: '20%', height: '20%' },
-    onion: { left: '10%', top: '50%', width: '12%', height: '21%' },
+    cucumber: { left: '40%', top: '24%', width: '17%', height: '20%' },
+    potato: { left: '67%', top: '24%', width: '20%', height: '20%' },
+    onion: { left: '10%', top: '55%', width: '12%', height: '21%' },
     // distractors
-    watermelon: { left: '33%', top: '50%', width: '11%', height: '21%' },
-    banana: { left: '55%', top: '50%', width: '15%', height: '21%' },
-    apple: { left: '78%', top: '50%', width: '14%', height: '21%' },
+    watermelon: { left: '33%', top: '55%', width: '14%', height: '21%' },
+    banana: { left: '55%', top: '55%', width: '14%', height: '21%' },
+    apple: { left: '78%', top: '55%', width: '14%', height: '21%' },
   },
 
   // ── Step 2: Fridge (fridge.png) ───────────────────────────────────────────
@@ -45,20 +45,36 @@ export const SCENE_HOTSPOTS = {
   },
 };
 
+const VIETNAMESE_MEANINGS = {
+  broccoli: 'Bông cải xanh',
+  cucumber: 'Dưa chuột',
+  potato: 'Khoai tây',
+  onion: 'Hành tây',
+  watermelon: 'Dưa hấu',
+  banana: 'Quả chuối',
+  apple: 'Quả táo',
+  cheese: 'Phô mai',
+  yogurt: 'Sữa chua',
+  butter: 'Bơ',
+  crackers: 'Bánh quy',
+  chocolate: 'Sô-cô-la',
+  candy: 'Kẹo',
+  chicken: 'Thịt gà',
+  beef: 'Thịt bò',
+  pork: 'Thịt heo',
+  fish: 'Con cá',
+  shrimp: 'Con tôm',
+  crab: 'Con cua',
+  bread: 'Bánh mì',
+  egg: 'Quả trứng',
+  milk: 'Sữa',
+  orange: 'Quả cam',
+  pear: 'Quả lê',
+  grapes: 'Chùm nho',
+};
+
 // =============================================================================
 // ShoppingCounter – Scene-based component
-//
-// Props:
-//   backgroundImage   – imported asset URL for the shelf/fridge/counter
-//   backgroundAlt     – a11y alt text for the background
-//   sceneKey          – key into SCENE_HOTSPOTS (= activeStep.expectedEntity)
-//   correctItems      – vocabulary items the player must collect
-//   wrongItems        – distractor vocabulary items
-//   collectedIds      – Set<string> of already-collected IDs
-//   onCorrect(id)     – called when a correct hotspot is clicked
-//   onWrong(id)       – called when a wrong hotspot is clicked
-//   onReturn          – callback to return to the main supermarket background
-//   devMode           – show hotspot outlines for layout calibration
 // =============================================================================
 export default function ShoppingCounter({
   backgroundImage,
@@ -109,7 +125,7 @@ export default function ShoppingCounter({
           onClick={onReturn}
           aria-label="Return to Supermarket"
         >
-          Return to Supermarket ↩️
+          Trở về siêu thị
         </button>
       )}
 
@@ -125,6 +141,9 @@ export default function ShoppingCounter({
       {Object.entries(hotspots).map(([hotspotId, pos]) => {
         const collected = collectedIds.has(hotspotId);
         const isShaking = shakingId === hotspotId;
+        const englishLabel = itemMap[hotspotId]?.label ?? hotspotId;
+        const vietnameseMeaning = itemMap[hotspotId]?.meaning || VIETNAMESE_MEANINGS[hotspotId.toLowerCase()];
+        const displayLabel = vietnameseMeaning ? `${englishLabel} (${vietnameseMeaning})` : englishLabel;
 
         return (
           <button
@@ -145,8 +164,8 @@ export default function ShoppingCounter({
             onClick={() => handleHotspotClick(hotspotId)}
             aria-label={
               collected
-                ? `${itemMap[hotspotId]?.label ?? hotspotId} — collected`
-                : `Pick up ${itemMap[hotspotId]?.label ?? hotspotId}`
+                ? `${englishLabel} — collected`
+                : `Pick up ${englishLabel}`
             }
             disabled={collected}
           >
@@ -158,7 +177,7 @@ export default function ShoppingCounter({
             {/* Label tooltip shown on hover (helps players learn the word) */}
             {!collected && (
               <span className="hotspot__label" aria-hidden="true">
-                {itemMap[hotspotId]?.label ?? hotspotId}
+                {displayLabel}
               </span>
             )}
           </button>

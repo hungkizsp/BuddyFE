@@ -30,7 +30,7 @@ const SPEECH_TIMEOUT_MS = 7_000;
  *   'NO_MATCH'       — speech detected but couldn't be recognised
  *   'CANCELLED'      — recognizer was cancelled (network / auth error)
  */
-export async function assessSpeech() {
+export async function assessSpeech(expectedSentence = '') {
   if (!SPEECH_KEY) {
     const err = new Error('Azure Speech key is not configured. Set VITE_AZURE_SPEECH_KEY in .env.local');
     err.code = 'NO_KEY';
@@ -53,11 +53,13 @@ export async function assessSpeech() {
 
     const audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
 
+    // Scripted mode: pass the expected sentence so Azure compares what was said
+    // against what should have been said (enableMiscue = true flags omissions/insertions)
     const pronConfig = new SpeechSDK.PronunciationAssessmentConfig(
-      "",
+      expectedSentence || "",
       SpeechSDK.PronunciationAssessmentGradingSystem.HundredMark,
       SpeechSDK.PronunciationAssessmentGranularity.Phoneme,
-      /* enableMiscue */ false,
+      /* enableMiscue */ Boolean(expectedSentence),
     );
     pronConfig.enableProsodyAssessment = true;
     pronConfig.phonemeAlphabet = "IPA";
@@ -112,9 +114,15 @@ export async function assessSpeech() {
             completenessScore: Math.round(pronResult.completenessScore ?? 0),
           };
 
-          const passed =
-            scores.accuracyScore >= ACCURACY_THRESHOLD &&
-            scores.fluencyScore >= FLUENCY_THRESHOLD;
+          // In scripted mode completenessScore measures how much of the expected
+          // sentence was actually spoken. Require both accuracy AND completeness
+          // so that saying "hello" when the sentence is long does NOT pass.
+          const hasExpected = Boolean(expectedSentence);
+          const passed = hasExpected
+            ? scores.accuracyScore >= ACCURACY_THRESHOLD &&
+              scores.completenessScore >= COVERAGE_THRESHOLD * 100
+            : scores.accuracyScore >= ACCURACY_THRESHOLD &&
+              scores.fluencyScore >= FLUENCY_THRESHOLD;
 
           const assessment = rawJson?.NBest?.[0];
           const words = assessment?.Words?.map(word => ({

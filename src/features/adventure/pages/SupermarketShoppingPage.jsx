@@ -374,8 +374,7 @@ export default function SupermarketShoppingPage() {
       {gameState === 'not-started' && (
         <div className="sm-intro-overlay">
           <div className="sm-intro-label">
-            <span className="sm-intro-label__icon">🔍</span>
-            <span>Adventure 2 – Supermarket Shopping</span>
+            <span>Tình huống 2 – Supermarket Shopping</span>
           </div>
 
           <div className="sm-intro-manga-grid">
@@ -393,9 +392,7 @@ export default function SupermarketShoppingPage() {
             onClick={handleStartMission}
             disabled={startDisabled}
           >
-            <span className="sm-intro-start-btn__icon">🛒</span>
-            <span>Let&apos;s Start!</span>
-            <span className="sm-intro-start-btn__arrow">🚀</span>
+            <span>Bắt đầu!</span>
           </button>
 
           <button
@@ -546,7 +543,7 @@ export default function SupermarketShoppingPage() {
                 onClick={() => setIsCounterPersonClicked(false)}
                 style={{ top: '15px', left: '15px' }}
               >
-                Quay lại siêu thị ↩️
+                Quay lại siêu thị
               </button>
               <div className="sm-voice-panel__header" style={{ marginTop: '20px' }}>
                 <span className="sm-voice-panel__icon">🗣️</span>

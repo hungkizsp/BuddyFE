@@ -1,154 +1,182 @@
-.adv-page {
-  position: relative;
+/* =========================================================
+   Adventure Hub – AdventurePage.css (2-Column Hero 1-Page Layout)
+   ========================================================= */
+
+.adv-hub-main {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(111, 255, 0, 0.16), transparent 35%),
-    radial-gradient(circle at 80% 20%, rgba(99, 179, 237, 0.2), transparent 32%),
-    #010828;
-  font-family: 'Nunito', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  height: calc(100vh - 52px);
   overflow: hidden;
-  color: var(--text-primary);
-}
-
-.adv-back-home {
-  position: absolute;
-  top: 70px;
-  left: 16px;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.8);
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  font-family: inherit;
-}
-
-.adv-back-home:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
-
-.adv-bg-glow {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  width: 500px;
-  height: 500px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(111, 255, 0, 0.2) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.adv-header {
   position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 32px 24px 8px;
 }
 
-.adv-title {
-  margin: 0;
-  font-size: clamp(1.6rem, 4vw, 2rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-primary);
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-}
-
-.adv-subtitle {
-  margin: 6px 0 0;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.65);
-  font-weight: 600;
-}
-
-.adv-progress-section {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 24px;
-  width: 100%;
-  max-width: 320px;
-}
-
-.adv-progress-bar-track {
+.adv-hub-container {
   flex: 1;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.adv-progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent-lime), #9afc57);
-  border-radius: 99px;
-  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.adv-progress-label {
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--accent-lime);
-  min-width: 36px;
-  text-align: right;
-}
-
-.adv-model-section {
-  position: relative;
-  z-index: 1;
-  flex: 1;
-  width: 100%;
-  max-width: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 32px 48px;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  gap: 48px;
+}
+
+/* ── Left Column: Info & Action Card ── */
+.adv-hub-info {
+  flex: 1;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  z-index: 5;
+}
+
+.adv-hub-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+  font-size: 0.85rem;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.adv-hub-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 2.75rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.adv-hub-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-weight: 1.5;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+/* ── Progress Card ── */
+.adv-hub-progress-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.adv-hub-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adv-hub-progress-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.adv-hub-progress-value {
+  font-size: 1rem;
+  font-weight: 900;
+  color: #4ade80;
+}
+
+.adv-hub-progress-track {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.adv-hub-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+}
+
+/* ── Action Button ── */
+.adv-enter-btn-hero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 32px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 18px;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(34, 197, 94, 0.45), 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-decoration: none;
+  user-select: none;
+  margin-top: 8px;
+}
+
+.adv-enter-btn-hero:hover {
+  transform: translateY(-3px) scale(1.02);
+  background: linear-gradient(135deg, #25e06b 0%, #16a34a 100%);
+  box-shadow: 0 14px 38px rgba(34, 197, 94, 0.65), 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.adv-enter-btn-hero:active {
+  transform: translateY(-1px) scale(0.99);
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+}
+
+.adv-enter-btn-arrow {
+  font-size: 1.3rem;
+  transition: transform 0.2s ease;
+}
+
+.adv-enter-btn-hero:hover .adv-enter-btn-arrow {
+  transform: translateX(6px);
+}
+
+/* ── Right Column: 3D World Globe ── */
+.adv-hub-visual {
+  flex: 1.2;
+  height: 100%;
+  max-height: 520px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 32px;
+  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.16) 0%, rgba(15, 23, 42, 0) 70%);
 }
 
 .adv-loading {
-  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.adv-footer {
-  position: relative;
-  z-index: 1;
-  padding: 16px 24px 40px;
-}
-
-.adv-enter-btn {
-  background: linear-gradient(90deg, var(--accent-lime), #9afc57);
-  color: #041139;
-  border: none;
-  border-radius: 999px;
-  padding: 14px 48px;
-  font-size: 16px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
-  box-shadow: 0 8px 22px rgba(111, 255, 0, 0.35);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.adv-enter-btn:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 28px rgba(111, 255, 0, 0.45);
-}
-
-.adv-enter-btn:active {
-  transform: translateY(1px);
-  box-shadow: 0 4px 12px rgba(111, 255, 0, 0.3);
+  font-size: 1.1rem;
 }

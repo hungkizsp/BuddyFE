@@ -5,7 +5,6 @@ import Tabs from '../../../shared/components/ui/Tabs'
  * FilterBar – Search input, tabs, and category dropdown for vocabulary filtering.
  */
 export default function FilterBar({
-  searchTerm,
   onSearch,
   selectedTab,
   onTabChange,
@@ -15,9 +14,9 @@ export default function FilterBar({
   stats,
 }) {
   const tabItems = [
-    { key: 'all',     label: 'Tất cả',   count: stats.total },
+    { key: 'all', label: 'Tất cả', count: stats.total },
     { key: 'learned', label: 'Đã thuộc', count: stats.learned },
-    { key: 'locked',  label: 'Chưa mở',  count: stats.locked },
+    { key: 'locked', label: 'Chưa mở', count: stats.locked },
   ]
 
   return (
