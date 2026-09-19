@@ -171,26 +171,6 @@ export default function HomePage() {
               ref={bellRef}
               style={{ position: 'relative', marginRight: '8px', display: 'inline-block' }}
             >
-              <button
-                className="reset-btn"
-                title="Thông báo"
-                onClick={() => setBellOpen((v) => !v)}
-                style={{ position: 'relative' }}
-              >
-                🔔
-                {unreadCount > 0 && (
-                  <span style={{
-                    position: 'absolute', top: '-4px', right: '-4px',
-                    background: 'linear-gradient(135deg,#f43f5e,#ef4444)',
-                    color: '#fff', fontSize: '9px', fontWeight: 800,
-                    borderRadius: '8px', padding: '1px 4px', lineHeight: 1.4,
-                    minWidth: '14px', textAlign: 'center',
-                  }}>
-                    {unreadCount > 99 ? '99+' : unreadCount}
-                  </span>
-                )}
-              </button>
-
               {/* Mini notification bubble popup */}
               {bellOpen && (
                 <div style={{

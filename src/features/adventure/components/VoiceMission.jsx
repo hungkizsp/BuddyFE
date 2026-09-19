@@ -89,7 +89,10 @@ export default function VoiceMission({
     setEvaluateError('');
 
     try {
-      const result = await assessSpeech(expectedSentence);
+      // Scenario 3 (Family Restaurant): use freeform recognition so Azure
+      // transcribes freely instead of anchoring to the expected sentence.
+      // The backend Gemini/rule-based engine will handle intent+entity matching.
+      const result = await assessSpeech(Number(scenarioId) === 3 ? '' : expectedSentence);
       if (abortRef.current) return; // component unmounted mid-flight
       setAssessmentResult(result);
 

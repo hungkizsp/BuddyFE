@@ -18,13 +18,7 @@ function XpBar({ xp, level }) {
 export default function SideBar() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { currentUser, childProfile, loadChildProfile, logout } = useAuthStore()
-
-  useEffect(() => {
-    if (!childProfile) {
-      loadChildProfile()
-    }
-  }, [])
+  const { currentUser, childProfile, logout } = useAuthStore()
 
   const handleLogout = async () => {
     await logout()

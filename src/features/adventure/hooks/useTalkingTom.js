@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import { useAudioStore } from '../store/audioStore';
 
-export function useTalkingTom(isActive = true) {
+export function useTalkingTom(enabled = true) {
+  const isMuted = useAudioStore((state) => state.isMuted);
+  const isActive = enabled && !isMuted;
+
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
@@ -9,14 +13,21 @@ export function useTalkingTom(isActive = true) {
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const silenceTimerRef = useRef(null);
-  
+  const currentEchoAudioRef = useRef(null);
+
   const isRecordingRef = useRef(false);
   const isBuddySpeakingRef = useRef(false);
   const animationFrameIdRef = useRef(null);
   const streamRef = useRef(null);
 
   useEffect(() => {
-    if (!isActive) return;
+    if (!isActive) {
+      setIsListening(false);
+      setIsSpeaking(false);
+      isRecordingRef.current = false;
+      isBuddySpeakingRef.current = false;
+      return;
+    }
 
     let isComponentMounted = true;
 
@@ -28,16 +39,16 @@ export function useTalkingTom(isActive = true) {
           return;
         }
         streamRef.current = stream;
-        
+
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
         analyserRef.current = audioContextRef.current.createAnalyser();
         analyserRef.current.fftSize = 512;
-        
+
         const source = audioContextRef.current.createMediaStreamSource(stream);
         source.connect(analyserRef.current);
 
         mediaRecorderRef.current = new MediaRecorder(stream);
-        
+
         mediaRecorderRef.current.ondataavailable = (e) => {
           if (e.data.size > 0) {
             audioChunksRef.current.push(e.data);
@@ -49,7 +60,9 @@ export function useTalkingTom(isActive = true) {
           const mimeType = mediaRecorderRef.current.mimeType || 'audio/webm';
           const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
           audioChunksRef.current = []; // reset
-          playEcho(audioBlob);
+          if (isComponentMounted) {
+            playEcho(audioBlob);
+          }
         };
 
         monitorVolume();
@@ -60,10 +73,10 @@ export function useTalkingTom(isActive = true) {
 
     const monitorVolume = () => {
       if (!analyserRef.current) return;
-      
+
       const bufferLength = analyserRef.current.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
-      
+
       const checkVolume = () => {
         if (!isComponentMounted) return;
 
@@ -74,7 +87,7 @@ export function useTalkingTom(isActive = true) {
         }
 
         analyserRef.current.getByteFrequencyData(dataArray);
-        
+
         // Calculate average volume
         let sum = 0;
         for (let i = 0; i < bufferLength; i++) {
@@ -91,7 +104,7 @@ export function useTalkingTom(isActive = true) {
           if (!isRecordingRef.current) {
             isRecordingRef.current = true;
             setIsListening(true);
-            try { mediaRecorderRef.current.start(); } catch(e){}
+            try { mediaRecorderRef.current.start(); } catch (e) { }
           }
           // Reset silence timer
           if (silenceTimerRef.current) {
@@ -104,7 +117,7 @@ export function useTalkingTom(isActive = true) {
             silenceTimerRef.current = setTimeout(() => {
               isRecordingRef.current = false;
               setIsListening(false);
-              try { mediaRecorderRef.current.stop(); } catch(e){}
+              try { mediaRecorderRef.current.stop(); } catch (e) { }
               silenceTimerRef.current = null;
             }, SILENCE_DURATION);
           }
@@ -122,11 +135,14 @@ export function useTalkingTom(isActive = true) {
 
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
+      currentEchoAudioRef.current = audio;
+
       // Pitch shift / Chipmunk effect
-      audio.playbackRate = 1.4; 
+      audio.playbackRate = 1.4;
       audio.preservesPitch = false; // Required for pitch shifting in modern browsers
 
       audio.onended = () => {
+        currentEchoAudioRef.current = null;
         if (!isComponentMounted) return;
         isBuddySpeakingRef.current = false;
         setIsSpeaking(false);
@@ -135,6 +151,7 @@ export function useTalkingTom(isActive = true) {
 
       audio.play().catch(e => {
         console.error("Talking Tom audio play failed", e);
+        currentEchoAudioRef.current = null;
         if (!isComponentMounted) return;
         isBuddySpeakingRef.current = false;
         setIsSpeaking(false);
@@ -145,16 +162,23 @@ export function useTalkingTom(isActive = true) {
 
     return () => {
       isComponentMounted = false;
+      if (currentEchoAudioRef.current) {
+        currentEchoAudioRef.current.pause();
+        currentEchoAudioRef.current.src = '';
+        currentEchoAudioRef.current = null;
+      }
       if (animationFrameIdRef.current) cancelAnimationFrame(animationFrameIdRef.current);
       if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
       if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-        mediaRecorderRef.current.stop();
+        try { mediaRecorderRef.current.stop(); } catch (e) { }
       }
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
       }
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        try { audioContextRef.current.close(); } catch (e) { }
+        audioContextRef.current = null;
       }
     };
   }, [isActive]);

@@ -99,7 +99,7 @@ function Settings({ size = 15, className, style }) {
 
 export default function TopBar({ theme = 'light' }) {
   const navigate = useNavigate()
-  const { currentUser, childProfile, profileStats, loadChildProfile, logout } = useAuthStore()
+  const { currentUser, childProfile, profileStats, logout } = useAuthStore()
   const { unreadCount, notifications, fetchNotifications, markAllAsRead, markAsRead } = useNotificationStore()
 
   const [profileOpen, setProfileOpen] = useState(false)
@@ -107,13 +107,6 @@ export default function TopBar({ theme = 'light' }) {
 
   const profileRef = useRef(null)
   const bellRef = useRef(null)
-
-  // Load child profile on mount
-  useEffect(() => {
-    if (!childProfile) {
-      loadChildProfile()
-    }
-  }, [])
 
   // Load and poll notifications
   useEffect(() => {

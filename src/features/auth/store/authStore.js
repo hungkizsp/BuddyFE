@@ -2,6 +2,9 @@ import { create } from 'zustand'
 import { authService } from '../services/authService'
 import axiosClient from '../../../shared/api/axiosClient'
 
+let childProfilePromise = null
+let profileStatsPromise = null
+
 export const useAuthStore = create((set, get) => ({
   currentUser: null,
   childProfile: null,
@@ -94,6 +97,8 @@ export const useAuthStore = create((set, get) => ({
     try {
       await authService.logout()
     } finally {
+      childProfilePromise = null
+      profileStatsPromise = null
       set({
         currentUser: null,
         childProfile: null,
@@ -105,46 +110,69 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  loadChildProfile: async () => {
-    try {
-      const response = await axiosClient.get('/profile/child')
-      const profile = response.data.data
-      set({ childProfile: profile })
-      if (profile?.id) {
-        await get().loadProfileStats(profile.id)
-      }
-      return profile
-    } catch (error) {
-      console.error('Failed to load child profile:', error)
-      return null
+  loadChildProfile: async (force = false) => {
+    if (childProfilePromise && !force) {
+      return childProfilePromise
     }
+
+    childProfilePromise = (async () => {
+      try {
+        const response = await axiosClient.get('/profile/child')
+        const profile = response.data.data
+        set({ childProfile: profile })
+        if (profile?.id) {
+          await get().loadProfileStats(profile.id, force)
+        }
+        return profile
+      } catch (error) {
+        console.error('Failed to load child profile:', error)
+        return null
+      } finally {
+        childProfilePromise = null
+      }
+    })()
+
+    return childProfilePromise
   },
 
-  loadProfileStats: async (childId) => {
-    try {
-      // 1. Fetch vocabulary count
-      const vocabRes = await axiosClient.get(`/progress/vocabularies?childId=${childId}`)
-      const vocabularyCount = vocabRes.data.data?.length || 0
+  loadProfileStats: async (childId, force = false) => {
+    if (!childId) return
+    if (profileStatsPromise && !force) {
+      return profileStatsPromise
+    }
 
-      // 2. Fetch achievement count
-      const achievementRes = await axiosClient.get(`/child-achievements?childId=${childId}`)
-      const achievementCount = achievementRes.data.data?.filter(a => a.earnedAt != null).length || 0
+    profileStatsPromise = (async () => {
+      try {
+        // Fetch vocabulary, achievements, and buddy profiles concurrently in parallel
+        const [vocabRes, achievementRes, buddyRes] = await Promise.all([
+          axiosClient.get(`/progress/vocabularies?childId=${childId}`),
+          axiosClient.get(`/child-achievements?childId=${childId}`),
+          axiosClient.get('/buddy/profiles'),
+        ])
 
-      // 3. Fetch buddy level
-      const buddyRes = await axiosClient.get('/buddy/profiles')
-      const myBuddy = buddyRes.data.data?.find(b => b.childId === childId)
-      const buddyLevel = myBuddy ? myBuddy.level : 1
+        const vocabularyCount = vocabRes.data.data?.length || 0
+        const achievementCount =
+          achievementRes.data.data?.filter((a) => a.earnedAt != null).length || 0
+        const myBuddy = buddyRes.data.data?.find((b) => b.childId === childId)
+        const buddyLevel = myBuddy ? myBuddy.level : 1
 
-      set({
-        profileStats: {
+        const stats = {
           vocabularyCount,
           achievementCount,
           buddyLevel,
-        },
-      })
-    } catch (error) {
-      console.error('Failed to load profile stats:', error)
-    }
+        }
+
+        set({ profileStats: stats })
+        return stats
+      } catch (error) {
+        console.error('Failed to load profile stats:', error)
+        return null
+      } finally {
+        profileStatsPromise = null
+      }
+    })()
+
+    return profileStatsPromise
   },
 }))
 

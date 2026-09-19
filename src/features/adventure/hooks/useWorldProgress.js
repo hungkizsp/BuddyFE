@@ -19,6 +19,7 @@ export default function useWorldProgress(worldId, childId) {
         setLoading(true)
         setError('')
         const data = await learningService.getWorldProgressByChildAndWorldId(childId, worldId)
+        console.log("call" + data);
         if (!ignore) setProgress(data ?? null)
       } catch (err) {
         if (!ignore) setError(err.message || 'Unable to load progress.')

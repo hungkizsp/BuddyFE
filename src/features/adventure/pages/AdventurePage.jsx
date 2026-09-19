@@ -34,10 +34,9 @@ export default function AdventurePage() {
   const { childProfile } = useAuthStore();
 
   const foodForest = useMemo(
-    () => worlds.find((w) => w.name?.toLowerCase() === "food forest"),
+    () => worlds.find((w) => w.name?.toLowerCase() === "food forest" || "khu rừng thức ăn"),
     [worlds],
   );
-
   const { progress, loading: progressLoading } = useWorldProgress(
     foodForest?.id,
     childProfile?.id,
