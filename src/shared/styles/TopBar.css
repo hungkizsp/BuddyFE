@@ -49,11 +49,9 @@
 }
 
 /* ── Dropdown Popover ── */
-.profile-popover {
+.base-popover {
   position: absolute;
   top: calc(100% + 8px);
-  left: 0;
-  width: 280px;
   background: var(--popover-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -61,12 +59,21 @@
   box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.15), 0 4px 12px -5px rgba(15, 23, 42, 0.08);
   border-radius: 20px;
   z-index: 1000;
+  animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--popover-text);
+}
+
+.profile-popover {
+  left: 0;
+  width: 280px;
   padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  color: var(--popover-text);
+}
+
+.notification-popover {
+  /* Tailwind handles dimensions and padding */
 }
 
 @keyframes popoverFadeIn {

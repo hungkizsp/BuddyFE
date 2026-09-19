@@ -225,7 +225,7 @@ export default function TopBar({ theme = 'light' }) {
 
         {/* Detailed Stats Popover */}
         {profileOpen && (
-          <div className="profile-popover" style={{ left: 0 }}>
+          <div className="base-popover profile-popover" style={{ left: 0 }}>
             <div className="profile-popover-header">
               <div className="profile-popover-title">{nickname}</div>
               <div className="profile-popover-subtitle">Nhà thám hiểm Cấp {displayLevel}</div>
@@ -299,7 +299,7 @@ export default function TopBar({ theme = 'light' }) {
       </div>
 
       {/* Action Buttons (Right) */}
-      <div className="flex items-center gap-1" ref={bellRef}>
+      <div className="flex items-center gap-1 relative" ref={bellRef}>
         <button
           className="w-8 h-8 rounded-full flex items-center justify-center transition-colors topbar-action-btn relative"
           onClick={() => setBellOpen((prev) => !prev)}
@@ -316,7 +316,7 @@ export default function TopBar({ theme = 'light' }) {
         {/* Notifications Dropdown Popup */}
         {bellOpen && (
           <div
-            className="absolute top-full right-5 mt-2 w-80 rounded-2xl shadow-xl z-[999] overflow-hidden profile-popover"
+            className="absolute top-full right-0 mt-2 w-80 rounded-2xl shadow-xl z-[999] overflow-hidden base-popover notification-popover"
             style={{ animation: 'popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1)', padding: 0 }}
           >
             {/* Header */}
