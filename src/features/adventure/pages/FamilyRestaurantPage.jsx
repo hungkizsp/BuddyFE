@@ -31,10 +31,18 @@ import '../styles/SupermarketShoppingPage.css';
 import '../styles/FamilyRestaurantPage.css';
 
 import orderPerson from '../../../assets/order_person.png';
-import menuImg from '../../../assets/menu.png';
+import menuImg from '../../../assets/menu2.png';
 import familyResMini from '../../../assets/mini-1/family_restaurant_mini.png'
 import BackgroundMusic from '../components/BackgroundMusic';
 import bgMusicSrc from '../../../assets/Music/Kitchen_Floor_Carnival.mp3';
+
+// Mapping bước → nhóm món trong thực đơn mới (menu2)
+const STEP_CATEGORIES = {
+  1: { label: 'Khai Vị', emoji: '', hint: 'Mục 1: KHAI Vị trong thực đơn nhé!' },
+  2: { label: 'Món Chính', emoji: '', hint: 'Mục 2: MÓN CHÍNH trong thực đơn nhé!' },
+  3: { label: 'Tráng Miệng', emoji: '', hint: 'Mục 3: TRÁNG MIỆNG trong thực đơn nhé!' },
+  4: { label: 'Đồ Uống', emoji: '', hint: 'Mục 4: ĐỒ UỐNG trong thực đơn nhé!' },
+};
 
 export default function FamilyRestaurantPage() {
   const navigate = useNavigate();
@@ -134,6 +142,19 @@ export default function FamilyRestaurantPage() {
   );
 
   const orderingSteps = useMemo(() => getGameplaySteps(scenarioSteps), [scenarioSteps]);
+
+  // Enrich bước với nhãn tiếng Việt cho progress bar
+  const enrichedOrderingSteps = useMemo(
+    () =>
+      orderingSteps.map((step) => {
+        const cat = STEP_CATEGORIES[step.stepOrder];
+        return cat
+          ? { ...step, categoryLabel: `${cat.emoji} ${cat.label}` }
+          : step;
+      }),
+    [orderingSteps],
+  );
+
   const activeStep = scenarioSteps[missionStage] ?? null;
   const activeOrderIndex = useMemo(() => {
     if (!activeStep) return 0;
@@ -316,7 +337,7 @@ export default function FamilyRestaurantPage() {
       {gameState === 'not-started' && (
         <div className="rest-intro-overlay">
           <div className="rest-intro-label">
-            <span>Tình huống 3 – Family Restaurant</span>
+            <span>Tình huống 3 – Nhà Hàng Gia Đình</span>
           </div>
 
           <div className="rest-intro-manga-grid">
@@ -344,8 +365,8 @@ export default function FamilyRestaurantPage() {
             className="rest-intro-back-link"
             onClick={() => navigate('/adventure/food-forest')}
           >
-            ← Back to map
-          </button>u
+            ← Quay lại bản đồ
+          </button>
         </div>
       )}
 
@@ -383,7 +404,13 @@ export default function FamilyRestaurantPage() {
               className="rest-waiter-hotspot animate-pulse"
               onClick={() => {
                 setWaiterClicked(true);
-                setFeedbackMessage(activeStep?.buddyMessage || 'Hãy gọi món bằng tiếng Anh nhé!');
+                const cat = STEP_CATEGORIES[activeStep?.stepOrder];
+                const catHint = cat ? cat.hint : '';
+                setFeedbackMessage(
+                  activeStep?.buddyMessage
+                    ? `${activeStep.buddyMessage}${catHint ? ` (${catHint})` : ''}`
+                    : cat?.hint || 'Hãy gọi món bằng tiếng Anh nhé!',
+                );
               }}
               aria-label="Gọi món với nhân viên"
             />
@@ -398,7 +425,7 @@ export default function FamilyRestaurantPage() {
       {gameState === 'ordering' && (
         <div className="rest-gameplay-area">
           <RestaurantProgress
-            steps={orderingSteps}
+            steps={enrichedOrderingSteps}
             currentIndex={activeOrderIndex}
             completedIndexes={completedStepIndexes}
           />
@@ -408,8 +435,14 @@ export default function FamilyRestaurantPage() {
       {gameState === 'ordering' && isOrderStep(activeStep) && waiterClicked && expectedSentence && (
         <div className="rest-voice-panel">
           <div className="rest-voice-panel__header">
-            <span className="rest-voice-panel__icon">🗣️</span>
-            <h2 className="rest-voice-panel__title">Gọi món bằng tiếng Anh</h2>
+            <span className="rest-voice-panel__icon">
+              {STEP_CATEGORIES[activeStep?.stepOrder]?.emoji || '🗣️'}
+            </span>
+            <h2 className="rest-voice-panel__title">
+              {STEP_CATEGORIES[activeStep?.stepOrder]
+                ? `${STEP_CATEGORIES[activeStep.stepOrder].label} – Gọi món tiếng Anh`
+                : 'Gọi món bằng tiếng Anh'}
+            </h2>
           </div>
           <VoiceMission
             expectedSentence={expectedSentence}
