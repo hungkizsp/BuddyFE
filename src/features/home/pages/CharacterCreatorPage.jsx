@@ -7,6 +7,9 @@ import { useCharacterGeneration } from '../hooks/useCharacterGeneration'
 import { getMyCharacters } from '../../../shared/api/characterApi'
 import { useAuthStore } from '../../auth/store/authStore'
 import axiosClient from '../../../shared/api/axiosClient'
+import TopBar from '../../../shared/components/TopBar'
+import SideBar from '../../../layouts/SideBar'
+import './HomePage.css'
 import './CharacterCreatorPage.css'
 
 const ART_STYLES = [
@@ -95,23 +98,28 @@ export default function CharacterCreatorPage() {
   const isIdle = !isGenerating && !task
 
   return (
-    <div className="character-creator">
-      {/* Ambient background blobs */}
-      <div className="character-creator__bg-blob character-creator__bg-blob--purple" />
-      <div className="character-creator__bg-blob character-creator__bg-blob--blue" />
-      <div className="noise-overlay" />
+    <div className="home-root app-shell">
+      <SideBar />
 
-      {/* ── Header ── */}
-      <header className="character-creator__header">
-        <button className="character-creator__back-btn" onClick={() => navigate('/home')}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M12 5l-7 7 7 7" />
-          </svg>
-          Back to Home
-        </button>
+      <main className="chat-main character-creator" style={{ position: 'relative', overflowY: 'auto', padding: 0 }}>
+        <TopBar theme="dark" />
+
+        {/* Ambient background blobs */}
+        <div className="character-creator__bg-blob character-creator__bg-blob--purple" />
+        <div className="character-creator__bg-blob character-creator__bg-blob--blue" />
+        <div className="noise-overlay" />
+
+        {/* ── Header ── */}
+        <header className="character-creator__header">
+          <button className="character-creator__back-btn" onClick={() => navigate('/home')}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
+            Quay Về Trang Chủ
+          </button>
         <div className="character-creator__title-wrap">
-          <div className="character-creator__title">Character Creator</div>
-          <div className="character-creator__subtitle">Design your personal Buddy with AI</div>
+          <div className="character-creator__title">Tạo Nhân Vật AI</div>
+          <div className="character-creator__subtitle">Tự tay thiết kế người bạn Buddy độc đáo với trí tuệ nhân tạo AI</div>
         </div>
         <div style={{ width: 120 }} />
       </header>
@@ -124,11 +132,11 @@ export default function CharacterCreatorPage() {
 
           {/* Character Name */}
           <div>
-            <div className="form-section-label">01 — Character Name</div>
+            <div className="form-section-label">01 — Tên nhân vật</div>
             <input
               type="text"
               className="character-creator__name-input"
-              placeholder="E.g. Spark, Luna, Rex..."
+              placeholder="Ví dụ: Khủng Long Con, Rồng Nhỏ, Cáo Xinh..."
               value={characterName}
               onChange={e => setCharacterName(e.target.value)}
               maxLength={50}
@@ -137,10 +145,10 @@ export default function CharacterCreatorPage() {
 
           {/* Prompt */}
           <div>
-            <div className="form-section-label">02 — Describe your character</div>
+            <div className="form-section-label">02 — Mô tả người bạn mong muốn</div>
             <textarea
               className="character-creator__prompt-input"
-              placeholder="A tiny dragon with golden scales, big friendly eyes, wearing a school backpack..."
+              placeholder="Một chú rồng nhỏ đáng yêu có vảy vàng lung linh, đôi mắt to tròn, đeo chiếc cặp sách bé xíu..."
               value={prompt}
               onChange={e => setPrompt(e.target.value)}
               maxLength={500}
@@ -149,7 +157,7 @@ export default function CharacterCreatorPage() {
 
           {/* Quick Prompts */}
           <div>
-            <div className="form-section-label">03 — Quick ideas</div>
+            <div className="form-section-label">03 — Gợi ý ý tưởng nhanh</div>
             <div className="character-creator__chips">
               {QUICK_PROMPTS.map(q => (
                 <button
@@ -165,7 +173,7 @@ export default function CharacterCreatorPage() {
 
           {/* Art Style */}
           <div>
-            <div className="form-section-label">04 — Art Style</div>
+            <div className="form-section-label">04 — Phong cách nghệ thuật</div>
             <div className="character-creator__art-styles">
               {ART_STYLES.map(style => (
                 <button
@@ -194,8 +202,8 @@ export default function CharacterCreatorPage() {
             disabled={isGenerating || !prompt.trim()}
           >
             {isGenerating
-              ? `✦ Generating... ${task?.progress ?? 0}%`
-              : '✦ Generate My Character'
+              ? `✦ Đang tạo nhân vật... ${task?.progress ?? 0}%`
+              : '✦ Tạo Nhân Vật Ngay'
             }
           </button>
 
@@ -204,7 +212,7 @@ export default function CharacterCreatorPage() {
               onClick={reset}
               style={{ background: 'none', border: 'none', color: 'rgba(243,244,246,0.4)', fontFamily: 'JetBrains Mono', fontSize: '0.7rem', textTransform: 'uppercase', cursor: 'pointer', letterSpacing: '0.05em' }}
             >
-              ✕ Start over
+              ✕ Làm lại từ đầu
             </button>
           )}
         </div>
@@ -229,7 +237,7 @@ export default function CharacterCreatorPage() {
               <div className="character-creator__placeholder">
                 <span className="character-creator__placeholder-icon">🐾</span>
                 <p className="character-creator__placeholder-text">
-                  Your character will appear here after generation
+                  Nhân vật 3D của bé sẽ xuất hiện tại đây sau khi tạo thành công!
                 </p>
               </div>
             )}
@@ -260,10 +268,10 @@ export default function CharacterCreatorPage() {
               }}
             >
               {childProfile?.activeCustomCharacterUrl === selectedModel
-                ? '⭐ Equipped as Active Buddy'
+                ? '⭐ Đang là Bạn Đồng Hành của bé'
                 : isEquipping
-                  ? 'Equipping...'
-                  : 'Equip Character'
+                  ? 'Đang thiết lập...'
+                  : 'Chọn Làm Bạn Đồng Hành'
               }
             </button>
           )}
@@ -272,7 +280,7 @@ export default function CharacterCreatorPage() {
           {task && (
             <div className="character-creator__status">
               <div className="character-creator__status-header">
-                <span className="character-creator__status-label">Generation Status</span>
+                <span className="character-creator__status-label">Trạng thái khởi tạo</span>
                 <StatusBadge status={task.status} />
               </div>
               <div className="character-creator__progress-bar-track">
@@ -283,10 +291,10 @@ export default function CharacterCreatorPage() {
               </div>
               <div className="character-creator__progress-text">
                 {task.status === 'SUCCEEDED'
-                  ? '✓ Complete — model saved locally'
+                  ? '✓ Hoàn thành — Mô hình 3D đã được lưu'
                   : task.status === 'FAILED'
-                    ? '✕ Generation failed'
-                    : `Meshy AI is sculpting your character... ${task.progress ?? 0}%`
+                    ? '✕ Khởi tạo thất bại'
+                    : `Trí tuệ nhân tạo đang phác thảo nhân vật... ${task.progress ?? 0}%`
                 }
               </div>
             </div>
@@ -295,9 +303,8 @@ export default function CharacterCreatorPage() {
           {/* Info Card when idle */}
           {isIdle && !selectedModel && (
             <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'rgba(243,244,246,0.35)', lineHeight: 1.8, padding: '0 0.25rem' }}>
-              <p>↑ Describe your character on the left and click Generate.</p>
-              <p style={{ marginTop: '0.5rem' }}>Generation takes approximately 1–3 minutes using Meshy AI.</p>
-              <p style={{ marginTop: '0.5rem' }}>The 3D model will be saved to your local project automatically.</p>
+              <p>↑ Mô tả nhân vật ở góc bên trái và bấm nút Tạo Nhân Vật.</p>
+              <p style={{ marginTop: '0.5rem' }}>Quá trình tạo mô hình 3D kéo dài khoảng 1–3 phút.</p>
             </div>
           )}
         </div>
@@ -307,7 +314,7 @@ export default function CharacterCreatorPage() {
       {myCharacters.length > 0 && (
         <div className="character-creator__gallery">
           <div className="character-creator__gallery-title">
-            My Characters <span style={{ fontSize: '0.75rem', color: 'rgba(243,244,246,0.4)', fontFamily: 'JetBrains Mono', textTransform: 'none', letterSpacing: 0 }}>({myCharacters.length})</span>
+            Bộ Sưu Tập Nhân Vật Của Bé <span style={{ fontSize: '0.75rem', color: 'rgba(243,244,246,0.4)', fontFamily: 'JetBrains Mono', textTransform: 'none', letterSpacing: 0 }}>({myCharacters.length})</span>
           </div>
           <div className="character-creator__gallery-grid">
             {myCharacters.map(character => (
@@ -332,6 +339,7 @@ export default function CharacterCreatorPage() {
           </div>
         </div>
       )}
+      </main>
     </div>
   )
 }

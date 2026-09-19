@@ -110,44 +110,44 @@ export default function TryBuddySection({ username = 'Hung', currentUser }) {
 
               {/* Heading */}
               <h2 className="font-grotesk text-[18px] sm:text-[36px] md:text-[48px] lg:text-[64px] uppercase leading-[1.05] text-cream text-left tracking-wide text-glow">
-                <span className="block mb-4 sm:mb-8 lg:mb-12">Your child deserves</span>
-                <span className="block">a friend who listens.</span>
-                <span className="block">a teacher who adapts.</span>
-                <span className="block">a companion who remembers.</span>
+                <span className="block mb-4 sm:mb-8 lg:mb-12">Bé xứng đáng có</span>
+                <span className="block">một người bạn luôn lắng nghe.</span>
+                <span className="block">một người thầy biết thấu hiểu.</span>
+                <span className="block">một người đồng hành tuyệt vời.</span>
               </h2>
 
               {/* Demo Profile Card */}
               <div className="mt-6 lg:mt-12 liquid-glass rounded-[16px] sm:rounded-[28px] p-4 sm:p-6 max-w-[420px] text-left">
-                <span className="font-grotesk text-[12px] uppercase tracking-widest text-neon block mb-3 text-glow">Live demo profile</span>
+                <span className="font-grotesk text-[12px] uppercase tracking-widest text-neon block mb-3 text-glow">Hồ sơ trải nghiệm</span>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#b724ff] to-[#7c3aed] text-cream flex items-center justify-center font-grotesk text-xl font-bold">
                     {userInitial}
                   </div>
                   <div>
                     <span className="font-grotesk text-base uppercase text-cream block text-glow">{username}</span>
-                    <span className="font-mono text-[11px] text-[#6FFF00] uppercase block font-bold text-readable">Level 3 — Food Forest Explorer</span>
+                    <span className="font-mono text-[11px] text-[#6FFF00] uppercase block font-bold text-readable">Cấp 3 — Nhà Thám Hiểm Rừng Thức Ăn</span>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2 font-mono text-[11px] uppercase">
                   <div className="bg-white/5 p-2.5 rounded-[10px]">
-                    <span className="text-cream/60 block mb-0.5">Speaking accuracy</span>
+                    <span className="text-cream/60 block mb-0.5">Độ chính xác phát âm</span>
                     <span className="text-cream font-bold text-sm text-glow">83%</span>
-                    <span className="text-neon block text-[10px] font-bold">↑ 12% this week</span>
+                    <span className="text-neon block text-[10px] font-bold">↑ 12% tuần này</span>
                   </div>
                   <div className="bg-white/5 p-2.5 rounded-[10px]">
-                    <span className="text-cream/60 block mb-0.5">Daily streak</span>
-                    <span className="text-cream font-bold text-sm text-glow">5 Days</span>
-                    <span className="text-neon block text-[10px] font-bold">Personal best: 12</span>
+                    <span className="text-cream/60 block mb-0.5">Chuỗi ngày học</span>
+                    <span className="text-cream font-bold text-sm text-glow">5 Ngày</span>
+                    <span className="text-neon block text-[10px] font-bold">Kỷ kỷ lục: 12 ngày</span>
                   </div>
                   <div className="bg-white/5 p-2.5 rounded-[10px]">
-                    <span className="text-cream/60 block mb-0.5">Words mastered</span>
+                    <span className="text-cream/60 block mb-0.5">Từ vựng đã thuộc</span>
                     <span className="text-cream font-bold text-sm text-glow">47 / 135</span>
-                    <span className="text-neon block text-[10px] font-bold">Food Forest: 80%</span>
+                    <span className="text-neon block text-[10px] font-bold">Khu Rừng Thức Ăn: 80%</span>
                   </div>
                   <div className="bg-white/5 p-2.5 rounded-[10px]">
-                    <span className="text-cream/60 block mb-0.5">Today's missions</span>
-                    <span className="text-cream font-bold text-sm text-glow">3 / 5 Done</span>
-                    <span className="text-neon block text-[10px] font-bold">2 missions left</span>
+                    <span className="text-cream/60 block mb-0.5">Nhiệm vụ hôm nay</span>
+                    <span className="text-cream font-bold text-sm text-glow">3 / 5 Xong</span>
+                    <span className="text-neon block text-[10px] font-bold">Còn 2 nhiệm vụ</span>
                   </div>
                 </div>
               </div>
@@ -156,21 +156,21 @@ export default function TryBuddySection({ username = 'Hung', currentUser }) {
               <div className="mt-6 text-left flex gap-3 flex-wrap">
                 {currentUser ? (
                   <Link to="/home" className="inline-block px-8 py-4 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
-                    Go to Dashboard
+                    Vào Trang Chủ
                   </Link>
                 ) : (
                   <Link to="/register" className="inline-block px-8 py-4 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
-                    Create free account
+                    Tạo tài khoản miễn phí
                   </Link>
                 )}
 
                 {currentUser ? (
                   <Link to="/adventure/food-forest/breakfast-trouble" className="inline-block liquid-glass px-8 py-4 font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
-                    Watch demo
+                    Xem bản học thử
                   </Link>
                 ) : (
                   <Link to="/login" className="inline-block liquid-glass px-8 py-4 font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
-                    Watch demo
+                    Xem bản học thử
                   </Link>
                 )}
               </div>

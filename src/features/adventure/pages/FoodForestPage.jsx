@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { useNavigate } from 'react-router-dom'
 import useScenarios from '../hooks/useScenarios'
@@ -12,10 +12,13 @@ import background from '../../../assets/BACKGROUND.png'
 import BackgroundMusic from '../components/BackgroundMusic'
 import bgMusicBoss from '../../../assets/Music/After_the_Boss_Fight.mp3'
 import bgMusicKitchen from '../../../assets/Music/Kitchen_Floor_Carnival.mp3'
+import learningService from '../services/learningService'
+import { useAuthStore } from '../../auth/store/authStore'
 
 export default function FoodForestPage() {
   const navigate = useNavigate()
   const { worlds, loading: worldsLoading, error: worldsError } = useWorlds()
+  const { childProfile } = useAuthStore()
 
   const foodForest = useMemo(
     () => worlds.find((world) => world.name?.toLowerCase() === 'food forest') || worlds[0],
@@ -36,26 +39,61 @@ export default function FoodForestPage() {
   )
 
   const [currentIndex, setCurrentIndex] = useState(0)
+  // completedIds: set of scenario IDs (numbers) that are COMPLETED in the backend
   const [completedIds, setCompletedIds] = useState([])
 
-  const getScenarioPath = (title) => {
-    switch (title) {
-      case 'Breakfast Trouble':
-        return '/adventure/food-forest/breakfast-trouble'
-      case 'Supermarket Shopping':
-        return '/adventure/food-forest/supermarket-shopping'
-      case 'Family Restaurant':
-        return '/adventure/food-forest/family-restaurant'
-      default:
-        return '/adventure/food-forest/kitchen-adventure'
+  // Load completed scenario IDs from backend on mount
+  useEffect(() => {
+    if (!childProfile?.id) return
+    let cancelled = false
+    const load = async () => {
+      try {
+        const list = await learningService.getScenarioProgressByChildId(childProfile.id)
+        if (cancelled) return
+        const ids = (list || [])
+          .filter((p) => p.status === 'COMPLETED')
+          .map((p) => p.scenarioId ?? p.scenario?.id)
+          .filter(Boolean)
+        setCompletedIds(ids)
+      } catch {
+        // silently ignore — not critical
+      }
     }
+    load()
+    return () => { cancelled = true }
+  }, [childProfile])
+
+  // Re-check completed when the tab regains focus (user returns from a scenario)
+  useEffect(() => {
+    if (!childProfile?.id) return
+    const onFocus = () => {
+      learningService.getScenarioProgressByChildId(childProfile.id)
+        .then((list) => {
+          const ids = (list || [])
+            .filter((p) => p.status === 'COMPLETED')
+            .map((p) => p.scenarioId ?? p.scenario?.id)
+            .filter(Boolean)
+          setCompletedIds(ids)
+        })
+        .catch(() => {})
+    }
+    window.addEventListener('focus', onFocus)
+    return () => window.removeEventListener('focus', onFocus)
+  }, [childProfile])
+
+  const getScenarioPath = (title) => {
+    if (!title) return '/adventure/food-forest/kitchen-adventure'
+    const t = title.toLowerCase()
+    if (t.includes('breakfast')) return '/adventure/food-forest/breakfast-trouble'
+    if (t.includes('supermarket') || t.includes('mua sắm') || t.includes('siêu thị'))
+      return '/adventure/food-forest/supermarket-shopping'
+    if (t.includes('restaurant') || t.includes('nhà hàng'))
+      return '/adventure/food-forest/family-restaurant'
+    return '/adventure/food-forest/kitchen-adventure'
   }
 
   const handleMissionClick = (mission) => {
-    setCompletedIds((prev) => (prev.includes(mission.id) ? prev : [...prev, mission.id]))
-
     const path = getScenarioPath(mission.scenario.title)
-
     navigate(`${path}?scenarioId=${mission.scenario.id}`, {
       state: {
         world: foodForest,
@@ -77,12 +115,10 @@ export default function FoodForestPage() {
   const error = worldsError || scenariosError
 
   const getMusicForMission = (title) => {
-    switch (title) {
-      case 'Family Restaurant':
-        return bgMusicKitchen;
-      default:
-        return bgMusicBoss;
-    }
+    if (!title) return bgMusicBoss
+    if (title.toLowerCase().includes('restaurant') || title.toLowerCase().includes('nhà hàng'))
+      return bgMusicKitchen
+    return bgMusicBoss
   }
 
   const selectedMusicSrc = getMusicForMission(selectedMission?.name);
@@ -99,7 +135,7 @@ export default function FoodForestPage() {
           <ambientLight intensity={1.4} color="#fffbf0" />
           <directionalLight position={[6, 8, 4]} intensity={1.8} color="#fff2d1" castShadow />
           <directionalLight position={[-6, 2, 2]} intensity={0.6} color="#e0f2fe" />
-          <BuddyModel position={[-1.6, -1.5, 1.0]} scale={[0.55, 0.55, 0.55]} />
+          <BuddyModel position={[-1.6, -1.0, 1.0]} scale={[0.45, 0.45, 0.35]} />
         </Canvas>
       </div>
 
@@ -111,11 +147,11 @@ export default function FoodForestPage() {
           aria-label="Back to worlds"
           type="button"
         >
-          Back
+          Quay Lại
         </Button>
 
         {loading ? (
-          <div className="ff-loading">Loading adventures...</div>
+          <div className="ff-loading">Đang tải cuộc phiêu lưu...</div>
         ) : error ? (
           <div className="ff-loading ff-loading--error">{error}</div>
         ) : (
@@ -141,7 +177,7 @@ export default function FoodForestPage() {
                   onClick={() => handleMissionClick(selectedMission)}
                   type="button"
                 >
-                  Start Adventure
+                  Bắt Đầu Phiêu Lưu
                 </Button>
               </div>
             </div>

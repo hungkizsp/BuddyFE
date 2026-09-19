@@ -36,8 +36,8 @@ export default function VoiceMission({
   onFail,
   onEvaluate,
   disabled = false,
-  returnLabel = '← Return to Supermarket',
-  successHint = 'Ah! the meat counter is on the left side',
+  returnLabel = 'Trở về siêu thị',
+  successHint = 'Hãy đi sang phía bên trái quầy nhé!',
 }) {
   const [status, setStatus] = useState('idle'); // 'idle' | 'listening' | 'processing' | 'result' | 'error'
   const [transcript, setTranscript] = useState('');
@@ -73,6 +73,7 @@ export default function VoiceMission({
 
     return res.data.data || res.data;
   };
+
   const handleStart = useCallback(async () => {
     if (disabled || busyRef.current) return;
 
@@ -88,8 +89,10 @@ export default function VoiceMission({
     setEvaluateError('');
 
     try {
-      const result = await assessSpeech();
-      // console.log(JSON.stringify(result, null, 2));
+      // Scenario 3 (Family Restaurant): use freeform recognition so Azure
+      // transcribes freely instead of anchoring to the expected sentence.
+      // The backend Gemini/rule-based engine will handle intent+entity matching.
+      const result = await assessSpeech(Number(scenarioId) === 3 ? '' : expectedSentence);
       if (abortRef.current) return; // component unmounted mid-flight
       setAssessmentResult(result);
 
@@ -101,24 +104,18 @@ export default function VoiceMission({
         fluencyScore: result.fluencyScore,
         completenessScore: result.completenessScore,
       });
+
       if (Number(scenarioId) === 3) {
-
         const recognize = await handleRecognize(result.transcript);
-
         const matched = recognize.matched;
-
         setPassed(matched);
 
         if (!matched) {
-          setErrorMsg(recognize.feedback || "That's not the correct order.");
+          setErrorMsg(recognize.feedback || "Câu nói chưa đúng yêu cầu.");
           onFail?.(result.transcript);
         }
-
       } else {
-
-        // Các scene khác vẫn dùng pronunciation
         setPassed(result.passed);
-
         if (!result.passed) {
           onFail?.(result.transcript);
         }
@@ -128,7 +125,7 @@ export default function VoiceMission({
     } catch (err) {
       if (abortRef.current) return;
 
-      const message = err?.message ?? 'An unexpected error occurred.';
+      const message = err?.message ?? 'Đã xảy ra lỗi. Vui lòng thử lại.';
       setErrorMsg(message);
       setStatus('error');
       onFail?.('');
@@ -156,6 +153,7 @@ export default function VoiceMission({
       setIsPlaying(false);
     }
   };
+
   const handleEvaluate = async () => {
     if (!assessmentResult) return;
     setEvaluateStatus('loading');
@@ -174,20 +172,14 @@ export default function VoiceMission({
           prosodyScore: assessmentResult.prosodyScore,
           words: assessmentResult.words,
         },
-        // transcript: assessmentResult.transcript,
-        // scenarioId: Number(scenarioId),
-        // stepOrder: Number(stepOrder),
       });
       const feedbackData = res.data?.data || res.data;
-
-      // Update passed state based on backend semantic match
-      // setPassed(true);
 
       setEvaluateFeedback(feedbackData);
       setEvaluateStatus('done');
       onEvaluate?.(feedbackData);
     } catch (err) {
-      setEvaluateError(err.message || 'Evaluation failed');
+      setEvaluateError(err.message || 'Phân tích thất bại. Vui lòng thử lại.');
       setEvaluateStatus('error');
     }
   };
@@ -199,22 +191,19 @@ export default function VoiceMission({
     <div className="voice-mission">
       {/* Expected sentence prompt */}
       <div className="voice-mission__prompt">
-        <span className="voice-mission__prompt-label">Say:</span>
+        <span className="voice-mission__prompt-label">Hãy nói:</span>
         <p className="voice-mission__expected">"{expectedSentence}"</p>
-        <button
-          type="button"
-          className="voice-mission__play-btn"
-          onClick={handlePlayExample}
-          disabled={isPlaying || disabled}
-          aria-label="Listen to example"
-        >
-          {isPlaying ? (
-            <span className="voice-mission__play-icon voice-mission__play-icon--playing">🔊</span>
-          ) : (
-            <span className="voice-mission__play-icon">🔈</span>
-          )}
-          <span className="voice-mission__play-label">{isPlaying ? 'Playing…' : 'Listen'}</span>
-        </button>
+        <div className="voice-mission__prompt-actions">
+          <button
+            type="button"
+            className="voice-mission__play-btn"
+            onClick={handlePlayExample}
+            disabled={isPlaying || disabled}
+            aria-label="Nghe mẫu"
+          >
+            <span className="voice-mission__play-label">{isPlaying ? 'Đang phát...' : 'Nghe mẫu'}</span>
+          </button>
+        </div>
       </div>
 
       {status === 'idle' && (
@@ -224,10 +213,9 @@ export default function VoiceMission({
           className="voice-btn"
           onClick={handleStart}
           disabled={disabled}
-          aria-label="Start Talking"
+          aria-label="Bắt đầu nói"
         >
-          <span className="voice-btn__icon">🎙️</span>
-          <span className="voice-btn__label">Start Talking</span>
+          <span className="voice-btn__label">Bắt đầu nói</span>
         </button>
       )}
 
@@ -238,10 +226,9 @@ export default function VoiceMission({
             type="button"
             className="voice-btn voice-btn--listening"
             disabled={true}
-            aria-label={isProcessing ? "Processing…" : "Listening…"}
+            aria-label={isProcessing ? "Đang xử lý..." : "Đang nghe..."}
           >
-            <span className="voice-btn__icon">{isProcessing ? '⏳' : '🔴'}</span>
-            <span className="voice-btn__label">{isProcessing ? 'Processing…' : 'Listening…'}</span>
+            <span className="voice-btn__label">{isProcessing ? 'Đang xử lý...' : 'Đang nghe...'}</span>
           </button>
           {isListening && (
             <div className="voice-mission__waves" aria-hidden="true">
@@ -256,7 +243,6 @@ export default function VoiceMission({
         <div className="voice-mission__error-container">
           {errorMsg && (
             <div className="voice-mission__error" role="alert">
-              <span className="voice-mission__error-icon">⚠️</span>
               <p>{errorMsg}</p>
             </div>
           )}
@@ -267,98 +253,77 @@ export default function VoiceMission({
               onClick={handleRetry}
               style={{ flex: 1 }}
             >
-              🔄 Try Again
+              Thử lại
             </button>
           </div>
         </div>
       )}
 
-      {/* Result state (Duolingo card style results) */}
+      {/* Result state */}
       {status === 'result' && (
         <div className="voice-mission__result-card">
-          <div className="voice-mission__result-columns">
-            {/* Left column: badge, transcript, scores, actions */}
-            <div className="voice-mission__result-left">
-              <div className="voice-mission__result-header">
-                {passed ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                    <div className="voice-mission__badge voice-mission__badge--success">
-                      <span className="voice-mission__badge-icon">✅</span>
-                      <span className="voice-mission__badge-text">Success! Great job!</span>
-                    </div>
-                    {successHint ? (
-                      <p className="voice-mission__success-hint" style={{ margin: '4px 0 0 0', fontFamily: 'var(--font-game)', fontSize: '15px', color: '#16a34a', textAlign: 'center', fontWeight: 'bold' }}>
-                        {successHint}
-                      </p>
-                    ) : null}
-                  </div>
-                ) : (
-                  <div className="voice-mission__badge voice-mission__badge--fail">
-                    <span className="voice-mission__badge-icon">❌</span>
-                    <span className="voice-mission__badge-text">Keep practicing!</span>
-                  </div>
-                )}
+          {/* Result header: pass/fail badge */}
+          <div className="voice-mission__result-header">
+            {passed ? (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <div className="voice-mission__badge voice-mission__badge--success">
+                  <span className="voice-mission__badge-text">Chính xác! Giỏi lắm!</span>
+                </div>
+                {successHint ? (
+                  <p className="voice-mission__success-hint" style={{ margin: '4px 0 0 0', fontFamily: 'var(--font-game)', fontSize: '15px', color: '#16a34a', textAlign: 'center', fontWeight: 'bold' }}>
+                    {successHint}
+                  </p>
+                ) : null}
               </div>
-
-              {transcript && (
-                <div
-                  className={`voice-mission__transcript ${passed ? 'voice-mission__transcript--success' : 'voice-mission__transcript--fail'
-                    }`}
-                >
-                  <span className="voice-mission__transcript-label">You said:</span>
-                  <p>"{transcript}"</p>
-                </div>
-              )}
-              {Number(scenarioId) === 3 && errorMsg && !passed && (
-                <div className="voice-mission__semantic-error">
-                  {errorMsg}
-                </div>
-              )}
-
-              {scores && (
-                <div className="voice-mission__scores" aria-label="Pronunciation scores">
-                  <div className={`voice-mission__score-pill ${scoreColour(scores.pronunciationScore)}`}>
-                    <span className="voice-mission__score-pill-label">Pronunciation</span>
-                    <span className="voice-mission__score-pill-value">{scores.pronunciationScore}</span>
-                  </div>
-                  <div className={`voice-mission__score-pill ${scoreColour(scores.accuracyScore)}`}>
-                    <span className="voice-mission__score-pill-label">Accuracy</span>
-                    <span className="voice-mission__score-pill-value">{scores.accuracyScore}</span>
-                  </div>
-                  <div className={`voice-mission__score-pill ${scoreColour(scores.fluencyScore)}`}>
-                    <span className="voice-mission__score-pill-label">Fluency</span>
-                    <span className="voice-mission__score-pill-value">{scores.fluencyScore}</span>
-                  </div>
-                  <div className={`voice-mission__score-pill ${scoreColour(scores.completenessScore)}`}>
-                    <span className="voice-mission__score-pill-label">Completeness</span>
-                    <span className="voice-mission__score-pill-value">{scores.completenessScore}</span>
-                  </div>
-                </div>
-              )}
-
-              <div className="voice-mission__actions">
-                {!passed && (
-                  <button
-                    type="button"
-                    className="voice-mission__retry-btn"
-                    onClick={handleRetry}
-                  >
-                    🔄 Try Again
-                  </button>
-                )}
-                <button
-                  type="button"
-                  className={`voice-mission__return-btn ${passed ? 'voice-mission__return-btn--pass' : ''}`}
-                  onClick={handleReturn}
-                  disabled={!passed}
-                >
-                  {returnLabel}
-                </button>
+            ) : (
+              <div className="voice-mission__badge voice-mission__badge--fail">
+                <span className="voice-mission__badge-text">Chưa chính xác! Thử lại nhé!</span>
               </div>
+            )}
+          </div>
+
+          {/* Transcript */}
+          {transcript && (
+            <div
+              className={`voice-mission__transcript ${passed ? 'voice-mission__transcript--success' : 'voice-mission__transcript--fail'}`}
+            >
+              <span className="voice-mission__transcript-label">Bạn đã nói:</span>
+              <p>"{transcript}"</p>
             </div>
+          )}
 
-            {/* Right column: evaluate feedback */}
-            <div className="voice-mission__result-right">
+          {/* Semantic error (scenario 3 only) */}
+          {Number(scenarioId) === 3 && errorMsg && !passed && (
+            <div className="voice-mission__semantic-error">
+              {errorMsg}
+            </div>
+          )}
+
+          {/* Action buttons */}
+          <div className="voice-mission__actions">
+            {!passed && (
+              <button
+                type="button"
+                className="voice-mission__retry-btn"
+                onClick={handleRetry}
+              >
+                Thử lại
+              </button>
+            )}
+            {passed && (
+              <button
+                type="button"
+                className="voice-mission__return-btn voice-mission__return-btn--pass"
+                onClick={handleReturn}
+              >
+                {returnLabel}
+              </button>
+            )}
+          </div>
+
+          {/* Evaluate section — only shown on failure, below action buttons */}
+          {!passed && (
+            <div className="voice-mission__evaluate-section">
               {evaluateStatus === 'done' && evaluateFeedback ? (
                 <div className="voice-mission__evaluate-feedback">
                   {typeof evaluateFeedback === 'string' ? (
@@ -366,13 +331,12 @@ export default function VoiceMission({
                   ) : evaluateFeedback.overallFeedback ? (
                     <>
                       <div className="evaluate-overall">
-                        <span className="evaluate-overall__icon">📊</span>
                         <p className="evaluate-overall__text">{evaluateFeedback.overallFeedback}</p>
                       </div>
 
                       {evaluateFeedback.strengths?.length > 0 && (
                         <div className="evaluate-section">
-                          <h4 className="evaluate-section__title evaluate-section__title--strength">💪 Điểm mạnh</h4>
+                          <h4 className="evaluate-section__title evaluate-section__title--strength">Điểm tốt</h4>
                           <ul className="evaluate-list">
                             {evaluateFeedback.strengths.map((s, i) => (
                               <li key={i} className="evaluate-list__item evaluate-list__item--strength">{s}</li>
@@ -383,7 +347,7 @@ export default function VoiceMission({
 
                       {evaluateFeedback.weaknesses?.length > 0 && (
                         <div className="evaluate-section">
-                          <h4 className="evaluate-section__title evaluate-section__title--weakness">🎯 Cần cải thiện</h4>
+                          <h4 className="evaluate-section__title evaluate-section__title--weakness">Cần cải thiện</h4>
                           <ul className="evaluate-list">
                             {evaluateFeedback.weaknesses.map((w, i) => (
                               <li key={i} className="evaluate-list__item evaluate-list__item--weakness">{w}</li>
@@ -394,7 +358,7 @@ export default function VoiceMission({
 
                       {evaluateFeedback.improvementTips?.length > 0 && (
                         <div className="evaluate-section">
-                          <h4 className="evaluate-section__title evaluate-section__title--tip">📝 Mẹo</h4>
+                          <h4 className="evaluate-section__title evaluate-section__title--tip">Mẹo phát âm</h4>
                           <ul className="evaluate-list">
                             {evaluateFeedback.improvementTips.map((t, i) => (
                               <li key={i} className="evaluate-list__item evaluate-list__item--tip">{t}</li>
@@ -405,19 +369,19 @@ export default function VoiceMission({
 
                       {evaluateFeedback.wordFeedback?.length > 0 && (
                         <div className="evaluate-section">
-                          <h4 className="evaluate-section__title evaluate-section__title--word">📖 Từng từ</h4>
+                          <h4 className="evaluate-section__title evaluate-section__title--word">Hướng dẫn từng từ</h4>
                           {evaluateFeedback.wordFeedback.map((wf, i) => (
                             <div key={i} className="evaluate-word-card">
                               <span className="evaluate-word-card__word">"{wf.word}"</span>
                               <p className="evaluate-word-card__problem">{wf.problem}</p>
-                              {wf.tip && <p className="evaluate-word-card__tip">💡 {wf.tip}</p>}
+                              {wf.tip && <p className="evaluate-word-card__tip">{wf.tip}</p>}
                             </div>
                           ))}
                         </div>
                       )}
                     </>
                   ) : (
-                    <p>{evaluateFeedback.feedback || evaluateFeedback.message || JSON.stringify(evaluateFeedback, null, 2)}</p>
+                    <p>{evaluateFeedback.feedback || evaluateFeedback.message}</p>
                   )}
                 </div>
               ) : evaluateStatus === 'error' ? (
@@ -428,7 +392,7 @@ export default function VoiceMission({
                     className="voice-mission__evaluate-retry-btn"
                     onClick={handleEvaluate}
                   >
-                    Retry
+                    Thử lại
                   </button>
                 </div>
               ) : (
@@ -438,18 +402,11 @@ export default function VoiceMission({
                   onClick={handleEvaluate}
                   disabled={evaluateStatus === 'loading' || !assessmentResult}
                 >
-                  {evaluateStatus === 'loading' ? (
-                    <>
-                      <span className="voice-mission__evaluate-spinner" />
-                      Evaluating...
-                    </>
-                  ) : (
-                    'Evaluate'
-                  )}
+                  {evaluateStatus === 'loading' ? 'Đang phân tích...' : 'Đánh giá & Hướng dẫn phát âm'}
                 </button>
               )}
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>

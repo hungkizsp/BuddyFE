@@ -140,7 +140,7 @@ export default function MatchModePage() {
       <div className="min-h-screen flex items-center justify-center bg-navy text-cream">
         <div className="flex flex-col items-center gap-3">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-          <p className="font-mono text-sm uppercase tracking-wider text-cream/40">Creating Match Board...</p>
+          <p className="font-mono text-sm uppercase tracking-wider text-cream/40">Đang chuẩn bị bàn ghép từ...</p>
         </div>
       </div>
     );
@@ -151,13 +151,13 @@ export default function MatchModePage() {
       <div className="min-h-screen flex items-center justify-center bg-navy text-cream px-6">
         <div className="text-center max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-glass">
           <span className="text-4xl">⚠️</span>
-          <h2 className="font-grotesk text-xl font-bold mt-4 mb-2">Failed to start Match</h2>
+          <h2 className="font-grotesk text-xl font-bold mt-4 mb-2">Không thể bắt đầu trò chơi</h2>
           <p className="text-sm text-cream/60 font-nunito mb-6">{error}</p>
           <button
             onClick={() => navigate('/study')}
             className="px-6 py-2.5 rounded-xl bg-primary hover:bg-blue-600 font-grotesk font-semibold text-white transition-all shadow-glow"
           >
-            Back to Study Hub
+            Trở Về Góc Học Tập
           </button>
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function MatchModePage() {
   if (isFinished) {
     return (
       <div className="min-h-screen bg-navy text-cream py-12 px-6">
-        <StudyResult results={results} modeName="Match" onRetry={startSession} onReviewWeakWords={startSession} />
+        <StudyResult results={results} modeName="Ghép Từ Nhanh" onRetry={startSession} onReviewWeakWords={startSession} />
       </div>
     );
   }
@@ -178,7 +178,7 @@ export default function MatchModePage() {
       <StudyProgressBar
         current={matchedIds.size}
         total={cards.length / 2}
-        modeName="Match"
+        modeName="Ghép Từ Nhanh"
         onExit={handleExit}
       />
 
@@ -186,7 +186,7 @@ export default function MatchModePage() {
         {/* Game stats */}
         <div className="w-full flex justify-between items-center mb-8 bg-slate-900/60 border border-slate-800 rounded-2xl px-6 py-4 shadow-soft">
           <span className="font-mono text-xs uppercase tracking-widest text-cream/40">
-            Click cards to match words with meanings
+            Bấm chọn 2 thẻ tương ứng để ghép từ tiếng Anh với nghĩa
           </span>
           <div className="font-mono font-bold text-lg text-accent">
             ⏱️ {timeElapsed}s

@@ -73,7 +73,7 @@ function WordCard({ word }) {
 function RewardPanel({ xp, coins }) {
   return (
     <div className="gr-reward">
-      <p className="gr-reward__title">🏅 Rewards</p>
+      <p className="gr-reward__title">🏅 Phần Thưởng</p>
       <div className="gr-reward__row">
         <span className="gr-reward__key">XP</span>
         <div className="gr-reward__bar-wrap">
@@ -82,7 +82,7 @@ function RewardPanel({ xp, coins }) {
         <span className="gr-reward__val">+{xp}/90</span>
       </div>
       <div className="gr-reward__row">
-        <span className="gr-reward__key">Coins</span>
+        <span className="gr-reward__key">Xu</span>
         <span className="gr-reward__coins">🟡 +{coins}</span>
       </div>
     </div>
@@ -96,10 +96,10 @@ function WinModal({ onBack, xp }) {
       <div className="gr-modal">
         <div className="gr-modal__stars">⭐⭐⭐</div>
         <div className="gr-modal__emoji">🎉</div>
-        <h2 className="gr-modal__title">Breakfast Found!</h2>
-        <p className="gr-modal__sub">Great job! Buddy is happy now 😊</p>
-        <div className="gr-modal__xp">+{xp} XP earned!</div>
-        <Button variant="secondary" className="gr-modal__btn" onClick={onBack}>← Back to Map</Button>
+        <h2 className="gr-modal__title">Đã Tìm Thấy Bữa Sáng! 🎉</h2>
+        <p className="gr-modal__sub">Giỏi lắm! Buddy đã no bụng và vui vẻ rồi 😊</p>
+        <div className="gr-modal__xp">Nhận được +{xp} XP!</div>
+        <Button variant="secondary" className="gr-modal__btn" onClick={onBack}>← Trở Về Bản Đồ</Button>
       </div>
     </div>
   )
@@ -137,7 +137,7 @@ export default function GameRoomPage() {
       )
       setMissions(updatedMissions)
 
-      setFeedback({ text: `🎉 Yes! That's ${item.label}!`, ok: true })
+      setFeedback({ text: `🎉 Đúng rồi! Đó là ${item.label}!`, ok: true })
       setTimeout(() => setFeedback(null), 1800)
 
       // Check win: all missions done
@@ -147,7 +147,7 @@ export default function GameRoomPage() {
     } else {
       // Wrong – distractor
       setItemStatus(prev => ({ ...prev, [item.id]: 'wrong' }))
-      setFeedback({ text: `❌ ${item.label} is not food!`, ok: false })
+      setFeedback({ text: `❌ ${item.label} không phải đồ ăn đâu nhé!`, ok: false })
       setTimeout(() => {
         setItemStatus(prev => ({ ...prev, [item.id]: 'idle' }))
         setFeedback(null)
@@ -167,23 +167,23 @@ export default function GameRoomPage() {
       <aside className="gr-sidebar">
         {/* Back + Level tag */}
         <Button variant="secondary" className="gr-sidebar__back" onClick={() => navigate('/adventure/food-forest')}>
-          ← Map
+          ← Bản Đồ
         </Button>
-        <div className="gr-sidebar__tag">Adventure 1 – Breakfast Trouble</div>
+        <div className="gr-sidebar__tag">Phiêu lưu 1 – Bữa Sáng Rắc Rối</div>
 
         {/* Buddy avatar */}
         <div className="gr-buddy-card">
           <div className="gr-buddy-card__avatar">😊</div>
           <div className="gr-buddy-card__speech">
             {allMissionsDone
-              ? "Thank you! I'm full now! 🥰"
-              : 'Oh no! My tummy is growling! Can you find something I can EAT? 🍽️'}
+              ? "Cảm ơn bé! Buddy no bụng rồi nè! 🥰"
+              : 'Ôi không! Bụng Buddy đang cồn cào! Bé tìm đồ ĂN giúp Buddy với! 🍽️'}
           </div>
         </div>
 
         {/* Missions */}
         <div className="gr-section">
-          <p className="gr-section__title">📋 Missions</p>
+          <p className="gr-section__title">📋 Nhiệm Vụ</p>
           <div className="gr-missions">
             {missions.map(m => <MissionRow key={m.id} mission={m} />)}
           </div>
@@ -191,7 +191,7 @@ export default function GameRoomPage() {
 
         {/* New Words */}
         <div className="gr-section">
-          <p className="gr-section__title">📚 New Words</p>
+          <p className="gr-section__title">📚 Từ Mới</p>
           <div className="gr-words">
             {NEW_WORDS.map(w => <WordCard key={w.id} word={w} />)}
           </div>
@@ -205,9 +205,9 @@ export default function GameRoomPage() {
 
         {/* Room title bar */}
         <div className="gr-topbar">
-          <h1 className="gr-topbar__title">🍳 Buddy&apos;s Breakfast Room</h1>
+          <h1 className="gr-topbar__title">🍳 Căn Bếp Bữa Sáng Của Buddy</h1>
           <div className="gr-topbar__mission">
-            🍽️ Find food to eat
+            🍽️ Tìm đồ ăn ngon lành
             <span className="gr-topbar__stars">☆☆☆</span>
           </div>
         </div>
@@ -266,8 +266,8 @@ export default function GameRoomPage() {
         {/* Hint bar */}
         <div className="gr-hint">
           <span className="gr-hint__icon">💡</span>
-          <span className="gr-hint__label">Buddy&apos;s Hint:</span>
-          <span className="gr-hint__text">Look for food you can put in your mouth and chew!</span>
+          <span className="gr-hint__label">Gợi Ý Của Buddy:</span>
+          <span className="gr-hint__text">Hãy tìm món ăn mà bé có thể bỏ vào miệng thưởng thức nhé!</span>
         </div>
       </main>
 
@@ -278,23 +278,23 @@ export default function GameRoomPage() {
         <RewardPanel xp={xp} coins={coins} />
 
         <div className="gr-badge-card">
-          <p className="gr-badge-card__title">🏆 Badge</p>
+          <p className="gr-badge-card__title">🏆 Huy Hiệu</p>
           <div className="gr-badge-card__badge">🔒</div>
-          <p className="gr-badge-card__name">Breakfast Saver</p>
+          <p className="gr-badge-card__name">Anh Hùng Bữa Sáng</p>
         </div>
 
         <div className="gr-nextup-card">
-          <p className="gr-nextup-card__title">⏭️ Next Up</p>
+          <p className="gr-nextup-card__title">⏭️ Thử Thách Tiếp Theo</p>
           <div className="gr-nextup-card__item">
             <span>🍓</span>
-            <span>Fruit Hunt</span>
+            <span>Săn Trái Cây</span>
           </div>
         </div>
 
         <div className="gr-buddyhint-card">
-          <p className="gr-buddyhint-card__title">🤫 Buddy&apos;s Hint</p>
+          <p className="gr-buddyhint-card__title">🤫 Gợi Ý Của Buddy</p>
           <p className="gr-buddyhint-card__text">
-            Look for food you can put in your mouth and chew!
+            Hãy tìm món ăn mà bé có thể bỏ vào miệng thưởng thức nhé!
           </p>
         </div>
       </aside>

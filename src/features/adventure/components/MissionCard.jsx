@@ -20,7 +20,7 @@ export default function MissionCard({
   return (
     <div className={`ff-card ${isCompleted ? 'ff-card--completed' : ''}`}>
       {isCompleted && (
-        <div className="ff-card__ribbon">Completed</div>
+        <div className="ff-card__ribbon">Hoàn thành</div>
       )}
       <div
         className="ff-card__bg"
@@ -30,9 +30,9 @@ export default function MissionCard({
       <div className="ff-card__content">
         <div className="ff-card__top">
           <span className="ff-card__difficulty" data-diff={mission.difficulty}>
-            {mission.difficulty}
+            {mission.difficulty === 'EASY' ? 'Dễ' : mission.difficulty === 'MEDIUM' ? 'Vừa' : mission.difficulty === 'HARD' ? 'Khó' : mission.difficulty}
           </span>
-          <span className="ff-card__num">Mission {index + 1}</span>
+          <span className="ff-card__num">Nhiệm vụ {index + 1}</span>
         </div>
         <div className="ff-card__center">
           <h3 className="ff-card__title">{mission.name}</h3>

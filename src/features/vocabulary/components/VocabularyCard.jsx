@@ -51,7 +51,7 @@ export default function VocabularyCard({ vocab, onClick }) {
         {isLocked && (
           <div className="absolute inset-0 bg-navy/70 backdrop-blur-sm flex flex-col items-center justify-center gap-2">
             <span className="text-3xl">🔒</span>
-            <span className="font-mono text-[11px] text-cream/40 uppercase">Unlock in adventure</span>
+            <span className="font-mono text-[11px] text-cream/40 uppercase">Mở khóa trong phiêu lưu</span>
           </div>
         )}
 

@@ -10,15 +10,16 @@ import { Environment, OrbitControls, ContactShadows } from '@react-three/drei'
 import BuddyModel from '../../../shared/components/BuddyModel'
 import DynamicBuddyModel from '../../../shared/components/DynamicBuddyModel'
 import TopBar from '../../../shared/components/TopBar'
+import SideBar from '../../../layouts/SideBar'
 import Button from '../../../shared/components/ui/Button'
 import './HomePage.css'
 
 const QUICK_PHRASES = [
   "Hello Buddy! 👋",
-  "Teach me a new word!",
-  "Let's play a game!",
-  "What's today's lesson?",
-  "Tell me something fun!",
+  "Dạy mình một từ mới!",
+  "Cùng chơi trò chơi nào!",
+  "Bài học hôm nay là gì?",
+  "Kể cho mình nghe điều gì vui đi!",
 ]
 
 function BuddyAvatar({ mood = 'HAPPY', isTyping = false, modelPath = null }) {
@@ -65,7 +66,7 @@ export default function HomePage() {
     {
       id: 1,
       role: 'buddy',
-      text: `Hi there! 👋 I'm Buddy, your English learning companion! Ready to learn something new today?`,
+      text: `Chào bé! 👋 Mình là Buddy, bạn đồng hành học tiếng Anh của bé đây! Bé đã sẵn sàng học điều mới hôm nay chưa?`,
     },
   ])
   const [input, setInput] = useState('')
@@ -111,7 +112,7 @@ export default function HomePage() {
 
       setMessages((prev) => [
         ...prev,
-        { id: Date.now() + 1, role: 'buddy', text: data.reply || 'Hmm, let me think... 🤔' },
+        { id: Date.now() + 1, role: 'buddy', text: data.reply || 'Hmm, để Buddy suy nghĩ chút nha... 🤔' },
       ])
 
       setBuddyMood('HAPPY')
@@ -130,7 +131,7 @@ export default function HomePage() {
         {
           id: Date.now() + 1,
           role: 'buddy',
-          text: "Oops! I had a little trouble thinking 😅. Please try again!",
+          text: "Ôi! Buddy gặp chút trục trặc khi suy nghĩ 😅. Bé thử lại nhé!",
         },
       ])
       setBuddyMood('SAD')
@@ -149,74 +150,9 @@ export default function HomePage() {
   return (
     <div className="home-root app-shell">
       <div className="noise-overlay" aria-hidden="true" />
-      {/* ── Sidebar ── */}
-      <aside className="sidebar">
-        <div className="sidebar-brand">
-          <span className="brand-icon">🦉</span>
-          <span className="brand-name">BollyyEnglish</span>
-        </div>
+      <SideBar />
 
-        <div className="profile-card">
-          <div className="profile-avatar">{user.nickname?.[0]?.toUpperCase() || '?'}</div>
-          <div className="profile-info">
-            <p className="profile-name">{user.nickname || 'Learner'}</p>
-            <p className="profile-level">Level {user.level ?? 1} Explorer</p>
-          </div>
-        </div>
-
-        <XpBar xp={user.xp ?? 0} level={user.level ?? 1} />
-
-        <div className="stats-grid">
-          <div className="stat-chip">
-            <span className="stat-icon">🪙</span>
-            <span className="stat-val">{user.coins ?? 0}</span>
-            <span className="stat-lbl">Coins</span>
-          </div>
-          <div className="stat-chip">
-            <span className="stat-icon">⭐</span>
-            <span className="stat-val">{user.xp ?? 0}</span>
-            <span className="stat-lbl">XP</span>
-          </div>
-          <div className="stat-chip">
-            <span className="stat-icon">🔥</span>
-            <span className="stat-val">{user.streakDays ?? 0}</span>
-            <span className="stat-lbl">Streak</span>
-          </div>
-          <div className="stat-chip">
-            <span className="stat-icon">🏆</span>
-            <span className="stat-val">Lv{user.level ?? 1}</span>
-            <span className="stat-lbl">Level</span>
-          </div>
-        </div>
-
-        {/*
-         * Sidebar nav — runs across the whole app via HomePage layout.
-         * NOTE FOR FUTURE DEVS: If a global NavBar or HeaderBar is added
-         * (one that wraps ALL pages, not just HomePage), move the nav items
-         * below into that global component instead of keeping them here.
-         */}
-        <nav className="sidebar-nav">
-          <a href="/home" className="nav-item active" onClick={(e) => { e.preventDefault() }}>
-            <span>💬</span> Chat with Buddy
-          </a>
-          <a href="/study" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/study') }}>
-            <span>📖</span> Study Modes
-          </a>
-          <a href="/adventure" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/adventure') }}>
-            <span>🗺️</span> Adventures
-          </a>
-          <a href="/character-creator" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/character-creator') }}>
-            <span>🎨</span> Create Character
-          </a>
-          <a href="/notifications" className="nav-item" onClick={(e) => { e.preventDefault(); navigate('/notifications') }}>
-            <span>🔔</span> Notifications
-          </a>
-        </nav>
-
-        <Button variant="secondary" className="logout-btn" onClick={handleLogout}>
-          <span>🚪</span> Logout
-        </Button>
-      </aside>
+      {/* ── Main Chat Area ── */}
 
       {/* ── Main Chat Area ── */}
       <main className="chat-main">
@@ -226,7 +162,7 @@ export default function HomePage() {
           <div className="chat-header-info">
             <h1>Buddy</h1>
             <p className={`buddy-status ${isSending ? 'typing' : 'online'}`}>
-              {isSending ? 'Buddy is thinking...' : '● Online & ready to learn!'}
+              {isSending ? 'Buddy đang suy nghĩ...' : '● Đang hoạt động & sẵn sàng học cùng bé!'}
             </p>
           </div>
           <div className="chat-header-actions">
@@ -235,26 +171,6 @@ export default function HomePage() {
               ref={bellRef}
               style={{ position: 'relative', marginRight: '8px', display: 'inline-block' }}
             >
-              <button
-                className="reset-btn"
-                title="Thông báo"
-                onClick={() => setBellOpen((v) => !v)}
-                style={{ position: 'relative' }}
-              >
-                🔔
-                {unreadCount > 0 && (
-                  <span style={{
-                    position: 'absolute', top: '-4px', right: '-4px',
-                    background: 'linear-gradient(135deg,#f43f5e,#ef4444)',
-                    color: '#fff', fontSize: '9px', fontWeight: 800,
-                    borderRadius: '8px', padding: '1px 4px', lineHeight: 1.4,
-                    minWidth: '14px', textAlign: 'center',
-                  }}>
-                    {unreadCount > 99 ? '99+' : unreadCount}
-                  </span>
-                )}
-              </button>
-
               {/* Mini notification bubble popup */}
               {bellOpen && (
                 <div style={{
@@ -362,13 +278,13 @@ export default function HomePage() {
             <Button
               variant="secondary"
               className="reset-btn"
-              title="Reset conversation"
+              title="Bắt đầu lại cuộc trò chuyện"
               onClick={async () => {
                 await axiosClient.delete('/chatbot/history')
-                setMessages([{ id: Date.now(), role: 'buddy', text: "Let's start fresh! 🌟 What would you like to learn today?" }])
+                setMessages([{ id: Date.now(), role: 'buddy', text: "Cùng bắt đầu lại từ đầu nào! 🌟 Hôm nay bé muốn học từ vựng gì?" }])
               }}
             >
-              🔄 Reset
+              🔄 Đặt lại
             </Button>
           </div>
         </header>
@@ -376,7 +292,7 @@ export default function HomePage() {
         {/* Vocabulary pop-up */}
         {vocabHighlight && (
           <div className="vocab-toast">
-            <span className="vocab-toast-label">📖 New Word!</span>
+            <span className="vocab-toast-label">📖 Từ vựng mới!</span>
             <span className="vocab-word">{vocabHighlight.word}</span>
             <span className="vocab-sep">→</span>
             <span className="vocab-meaning">{vocabHighlight.meaning}</span>
@@ -439,7 +355,7 @@ export default function HomePage() {
           <input
             className="chat-input"
             type="text"
-            placeholder="Type a message to Buddy..."
+            placeholder="Nhắn tin cho Buddy tại đây..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isSending}

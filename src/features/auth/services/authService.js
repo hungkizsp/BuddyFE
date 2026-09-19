@@ -19,4 +19,9 @@ export const authService = {
   async logout() {
     await axiosClient.post('/auth/logout')
   },
+
+  async refreshToken() {
+    const response = await axiosClient.post('/auth/refresh')
+    return response.data.data
+  },
 }

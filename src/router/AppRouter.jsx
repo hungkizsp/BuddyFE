@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useAuthStore } from "../features/auth/store/authStore";
 import { stopBackgroundMusic } from "../features/adventure/components/BackgroundMusic";
 
 import LoginPage from "../features/auth/pages/LoginPage";
@@ -36,6 +37,15 @@ function GlobalMusicController() {
 }
 
 export default function AppRouter() {
+  const loadChildProfile = useAuthStore((s) => s.loadChildProfile);
+
+  // Load the child profile once when the app boots.
+  // In dev mode (no auth required) the backend still returns profile data,
+  // so childProfile will be populated even without an explicit login.
+  useEffect(() => {
+    loadChildProfile();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <BrowserRouter>
       <GlobalMusicController />

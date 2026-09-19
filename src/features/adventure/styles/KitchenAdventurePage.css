@@ -2,10 +2,10 @@
    Kitchen Adventure Page CSS
    ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap');
 
 :root {
-  --font-game: 'Fredoka One', 'Nunito', sans-serif;
+  --font-game: 'Nunito', sans-serif;
   --font-ui: 'Nunito', sans-serif;
 }
 .fruit-basket-drop-zone {

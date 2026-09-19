@@ -50,7 +50,7 @@ function RewardPanel({ xp, maxXp }) {
   const pct = Math.min((xp / maxXp) * 100, 100)
   return (
     <div className="gl-reward">
-      <p className="gl-reward__title">🏅 Rewards</p>
+      <p className="gl-reward__title">🏅 Phần Thưởng</p>
       <div className="gl-reward__row">
         <span className="gl-reward__key">XP</span>
         <div className="gl-reward__bar-wrap">
@@ -184,12 +184,12 @@ function WinModal({ level, xp, onBack }) {
         <div className="gl-modal__confetti">🎊🎉🎊🎉🎊</div>
         <div className="gl-modal__emoji">🏆</div>
         <div className="gl-modal__stars">⭐⭐⭐</div>
-        <h2 className="gl-modal__title">Level Complete!</h2>
+        <h2 className="gl-modal__title">Bé Đã Thắng Màn Này! 🎉</h2>
         <p className="gl-modal__level">{level.name}</p>
         <p className="gl-modal__sub">{level.buddyWinSpeech}</p>
-        <div className="gl-modal__xp">+{xp} XP earned!</div>
+        <div className="gl-modal__xp">Nhận được +{xp} XP!</div>
         <Button variant="secondary" className="gl-modal__btn" id="btn-modal-back" onClick={onBack}>
-          ← Back to Map
+          ← Trở Về Bản Đồ
         </Button>
       </div>
     </div>
@@ -375,7 +375,7 @@ export default function GameLevelPage({ levelId }) {
         {/* Hint bar */}
         <div className="gl-hint">
           <span className="gl-hint__icon">💡</span>
-          <strong className="gl-hint__label">Buddy&apos;s Hint:</strong>
+          <strong className="gl-hint__label">Gợi Ý Của Buddy:</strong>
           <span className="gl-hint__text">{level.hint}</span>
         </div>
       </main>
@@ -387,13 +387,13 @@ export default function GameLevelPage({ levelId }) {
         <RewardPanel xp={xp} maxXp={maxXp} />
 
         <div className="gl-badge-card">
-          <p className="gl-badge-card__title">🏆 Badge</p>
+          <p className="gl-badge-card__title">🏆 Huy Hiệu</p>
           <div className="gl-badge-card__badge">{allDone ? '🥇' : '🔒'}</div>
-          <p className="gl-badge-card__name">{level.name} Hero</p>
+          <p className="gl-badge-card__name">Anh Hùng {level.name}</p>
         </div>
 
         <div className="gl-nextup-card">
-          <p className="gl-nextup-card__title">⏭️ Next Up</p>
+          <p className="gl-nextup-card__title">⏭️ Màn Tiếp Theo</p>
           {levelId < 4 ? (
             <div className="gl-nextup-card__item">
               <span>{GAME_LEVELS[levelId + 1]?.theme === 'orchard' ? '🌳' : levelId + 1 === 3 ? '🍔' : '🍽️'}</span>
@@ -402,13 +402,13 @@ export default function GameLevelPage({ levelId }) {
           ) : (
             <div className="gl-nextup-card__item">
               <span>🌟</span>
-              <span>More coming soon!</span>
+              <span>Đón chờ màn mới nhé!</span>
             </div>
           )}
         </div>
 
         <div className="gl-buddyhint-card">
-          <p className="gl-buddyhint-card__title">🤫 Buddy&apos;s Hint</p>
+          <p className="gl-buddyhint-card__title">🤫 Gợi Ý Của Buddy</p>
           <p className="gl-buddyhint-card__text">{level.hint}</p>
         </div>
       </aside>

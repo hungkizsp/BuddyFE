@@ -19,10 +19,10 @@ function getPasswordStrength(password) {
   if (/\d/.test(password)) score++
   if (/[^A-Za-z0-9]/.test(password)) score++
 
-  if (score <= 1) return { level: 1, label: 'Weak', color: 'bg-danger' }
-  if (score <= 2) return { level: 2, label: 'Fair', color: 'bg-accent' }
-  if (score <= 3) return { level: 3, label: 'Good', color: 'bg-neon/70' }
-  return { level: 4, label: 'Strong', color: 'bg-neon' }
+  if (score <= 1) return { level: 1, label: 'Dễ đoán', color: 'bg-danger' }
+  if (score <= 2) return { level: 2, label: 'Tạm ổn', color: 'bg-accent' }
+  if (score <= 3) return { level: 3, label: 'Tốt', color: 'bg-neon/70' }
+  return { level: 4, label: 'Rất mạnh', color: 'bg-neon' }
 }
 
 function SignupPage() {
@@ -48,7 +48,7 @@ function SignupPage() {
     setError('')
 
     if (form.password !== form.confirmPassword) {
-      setError('Passwords do not match')
+      setError('Mật khẩu xác nhận không khớp nè!')
       return
     }
 
@@ -74,14 +74,14 @@ function SignupPage() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-simple border border-white/10 mb-6">
               <span className="text-2xl">🦉</span>
               <span className="font-grotesk text-sm font-bold uppercase tracking-wider text-neon">
-                BollyEnglish
+                BuddyEnglish
               </span>
             </div>
             <h1 className="font-grotesk text-3xl sm:text-4xl font-bold uppercase text-cream tracking-wide mb-2">
-              Create account
+              Tạo tài khoản mới
             </h1>
             <p className="font-mono text-sm text-cream/50 uppercase">
-              Begin your English adventure today
+              Bắt đầu hành trình tiếng Anh ngay hôm nay
             </p>
           </div>
 
@@ -89,14 +89,14 @@ function SignupPage() {
             {/* Username */}
             <label className="block">
               <span className="font-mono text-xs text-cream/50 uppercase tracking-wider mb-2 block">
-                Username
+                Tên đăng nhập
               </span>
               <input
                 type="text"
                 name="username"
                 value={form.username}
                 onChange={handleChange}
-                placeholder="Choose a username"
+                placeholder="Chọn tên người dùng của bé"
                 autoComplete="username"
                 required
                 minLength={3}
@@ -115,7 +115,7 @@ function SignupPage() {
             {/* Email */}
             <label className="block">
               <span className="font-mono text-xs text-cream/50 uppercase tracking-wider mb-2 block">
-                Email
+                Địa chỉ Email
               </span>
               <input
                 type="email"
@@ -139,7 +139,7 @@ function SignupPage() {
             {/* Password */}
             <label className="block">
               <span className="font-mono text-xs text-cream/50 uppercase tracking-wider mb-2 block">
-                Password
+                Mật khẩu
               </span>
               <div className="relative">
                 <input
@@ -147,7 +147,7 @@ function SignupPage() {
                   name="password"
                   value={form.password}
                   onChange={handleChange}
-                  placeholder="At least 6 characters"
+                  placeholder="Ít nhất 6 ký tự"
                   autoComplete="new-password"
                   required
                   minLength={6}
@@ -195,14 +195,14 @@ function SignupPage() {
             {/* Confirm Password */}
             <label className="block">
               <span className="font-mono text-xs text-cream/50 uppercase tracking-wider mb-2 block">
-                Confirm password
+                Xác nhận mật khẩu
               </span>
               <input
                 type="password"
                 name="confirmPassword"
                 value={form.confirmPassword}
                 onChange={handleChange}
-                placeholder="Re-enter your password"
+                placeholder="Nhập lại mật khẩu"
                 autoComplete="new-password"
                 required
                 minLength={6}
@@ -242,19 +242,19 @@ function SignupPage() {
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                  Creating account...
+                  Đang tạo tài khoản...
                 </span>
-              ) : 'Create account'}
+              ) : 'Đăng Ký Ngay ✨'}
             </button>
 
             {/* Login link */}
             <p className="text-center font-mono text-sm text-cream/40">
-              Already have an account?{' '}
+              Bé đã có tài khoản?{' '}
               <Link
                 to="/login"
                 className="text-primary font-bold hover:text-primary/80 transition-colors"
               >
-                Log in
+                Đăng nhập
               </Link>
             </p>
           </form>

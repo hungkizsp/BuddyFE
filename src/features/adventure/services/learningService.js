@@ -34,8 +34,18 @@ const learningService = {
     return unwrap(response)
   },
 
-  async getWorldProgressById(worldId) {
-    const response = await axiosClient.get(`/progress/worlds/${worldId}`)
+  /**
+   * Get world progress for a specific child + world combination.
+   * Uses GET /progress/worlds?childId=... and filters by worldId client-side.
+   */
+  async getWorldProgressByChildAndWorldId(childId, worldId) {
+    const response = await axiosClient.get('/progress/worlds', { params: { childId } })
+    const list = unwrap(response) ?? []
+    return list.find((p) => p.worldId === worldId || p.worldId === Number(worldId)) ?? null
+  },
+
+  async getScenarioProgressByChildId(childId) {
+    const response = await axiosClient.get('/progress/scenarios', { params: { childId } })
     return unwrap(response)
   },
 }

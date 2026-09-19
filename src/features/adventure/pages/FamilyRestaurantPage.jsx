@@ -316,8 +316,7 @@ export default function FamilyRestaurantPage() {
       {gameState === 'not-started' && (
         <div className="rest-intro-overlay">
           <div className="rest-intro-label">
-            <span className="rest-intro-label__icon">🔍</span>
-            <span>Adventure 3 – Family Restaurant</span>
+            <span>Tình huống 3 – Family Restaurant</span>
           </div>
 
           <div className="rest-intro-manga-grid">
@@ -335,9 +334,9 @@ export default function FamilyRestaurantPage() {
             onClick={handleStartMission}
             disabled={startDisabled}
           >
-            <span className="rest-intro-start-btn__icon">🍽️</span>
-            <span>Let&apos;s Start!</span>
-            <span className="rest-intro-start-btn__arrow">🚀</span>
+            <span className="rest-intro-start-btn__icon"></span>
+            <span>Bắt đầu!</span>
+            <span className="rest-intro-start-btn__arrow"></span>
           </button>
 
           <button
@@ -346,14 +345,14 @@ export default function FamilyRestaurantPage() {
             onClick={() => navigate('/adventure/food-forest')}
           >
             ← Back to map
-          </button>
+          </button>u
         </div>
       )}
 
       <header className="hud-header">
         <div className="hud-title-container">
-          <span className="hud-title-forest">{scenario?.worldName || 'Food Forest'}</span>
-          <span className="hud-title-level">{scenario?.title || 'Family Restaurant'}</span>
+          <span className="hud-title-forest">{scenario?.worldName === 'Food Forest' ? 'Khu Rừng Thức Ăn' : (scenario?.worldName || 'Khu Rừng Thức Ăn')}</span>
+          <span className="hud-title-level">{scenario?.title === 'Family Restaurant' ? 'Nhà Hàng Gia Đình' : (scenario?.title || 'Nhà Hàng Gia Đình')}</span>
         </div>
         <div className="hud-stats-container">
           <div className="stat-card">
@@ -410,7 +409,7 @@ export default function FamilyRestaurantPage() {
         <div className="rest-voice-panel">
           <div className="rest-voice-panel__header">
             <span className="rest-voice-panel__icon">🗣️</span>
-            <h2 className="rest-voice-panel__title">Order in English</h2>
+            <h2 className="rest-voice-panel__title">Gọi món bằng tiếng Anh</h2>
           </div>
           <VoiceMission
             expectedSentence={expectedSentence}
@@ -419,7 +418,7 @@ export default function FamilyRestaurantPage() {
             onSuccess={handleVoiceSuccess}
             onFail={handleVoiceFail}
             disabled={stepLocked || gameState !== 'ordering'}
-            returnLabel="Continue ordering"
+            returnLabel="Tiếp tục gọi món"
             successHint={activeStep?.successResponse || ''}
           />
         </div>
@@ -446,7 +445,7 @@ export default function FamilyRestaurantPage() {
                 ? 'completed'
                 : 'idle-at-table'
           }
-          title={scenario?.title || 'Family Restaurant'}
+          title={scenario?.title === 'Family Restaurant' ? 'Nhà Hàng Gia Đình' : (scenario?.title || 'Nhà Hàng Gia Đình')}
           description={scenario?.description}
           onStartMission={handleStartMission}
           instruction={getMissionInstruction()}
