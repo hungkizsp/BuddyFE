@@ -251,7 +251,7 @@ export default function TopBar({ theme = 'light' }) {
               <div className="popover-stat-card">
                 <span className="popover-stat-icon">🤝</span>
                 <div className="popover-stat-info text-left">
-                  <span className="popover-stat-label">Cấp độ Buddy</span>
+                  <span className="popover-stat-label">Cấp độ Bolly</span>
                   <span className="popover-stat-value">Cấp {stats.buddyLevel}</span>
                 </div>
               </div>

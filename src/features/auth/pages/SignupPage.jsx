@@ -74,7 +74,7 @@ function SignupPage() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-simple border border-white/10 mb-6">
               <span className="text-2xl">🦉</span>
               <span className="font-grotesk text-sm font-bold uppercase tracking-wider text-neon">
-                BuddyEnglish
+                BollyEnglish
               </span>
             </div>
             <h1 className="font-grotesk text-3xl sm:text-4xl font-bold uppercase text-cream tracking-wide mb-2">

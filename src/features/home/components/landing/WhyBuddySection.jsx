@@ -5,25 +5,25 @@ const EMOTION_LOGIC = {
     emoji: '😊',
     title: 'Happy & Confident',
     condition: 'Correct pronunciation detected',
-    desc: 'When your child pronounces a word correctly, Buddy lights up with genuine excitement. This positive reinforcement builds speaking confidence and motivates children to keep practicing without fear of making mistakes.',
+    desc: 'When your child pronounces a word correctly, Bolly lights up with genuine excitement. This positive reinforcement builds speaking confidence and motivates children to keep practicing without fear of making mistakes.',
   },
   encourage: {
     emoji: '💪',
     title: 'Gently Encouraging',
     condition: 'Pronunciation needs work',
-    desc: `Buddy never says "wrong." Instead, he models the correct pronunciation slowly and clearly, then asks the child to try again. This patient approach mirrors how the best language tutors work — through encouragement, not correction.`,
+    desc: `Bolly never says "wrong." Instead, he models the correct pronunciation slowly and clearly, then asks the child to try again. This patient approach mirrors how the best language tutors work — through encouragement, not correction.`,
   },
   celebrate: {
     emoji: '🥳',
     title: 'Celebrating Milestones',
     condition: 'Lesson or mission completed',
-    desc: 'Completing a scenario, finishing a vocabulary set, or maintaining a streak triggers a full celebration from Buddy. Children earn coins, unlock new adventure worlds, and see their progress visually — making every achievement feel meaningful.',
+    desc: 'Completing a scenario, finishing a vocabulary set, or maintaining a streak triggers a full celebration from Bolly. Children earn coins, unlock new adventure worlds, and see their progress visually — making every achievement feel meaningful.',
   },
   thinking: {
     emoji: '🤔',
     title: 'Actively Listening',
     condition: 'Processing speech input',
-    desc: 'While your child speaks, Buddy tilts his head and listens carefully. Behind the scenes, the Web Speech API captures audio, converts it to text, and sends it to our Spring Boot backend for AI-powered analysis using Google Gemini.',
+    desc: 'While your child speaks, Bolly tilts his head and listens carefully. Behind the scenes, the Web Speech API captures audio, converts it to text, and sends it to our Spring Boot backend for AI-powered analysis using Google Gemini.',
   },
 }
 
@@ -31,12 +31,12 @@ const WHY_DIFFERENT = [
   {
     icon: '🧠',
     title: 'Long-term memory',
-    desc: 'Unlike generic chatbots, Buddy remembers what your child learned yesterday, last week, and last month. Each session starts exactly where the previous one ended — no repetition, no wasted time.',
+    desc: 'Unlike generic chatbots, Bolly remembers what your child learned yesterday, last week, and last month. Each session starts exactly where the previous one ended — no repetition, no wasted time.',
   },
   {
     icon: '🎭',
     title: 'Emotional awareness',
-    desc: `Buddy reads your child's performance in real-time and adapts his mood accordingly. Struggling? He slows down and simplifies. Excelling? He introduces harder vocabulary and faster pacing.`,
+    desc: `Bolly reads your child's performance in real-time and adapts his mood accordingly. Struggling? He slows down and simplifies. Excelling? He introduces harder vocabulary and faster pacing.`,
   },
   {
     icon: '🛡️',
@@ -86,7 +86,7 @@ export default function WhyBuddySection({ username = 'Hung' }) {
 
           {/* Right: Description */}
           <p className="font-mono text-[14px] lg:text-[16px] uppercase text-cream/90 max-w-[380px] leading-relaxed text-readable">
-            Buddy is not just another language app. He is a persistent, emotionally intelligent AI friend who remembers your child, adapts to their level, and makes every English conversation feel like play — not homework.
+            Bolly is not just another language app. He is a persistent, emotionally intelligent AI friend who remembers your child, adapts to their level, and makes every English conversation feel like play — not homework.
           </p>
         </div>
 
@@ -108,7 +108,7 @@ export default function WhyBuddySection({ username = 'Hung' }) {
           <div className="liquid-glass rounded-[32px] p-6">
             <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-2">Adaptive Memory System</span>
             <p className="font-mono text-[12px] uppercase text-cream/60 mb-4 leading-relaxed">
-              Buddy stores every interaction in a personalized learning profile. vocabulary mastered, topics explored, common mistakes, and preferred learning pace — all saved across sessions.
+              Bolly stores every interaction in a personalized learning profile. vocabulary mastered, topics explored, common mistakes, and preferred learning pace — all saved across sessions.
             </p>
             <div className="space-y-3 font-mono text-[13px] uppercase">
               <div className="bg-white/5 p-4 rounded-[16px] border border-white/5">
@@ -130,7 +130,7 @@ export default function WhyBuddySection({ username = 'Hung' }) {
           <div className="liquid-glass rounded-[32px] p-6">
             <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-2">Emotion Decision Engine</span>
             <p className="font-mono text-[12px] uppercase text-cream/60 mb-4 leading-relaxed">
-              {`Buddy's emotional state isn't random. It's driven by a rule-based engine in our Spring Boot backend that evaluates pronunciation accuracy, response time, streak data, and session progress to determine the most supportive reaction.`}
+              {`Bolly's emotional state isn't random. It's driven by a rule-based engine in our Spring Boot backend that evaluates pronunciation accuracy, response time, streak data, and session progress to determine the most supportive reaction.`}
             </p>
             <div className="grid grid-cols-2 gap-2 mb-4">
               {Object.entries(EMOTION_LOGIC).map(([key, item]) => (

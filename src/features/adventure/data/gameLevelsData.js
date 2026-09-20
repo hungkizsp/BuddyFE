@@ -2,7 +2,7 @@
    Game Levels Data
    Level 2 – Fruit Hunt  (🌳 Apple Orchard)     – Easy+
    Level 3 – Lunch Time  (🍔 Food Court)         – Medium
-   Level 4 – Buddy's Restaurant (🍽️ Fine Dining) – Medium+
+   Level 4 – Bolly's Restaurant (🍽️ Fine Dining) – Medium+
    ========================================================= */
 
 export const GAME_LEVELS = {
@@ -101,9 +101,9 @@ export const GAME_LEVELS = {
   4: {
     id: 4,
     theme: 'fancy',
-    name: "Buddy's Restaurant",
+    name: "Bolly's Restaurant",
     roomTitle: "🍽️ Buddy's Fine Restaurant",
-    levelLabel: "Level 4 – Buddy's Restaurant",
+    levelLabel: "Level 4 – Bolly's Restaurant",
     difficulty: 'Medium+',
     difficultyColor: '#8b5cf6',
     backRoute: '/adventure/food-forest',

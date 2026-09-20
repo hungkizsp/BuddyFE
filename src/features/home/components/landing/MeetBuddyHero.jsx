@@ -132,7 +132,7 @@ function SocialIcons() {
 }
 
 export default function MeetBuddyHero({ onLearnMore, currentUser }) {
-  const [bubbleText, setBubbleText] = useState("Hi there! I'm Buddy — your AI English speaking companion. I listen, I remember, and I grow with you every day!")
+  const [bubbleText, setBubbleText] = useState("Hi there! I'm Bolly — your AI English speaking companion. I listen, I remember, and I grow with you every day!")
   const [reaction, setReaction] = useState(null)
 
   const triggerReaction = (text, type) => {
@@ -175,7 +175,7 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
         <div className="flex items-center justify-between pt-7">
           {/* Logo */}
           <Link to={currentUser ? "/home" : "/landing"} className="font-grotesk text-xl uppercase text-cream tracking-widest text-glow hover:text-neon transition-colors duration-200">
-            BuddyEnglish
+            BollyEnglish
           </Link>
 
           {/* Navigation */}
@@ -217,13 +217,13 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
 
             {/* Script overlay */}
             <span className="font-condiment text-[28px] sm:text-[42px] md:text-[56px] text-neon -rotate-1 mix-blend-exclusion opacity-90 absolute right-4 lg:right-[20px] bottom-[-20px] leading-none normal-case pointer-events-none text-glow">
-              speak with Buddy
+              speak with Bolly
             </span>
           </div>
 
           {/* Sub-description */}
           <p className="font-mono text-[14px] sm:text-[16px] uppercase text-cream/80 max-w-[560px] mt-8 lg:ml-32 leading-relaxed text-readable">
-            An AI-powered speaking companion designed for Vietnamese children aged 4–12. Buddy uses real-time speech recognition, adaptive memory, and emotional intelligence to help kids practice English naturally — anytime, anywhere, without fear of judgment.
+            An AI-powered speaking companion designed for Vietnamese children aged 4–12. Bolly uses real-time speech recognition, adaptive memory, and emotional intelligence to help kids practice English naturally — anytime, anywhere, without fear of judgment.
           </p>
 
           {/* CTA buttons */}
@@ -234,7 +234,7 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
               </Link>
             ) : (
               <Link to="/register" className="inline-block px-8 py-4 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
-                Try Buddy Free
+                Try Bolly Free
               </Link>
             )}
             <button onClick={onLearnMore} className="liquid-glass px-8 py-4 sm:px-10 sm:py-5 font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
@@ -291,7 +291,7 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
               <span>Powered by</span>
             </div>
           </div>
-          <span>© 2026 BuddyEnglish — FPT University</span>
+          <span>© 2026 BollyEnglish — FPT University</span>
         </div>
 
       </div>

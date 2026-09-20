@@ -15,7 +15,7 @@ import Button from '../../../shared/components/ui/Button'
 import './HomePage.css'
 
 const QUICK_PHRASES = [
-  "Hello Buddy! 👋",
+  "Hello Bolly! 👋",
   "Dạy mình một từ mới!",
   "Cùng chơi trò chơi nào!",
   "Bài học hôm nay là gì?",
@@ -66,7 +66,7 @@ export default function HomePage() {
     {
       id: 1,
       role: 'buddy',
-      text: `Chào bé! 👋 Mình là Buddy, bạn đồng hành học tiếng Anh của bé đây! Bé đã sẵn sàng học điều mới hôm nay chưa?`,
+      text: `Chào bé! 👋 Mình là Bolly, bạn đồng hành học tiếng Anh của bé đây! Bé đã sẵn sàng học điều mới hôm nay chưa?`,
     },
   ])
   const [input, setInput] = useState('')
@@ -112,7 +112,7 @@ export default function HomePage() {
 
       setMessages((prev) => [
         ...prev,
-        { id: Date.now() + 1, role: 'buddy', text: data.reply || 'Hmm, để Buddy suy nghĩ chút nha... 🤔' },
+        { id: Date.now() + 1, role: 'buddy', text: data.reply || 'Hmm, để Bolly suy nghĩ chút nha... 🤔' },
       ])
 
       setBuddyMood('HAPPY')
@@ -131,7 +131,7 @@ export default function HomePage() {
         {
           id: Date.now() + 1,
           role: 'buddy',
-          text: "Ôi! Buddy gặp chút trục trặc khi suy nghĩ 😅. Bé thử lại nhé!",
+          text: "Ôi! Bolly gặp chút trục trặc khi suy nghĩ 😅. Bé thử lại nhé!",
         },
       ])
       setBuddyMood('SAD')
@@ -160,9 +160,9 @@ export default function HomePage() {
         <header className="chat-header">
           <BuddyAvatar mood={buddyMood} isTyping={isSending} modelPath={childProfile?.activeCustomCharacterUrl} />
           <div className="chat-header-info">
-            <h1>Buddy</h1>
+            <h1>Bolly</h1>
             <p className={`buddy-status ${isSending ? 'typing' : 'online'}`}>
-              {isSending ? 'Buddy đang suy nghĩ...' : '● Đang hoạt động & sẵn sàng học cùng bé!'}
+              {isSending ? 'Bolly đang suy nghĩ...' : '● Đang hoạt động & sẵn sàng học cùng bé!'}
             </p>
           </div>
           <div className="chat-header-actions">
@@ -355,7 +355,7 @@ export default function HomePage() {
           <input
             className="chat-input"
             type="text"
-            placeholder="Nhắn tin cho Buddy tại đây..."
+            placeholder="Nhắn tin cho Bolly tại đây..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isSending}

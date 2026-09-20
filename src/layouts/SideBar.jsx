@@ -41,7 +41,7 @@ export default function SideBar() {
     <aside className="sidebar">
       <div className="sidebar-brand cursor-pointer" onClick={() => navigate('/home')}>
         <span className="brand-icon">🦉</span>
-        <span className="brand-name">BuddyEnglish</span>
+        <span className="brand-name">BollyEnglish</span>
       </div>
 
       <div className="profile-card">
@@ -89,7 +89,7 @@ export default function SideBar() {
           className={`nav-item ${pathname === '/home' ? 'active' : ''}`}
           onClick={(e) => { e.preventDefault(); navigate('/home') }}
         >
-          <span>💬</span> Trò chuyện với Buddy
+          <span>💬</span> Trò chuyện với Bolly
         </a>
         <a
           href="/study"

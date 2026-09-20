@@ -44,7 +44,7 @@ const PARENT_FEATURES = [
   {
     icon: '⏰',
     title: 'Schedule & Reminders',
-    desc: 'Set preferred practice times. Buddy will remind your child when it is time to learn, keeping the streak alive without parental nagging.',
+    desc: 'Set preferred practice times. Bolly will remind your child when it is time to learn, keeping the streak alive without parental nagging.',
   },
 ]
 
@@ -55,11 +55,11 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Is it safe for my child to use?',
-    a: 'Yes. Every AI response is filtered for age-appropriate content. Buddy cannot discuss topics outside of English learning. All data is stored securely with JWT authentication, and no personal data is shared with third parties.',
+    a: 'Yes. Every AI response is filtered for age-appropriate content. Bolly cannot discuss topics outside of English learning. All data is stored securely with JWT authentication, and no personal data is shared with third parties.',
   },
   {
     q: 'How does the speech recognition work?',
-    a: 'BuddyEnglish uses the Web Speech API built into modern browsers to capture your child\'s voice. The audio is converted to text locally, then sent to our Spring Boot backend for analysis by Google Gemini AI. No audio recordings are stored.',
+    a: 'BollyEnglish uses the Web Speech API built into modern browsers to capture your child\'s voice. The audio is converted to text locally, then sent to our Spring Boot backend for analysis by Google Gemini AI. No audio recordings are stored.',
   },
   {
     q: 'Does my child need a microphone?',
@@ -67,7 +67,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'How much does it cost?',
-    a: 'BuddyEnglish is currently in beta and free to use. We plan to offer a freemium model with basic features available for free and premium worlds/scenarios available through a monthly subscription.',
+    a: 'BollyEnglish is currently in beta and free to use. We plan to offer a freemium model with basic features available for free and premium worlds/scenarios available through a monthly subscription.',
   },
   {
     q: 'Can I track my child\'s progress?',
@@ -215,7 +215,7 @@ export default function TryBuddySection({ username = 'Hung', currentUser }) {
             </span>
           </div>
           <p className="font-mono text-[14px] uppercase text-cream/80 max-w-[420px] leading-relaxed text-readable">
-            We understand that parents need to trust the technology their children use. BuddyEnglish is designed with safety, transparency, and parental control at its core.
+            We understand that parents need to trust the technology their children use. BollyEnglish is designed with safety, transparency, and parental control at its core.
           </p>
         </div>
 
@@ -260,7 +260,7 @@ export default function TryBuddySection({ username = 'Hung', currentUser }) {
           <div className="flex flex-col lg:flex-row justify-between gap-8 mb-8">
             <div className="max-w-[400px]">
               <Link to={currentUser ? "/home" : "/landing"} className="font-grotesk text-[22px] uppercase text-cream block mb-3 text-glow hover:text-neon transition-colors duration-200">
-                BuddyEnglish
+                BollyEnglish
               </Link>
               <p className="font-mono text-[12px] uppercase text-cream/50 leading-relaxed text-readable">
                 An AI-powered English speaking companion for Vietnamese children. Built as a capstone project at FPT University (EXE101) to demonstrate that technology can make language learning accessible, safe, and genuinely fun.
@@ -307,7 +307,7 @@ export default function TryBuddySection({ username = 'Hung', currentUser }) {
           </div>
           {/* Bottom row */}
           <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-2 font-mono text-[11px] uppercase text-cream/40 text-readable">
-            <span>© 2026 BuddyEnglish — EXE101 Capstone Project, FPT University</span>
+            <span>© 2026 BollyEnglish — EXE101 Capstone Project, FPT University</span>
             <span>Spring Boot · React · Google Gemini AI · SQL Server</span>
           </div>
         </div>

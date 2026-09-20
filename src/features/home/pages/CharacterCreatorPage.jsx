@@ -67,7 +67,7 @@ export default function CharacterCreatorPage() {
 
   const handleGenerate = () => {
     if (!prompt.trim()) return
-    generate(prompt.trim(), artStyle, characterName.trim() || 'My Buddy')
+    generate(prompt.trim(), artStyle, characterName.trim() || 'My Bolly')
   }
 
   const handleChipClick = (chip) => {

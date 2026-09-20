@@ -61,7 +61,7 @@ export default function LearnJourneySection({ currentUser }) {
             </h2>
             <div className="ml-12 sm:ml-24 lg:ml-32 flex items-baseline gap-3">
               <span className="font-condiment text-[40px] sm:text-[76px] text-neon normal-case leading-none -rotate-1 inline-block text-glow">học tập cùng</span>
-              <span className="font-grotesk text-[36px] sm:text-[68px] uppercase text-cream leading-tight text-glow">Buddy</span>
+              <span className="font-grotesk text-[36px] sm:text-[68px] uppercase text-cream leading-tight text-glow">Bolly</span>
             </div>
           </div>
 

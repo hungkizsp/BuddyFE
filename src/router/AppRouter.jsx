@@ -87,7 +87,7 @@ export default function AppRouter() {
         {/* Level 3 – Lunch Time (Food Court) */}
         <Route path="/adventure/food-forest/lunch-time/play" element={<GameLevelPage levelId={3} />} />
 
-        {/* Level 4 – Buddy's Restaurant (Fine Dining) */}
+        {/* Level 4 – Bolly's Restaurant (Fine Dining) */}
         <Route path="/adventure/food-forest/buddys-restaurant/play" element={<GameLevelPage levelId={4} />} />
       </Routes>
     </BrowserRouter>
