@@ -1,8 +1,8 @@
 import { Canvas } from '@react-three/fiber';
-import BuddyCharacter from './BuddyCharacter';
+import BollyCharacter from './BollyCharacter';
 import { useTalkingTom } from '../hooks/useTalkingTom';
 
-export default function AdventureScene({ gameState, onArrivedAtTable, buddyPosition, buddyScale = 1 }) {
+export default function AdventureScene({ gameState, onArrivedAtTable, bollyPosition, bollyScale = 1 }) {
   // Actively listen and echo back in the background (Talking Tom style)
   useTalkingTom(true);
 
@@ -34,11 +34,11 @@ export default function AdventureScene({ gameState, onArrivedAtTable, buddyPosit
         />
 
         {/* Character Node */}
-        <BuddyCharacter
+        <BollyCharacter
           gameState={gameState}
           onArrivedAtTable={onArrivedAtTable}
-          position={buddyPosition}
-          scale={buddyScale}
+          position={bollyPosition}
+          scale={bollyScale}
         />
       </Canvas>
     </div>

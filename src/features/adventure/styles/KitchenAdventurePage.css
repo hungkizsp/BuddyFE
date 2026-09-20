@@ -147,7 +147,7 @@
   user-select: none;
 }
 
-/* Layer 3: Buddy 3D Canvas wrapper */
+/* Layer 3: Bolly 3D Canvas wrapper */
 .canvas-container {
   position: absolute;
   top: 0;
@@ -164,8 +164,8 @@
   pointer-events: none;
 }
 
-/* Target collider zone overlay to detect drag drops on Buddy in HTML space */
-.buddy-drop-target {
+/* Target collider zone overlay to detect drag drops on Bolly in HTML space */
+.bolly-drop-target {
   position: absolute;
   width: 180px;
   height: 240px;
@@ -178,13 +178,13 @@
   transition: all 0.2s ease;
 }
 
-.buddy-drop-target.drag-over {
+.bolly-drop-target.drag-over {
   background-color: rgba(74, 222, 128, 0.15);
   border: 3px dashed #4ade80;
   box-shadow: 0 0 25px rgba(74, 222, 128, 0.5);
 }
 
-.buddy-drag-handle {
+.bolly-drag-handle {
   position: absolute;
   width: 120px;
   height: 34px;
@@ -201,7 +201,7 @@
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.22);
 }
 
-.buddy-drag-handle:active {
+.bolly-drag-handle:active {
   cursor: grabbing;
   transform: translate(-50%, -80%) scale(0.98);
 }
@@ -266,7 +266,7 @@
   border-color: rgba(234, 179, 8, 1);
 }
 
-.buddy-drag-handle {
+.bolly-drag-handle {
   position: absolute;
   width: 120px;
   height: 34px;
@@ -283,7 +283,7 @@
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.22);
 }
 
-.buddy-drag-handle:active {
+.bolly-drag-handle:active {
   cursor: grabbing;
   transform: translate(-50%, -80%) scale(0.98);
 }

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 
-export default function BuddyModel(props) {
+export default function BollyModel(props) {
   const group = useRef();
   
   // Load file 3D (Đường dẫn tính từ thư mục public)

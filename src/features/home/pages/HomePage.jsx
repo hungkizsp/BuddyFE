@@ -7,30 +7,30 @@ import axiosClient from '../../../shared/api/axiosClient'
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls, ContactShadows } from '@react-three/drei'
-import BuddyModel from '../../../shared/components/BuddyModel'
-import DynamicBuddyModel from '../../../shared/components/DynamicBuddyModel'
+import BollyModel from '../../../shared/components/BollyModel'
+import DynamicBollyModel from '../../../shared/components/DynamicBollyModel'
 import TopBar from '../../../shared/components/TopBar'
 import SideBar from '../../../layouts/SideBar'
 import Button from '../../../shared/components/ui/Button'
 import './HomePage.css'
 
 const QUICK_PHRASES = [
-  "Hello Buddy! 👋",
+  "Hello Bolly! 👋",
   "Dạy mình một từ mới!",
   "Cùng chơi trò chơi nào!",
   "Bài học hôm nay là gì?",
   "Kể cho mình nghe điều gì vui đi!",
 ]
 
-function BuddyAvatar({ mood = 'HAPPY', isTyping = false, modelPath = null }) {
+function BollyAvatar({ mood = 'HAPPY', isTyping = false, modelPath = null }) {
   return (
-    <div className={`buddy-avatar ${isTyping ? 'buddy-typing' : ''}`} style={{ width: '64px', height: '64px', padding: 0, overflow: 'hidden' }}>
+    <div className={`bolly-avatar ${isTyping ? 'bolly-typing' : ''}`} style={{ width: '64px', height: '64px', padding: 0, overflow: 'hidden' }}>
       <Canvas camera={{ position: [0, 1.2, 3.5], fov: 50 }} style={{ width: '100%', height: '100%' }}>
         <ambientLight intensity={0.7} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
         <Environment preset="city" />
         <Suspense fallback={null}>
-          <DynamicBuddyModel modelPath={modelPath} scale={1.5} position={[0, -1.2, 0]} />
+          <DynamicBollyModel modelPath={modelPath} scale={1.5} position={[0, -1.2, 0]} />
         </Suspense>
         <OrbitControls enableZoom={false} enablePan={false} />
       </Canvas>
@@ -65,13 +65,13 @@ export default function HomePage() {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      role: 'buddy',
-      text: `Chào bé! 👋 Mình là Buddy, bạn đồng hành học tiếng Anh của bé đây! Bé đã sẵn sàng học điều mới hôm nay chưa?`,
+      role: 'bolly',
+      text: `Chào bé! 👋 Mình là Bolly, bạn đồng hành học tiếng Anh của bé đây! Bé đã sẵn sàng học điều mới hôm nay chưa?`,
     },
   ])
   const [input, setInput] = useState('')
   const [isSending, setIsSending] = useState(false)
-  const [buddyMood, setBuddyMood] = useState('HAPPY')
+  const [bollyMood, setBollyMood] = useState('HAPPY')
   const [vocabHighlight, setVocabHighlight] = useState(null)
   const chatEndRef = useRef(null)
   // Bell popup state
@@ -104,7 +104,7 @@ export default function HomePage() {
     setInput('')
     setMessages((prev) => [...prev, { id: Date.now(), role: 'child', text: msg }])
     setIsSending(true)
-    setBuddyMood('CURIOUS')
+    setBollyMood('CURIOUS')
 
     try {
       const res = await axiosClient.post('/chatbot/chat', { message: msg })
@@ -112,10 +112,10 @@ export default function HomePage() {
 
       setMessages((prev) => [
         ...prev,
-        { id: Date.now() + 1, role: 'buddy', text: data.reply || 'Hmm, để Buddy suy nghĩ chút nha... 🤔' },
+        { id: Date.now() + 1, role: 'bolly', text: data.reply || 'Hmm, để Bolly suy nghĩ chút nha... 🤔' },
       ])
 
-      setBuddyMood('HAPPY')
+      setBollyMood('HAPPY')
 
       if (data.vocabularyWord) {
         setVocabHighlight({
@@ -130,11 +130,11 @@ export default function HomePage() {
         ...prev,
         {
           id: Date.now() + 1,
-          role: 'buddy',
-          text: "Ôi! Buddy gặp chút trục trặc khi suy nghĩ 😅. Bé thử lại nhé!",
+          role: 'bolly',
+          text: "Ôi! Bolly gặp chút trục trặc khi suy nghĩ 😅. Bé thử lại nhé!",
         },
       ])
-      setBuddyMood('SAD')
+      setBollyMood('SAD')
     } finally {
       setIsSending(false)
     }
@@ -158,11 +158,11 @@ export default function HomePage() {
       <main className="chat-main">
         <TopBar theme="dark" />
         <header className="chat-header">
-          <BuddyAvatar mood={buddyMood} isTyping={isSending} modelPath={childProfile?.activeCustomCharacterUrl} />
+          <BollyAvatar mood={bollyMood} isTyping={isSending} modelPath={childProfile?.activeCustomCharacterUrl} />
           <div className="chat-header-info">
-            <h1>Buddy</h1>
-            <p className={`buddy-status ${isSending ? 'typing' : 'online'}`}>
-              {isSending ? 'Buddy đang suy nghĩ...' : '● Đang hoạt động & sẵn sàng học cùng bé!'}
+            <h1>Bolly</h1>
+            <p className={`bolly-status ${isSending ? 'typing' : 'online'}`}>
+              {isSending ? 'Bolly đang suy nghĩ...' : '● Đang hoạt động & sẵn sàng học cùng bé!'}
             </p>
           </div>
           <div className="chat-header-actions">
@@ -281,7 +281,7 @@ export default function HomePage() {
               title="Bắt đầu lại cuộc trò chuyện"
               onClick={async () => {
                 await axiosClient.delete('/chatbot/history')
-                setMessages([{ id: Date.now(), role: 'buddy', text: "Cùng bắt đầu lại từ đầu nào! 🌟 Hôm nay bé muốn học từ vựng gì?" }])
+                setMessages([{ id: Date.now(), role: 'bolly', text: "Cùng bắt đầu lại từ đầu nào! 🌟 Hôm nay bé muốn học từ vựng gì?" }])
               }}
             >
               🔄 Đặt lại
@@ -306,8 +306,8 @@ export default function HomePage() {
         <div className="chat-messages">
           {messages.map((msg) => (
             <div key={msg.id} className={`message-row ${msg.role}`}>
-              {msg.role === 'buddy' && (
-                <div className="msg-avatar buddy-msg-avatar">🦉</div>
+              {msg.role === 'bolly' && (
+                <div className="msg-avatar bolly-msg-avatar">🦉</div>
               )}
               <div className={`message-bubble ${msg.role}`}>
                 <p>{msg.text}</p>
@@ -320,9 +320,9 @@ export default function HomePage() {
             </div>
           ))}
           {isSending && (
-            <div className="message-row buddy">
-              <div className="msg-avatar buddy-msg-avatar">🦉</div>
-              <div className="message-bubble buddy typing-bubble">
+            <div className="message-row bolly">
+              <div className="msg-avatar bolly-msg-avatar">🦉</div>
+              <div className="message-bubble bolly typing-bubble">
                 <span /><span /><span />
               </div>
             </div>
@@ -355,7 +355,7 @@ export default function HomePage() {
           <input
             className="chat-input"
             type="text"
-            placeholder="Nhắn tin cho Buddy tại đây..."
+            placeholder="Nhắn tin cho Bolly tại đây..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isSending}

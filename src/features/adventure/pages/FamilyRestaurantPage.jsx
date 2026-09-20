@@ -218,7 +218,7 @@ export default function FamilyRestaurantPage() {
 
     setCompletedStepIndexes((prev) => new Set([...prev, activeOrderIndex]));
     setMissionStage((prev) => prev + 1);
-    setFeedbackMessage(nextStep.buddyMessage || '');
+    setFeedbackMessage(nextStep.bollyMessage || '');
   }, [activeOrderIndex, missionStage, scenarioSteps]);
 
   const handleStepSuccess = useCallback(
@@ -270,7 +270,7 @@ export default function FamilyRestaurantPage() {
     resetStepVisualState();
     setShowReward(false);
     setGameState('ordering');
-    setFeedbackMessage(scenarioSteps[0]?.buddyMessage || scenario?.description || '');
+    setFeedbackMessage(scenarioSteps[0]?.bollyMessage || scenario?.description || '');
   };
 
   const handleMenuSelect = (item) => {
@@ -310,7 +310,7 @@ export default function FamilyRestaurantPage() {
     if (gameState === 'not-started') {
       return scenario?.description || "Nhấn 'Bắt đầu nhiệm vụ' để bắt đầu.";
     }
-    return activeStep?.buddyMessage || 'Hoàn thành bước gọi món hiện tại.';
+    return activeStep?.bollyMessage || 'Hoàn thành bước gọi món hiện tại.';
   };
 
   const startDisabled =
@@ -320,8 +320,8 @@ export default function FamilyRestaurantPage() {
     !scenarioId ||
     scenarioSteps.length === 0;
 
-  const buddyPosition = { left: '76%', top: '58%' };
-  const buddy3DPosition = [1.5, -1.2, 1.5];
+  const bollyPosition = { left: '76%', top: '58%' };
+  const bolly3DPosition = [1.5, -1.2, 1.5];
 
   return (
     <div className="restaurant-container app-shell">
@@ -329,8 +329,8 @@ export default function FamilyRestaurantPage() {
       <AdventureScene
         gameState={gameState === 'not-started' ? 'not-started' : 'idle-at-table'}
         onArrivedAtTable={() => { }}
-        buddyPosition={buddy3DPosition}
-        buddyScale={0.6}
+        bollyPosition={bolly3DPosition}
+        bollyScale={0.6}
       />
 
       {/* ── Intro Story Panel (shown before game starts) ── */}
@@ -407,8 +407,8 @@ export default function FamilyRestaurantPage() {
                 const cat = STEP_CATEGORIES[activeStep?.stepOrder];
                 const catHint = cat ? cat.hint : '';
                 setFeedbackMessage(
-                  activeStep?.buddyMessage
-                    ? `${activeStep.buddyMessage}${catHint ? ` (${catHint})` : ''}`
+                  activeStep?.bollyMessage
+                    ? `${activeStep.bollyMessage}${catHint ? ` (${catHint})` : ''}`
                     : cat?.hint || 'Hãy gọi món bằng tiếng Anh nhé!',
                 );
               }}
@@ -499,8 +499,8 @@ export default function FamilyRestaurantPage() {
         <SpeechBubble
           gameState={gameState === 'completed' ? 'completed' : 'idle-at-table'}
           message={feedbackMessage}
-          buddyPosition={buddyPosition}
-          scenarioDescription={activeStep?.buddyMessage || scenario?.description}
+          bollyPosition={bollyPosition}
+          scenarioDescription={activeStep?.bollyMessage || scenario?.description}
         />
       )}
 

@@ -242,7 +242,7 @@
   flex-shrink: 0;
 }
 
-.buddy-avatar {
+.bolly-avatar {
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -257,16 +257,16 @@
   transition: transform 0.3s;
 }
 
-.buddy-avatar.buddy-typing {
-  animation: buddyPulse 1s ease-in-out infinite;
+.bolly-avatar.bolly-typing {
+  animation: bollyPulse 1s ease-in-out infinite;
 }
 
-@keyframes buddyPulse {
+@keyframes bollyPulse {
   0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 213, 79, 0.4); }
   50% { transform: scale(1.08); box-shadow: 0 0 30px rgba(255, 213, 79, 0.7); }
 }
 
-.buddy-face { font-size: 1.8rem; }
+.bolly-face { font-size: 1.8rem; }
 
 .typing-dots {
   position: absolute;
@@ -302,15 +302,15 @@
   color: #fff;
 }
 
-.buddy-status {
+.bolly-status {
   font-size: 0.78rem;
   font-weight: 600;
   margin: 2px 0 0;
   color: rgba(255, 255, 255, 0.5);
 }
 
-.buddy-status.online { color: var(--accent-lime); }
-.buddy-status.typing { color: var(--accent-cyan); }
+.bolly-status.online { color: var(--accent-lime); }
+.bolly-status.typing { color: var(--accent-cyan); }
 
 .chat-header-actions { margin-left: auto; }
 
@@ -429,7 +429,7 @@
   flex-shrink: 0;
 }
 
-.buddy-msg-avatar {
+.bolly-msg-avatar {
   background: linear-gradient(135deg, #ffd54f, #ff8a65);
   box-shadow: 0 2px 10px rgba(255,213,79,0.35);
 }
@@ -453,7 +453,7 @@
 
 .message-bubble p { margin: 0; }
 
-.message-bubble.buddy {
+.message-bubble.bolly {
   background: rgba(255, 255, 255, 0.09);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom-left-radius: 6px;

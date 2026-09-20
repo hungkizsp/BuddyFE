@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
 import { Link } from 'react-router-dom'
-import SharedBuddyModel from '../../../../shared/components/BuddyModel'
+import SharedBollyModel from '../../../../shared/components/BollyModel'
 
 const MailIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -30,7 +30,7 @@ const NAV_LINKS = [
   { name: 'FAQ', href: '#faq' }
 ]
 
-function InteractiveBuddy({ reaction }) {
+function InteractiveBolly({ reaction }) {
   const group = useRef()
   const [isMobile, setIsMobile] = useState(false)
   const startTimeRef = useRef(0)
@@ -83,12 +83,12 @@ function InteractiveBuddy({ reaction }) {
 
   return (
     <group ref={group} position={[0, -1.1, 0]} scale={1.35}>
-      <SharedBuddyModel />
+      <SharedBollyModel />
     </group>
   )
 }
 
-function BuddyScene({ reaction }) {
+function BollyScene({ reaction }) {
   return (
     <Canvas camera={{ position: [0, 1.2, 4.2], fov: 40 }} gl={{ alpha: true, antialias: true }}>
       <ambientLight intensity={2.0} />
@@ -96,7 +96,7 @@ function BuddyScene({ reaction }) {
       <directionalLight position={[-3, 2, -3]} intensity={0.6} color="#6060ff" />
       <Environment preset="city" />
       <Suspense fallback={null}>
-        <InteractiveBuddy reaction={reaction} />
+        <InteractiveBolly reaction={reaction} />
       </Suspense>
     </Canvas>
   )
@@ -106,7 +106,7 @@ function SocialIcons() {
   return (
     <>
       <a
-        href="mailto:buddyenglish@fpt.edu.vn"
+        href="mailto:bollyenglish@fpt.edu.vn"
         className="liquid-glass w-[56px] h-[56px] rounded-[1rem] flex items-center justify-center hover:bg-white/10 transition-all duration-300 text-cream"
       >
         <MailIcon />
@@ -131,8 +131,8 @@ function SocialIcons() {
   )
 }
 
-export default function MeetBuddyHero({ onLearnMore, currentUser }) {
-  const [bubbleText, setBubbleText] = useState("Hi there! I'm Buddy — your AI English speaking companion. I listen, I remember, and I grow with you every day!")
+export default function MeetBollyHero({ onLearnMore, currentUser }) {
+  const [bubbleText, setBubbleText] = useState("Hi there! I'm Bolly — your AI English speaking companion. I listen, I remember, and I grow with you every day!")
   const [reaction, setReaction] = useState(null)
 
   const triggerReaction = (text, type) => {
@@ -163,9 +163,9 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
         src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_045634_e1c98c76-1265-4f5c-882a-4276f2080894.mp4"
       />
 
-      {/* 3D Buddy Canvas */}
+      {/* 3D Bolly Canvas */}
       <div className="absolute inset-0 left-[35%] z-10 pointer-events-none md:pointer-events-auto">
-        <BuddyScene reaction={reaction} />
+        <BollyScene reaction={reaction} />
       </div>
 
       {/* Main Container — sits above video-darken overlay (z-index > 1) */}
@@ -175,7 +175,7 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
         <div className="flex items-center justify-between pt-7">
           {/* Logo */}
           <Link to={currentUser ? "/home" : "/landing"} className="font-grotesk text-xl uppercase text-cream tracking-widest text-glow hover:text-neon transition-colors duration-200">
-            BuddyEnglish
+            BollyEnglish
           </Link>
 
           {/* Navigation */}
@@ -217,13 +217,13 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
 
             {/* Script overlay */}
             <span className="font-condiment text-[28px] sm:text-[42px] md:text-[56px] text-neon -rotate-1 mix-blend-exclusion opacity-90 absolute right-4 lg:right-[20px] bottom-[-20px] leading-none normal-case pointer-events-none text-glow">
-              speak with Buddy
+              speak with Bolly
             </span>
           </div>
 
           {/* Sub-description */}
           <p className="font-mono text-[14px] sm:text-[16px] uppercase text-cream/80 max-w-[560px] mt-8 lg:ml-32 leading-relaxed text-readable">
-            An AI-powered speaking companion designed for Vietnamese children aged 4–12. Buddy uses real-time speech recognition, adaptive memory, and emotional intelligence to help kids practice English naturally — anytime, anywhere, without fear of judgment.
+            An AI-powered speaking companion designed for Vietnamese children aged 4–12. Bolly uses real-time speech recognition, adaptive memory, and emotional intelligence to help kids practice English naturally — anytime, anywhere, without fear of judgment.
           </p>
 
           {/* CTA buttons */}
@@ -234,7 +234,7 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
               </Link>
             ) : (
               <Link to="/register" className="inline-block px-8 py-4 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
-                Try Buddy Free
+                Try Bolly Free
               </Link>
             )}
             <button onClick={onLearnMore} className="liquid-glass px-8 py-4 sm:px-10 sm:py-5 font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
@@ -252,7 +252,7 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
         <div className="absolute right-[4%] lg:right-[6%] top-[14%] lg:top-[18%] max-w-[260px] sm:max-w-[300px] liquid-glass rounded-2xl rounded-tr-none p-5 z-30">
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-wider text-neon font-bold">Buddy online</span>
+            <span className="font-mono text-[10px] uppercase tracking-wider text-neon font-bold">Bolly online</span>
           </div>
           <p className="font-mono text-[13px] text-cream leading-relaxed">{bubbleText}</p>
           <div className="flex gap-2 mt-3">
@@ -291,7 +291,7 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
               <span>Powered by</span>
             </div>
           </div>
-          <span>© 2026 BuddyEnglish — FPT University</span>
+          <span>© 2026 BollyEnglish — FPT University</span>
         </div>
 
       </div>

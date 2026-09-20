@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
-export default function SpeechBubble({ gameState, message, buddyPosition, scenarioDescription }) {
+export default function SpeechBubble({ gameState, message, bollyPosition, scenarioDescription }) {
   const [isVisible, setIsVisible] = useState(true)
   const isCompleted = gameState === 'completed'
 
   const wrapperStyle = {
-    left: buddyPosition?.left || '47%',
-    top: buddyPosition?.top ? `calc(${buddyPosition.top} - 18%)` : '20%',
+    left: bollyPosition?.left || '47%',
+    top: bollyPosition?.top ? `calc(${bollyPosition.top} - 18%)` : '20%',
     transform: isVisible ? 'translateX(0)' : 'translateX(80px)',
     transition: gameState === 'walking-to-table'
       ? 'left 2.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 0.3s ease, transform 0.3s ease'

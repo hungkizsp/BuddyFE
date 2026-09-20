@@ -100,7 +100,7 @@
   line-height: 1.5;
 }
 
-/* ── Main area (carousel + buddy + actions) ── */
+/* ── Main area (carousel + bolly + actions) ── */
 .ff-main-area {
   flex: 1;
   display: flex;
@@ -373,7 +373,7 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* ── 3D Buddy Canvas ── */
+/* ── 3D Bolly Canvas ── */
 .ff-page .canvas-container {
   position: absolute;
   inset: 0;
