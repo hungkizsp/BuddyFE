@@ -6,7 +6,7 @@ import axiosClient from './axiosClient'
  * @param {string} artStyle - Art style (cartoon, low-poly, realistic, anime, voxel)
  * @param {string} characterName - Optional friendly name
  */
-export const generateCharacter = async (prompt, artStyle, characterName = 'My Buddy') => {
+export const generateCharacter = async (prompt, artStyle, characterName = 'My Bolly') => {
   const response = await axiosClient.post('/character/generate', {
     prompt,
     artStyle,

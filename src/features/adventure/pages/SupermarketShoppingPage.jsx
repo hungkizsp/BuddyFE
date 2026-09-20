@@ -239,7 +239,7 @@ export default function SupermarketShoppingPage() {
     setCollectedIds(new Set());
     setShowReward(false);
     setGameState('shopping');
-    setFeedbackMessage(scenarioSteps[0]?.buddyMessage || scenario?.description || '');
+    setFeedbackMessage(scenarioSteps[0]?.bollyMessage || scenario?.description || '');
   };
 
   const handleCorrectItem = (itemId) => {
@@ -261,7 +261,7 @@ export default function SupermarketShoppingPage() {
     if (nextStep) {
       setCollectedIds(new Set());
       setMissionStage((prev) => prev + 1);
-      setFeedbackMessage(nextStep.buddyMessage || activeStep?.successResponse || '');
+      setFeedbackMessage(nextStep.bollyMessage || activeStep?.successResponse || '');
     }
   };
 
@@ -345,7 +345,7 @@ export default function SupermarketShoppingPage() {
     if (anyError) return anyError;
     if (!scenarioId) return 'Chọn một kịch bản để bắt đầu.';
     if (gameState === 'not-started') return scenario?.description || "Nhấn 'Bắt đầu nhiệm vụ' để bắt đầu.";
-    return activeStep?.buddyMessage || 'Hoàn thành bước nhiệm vụ hiện tại.';
+    return activeStep?.bollyMessage || 'Hoàn thành bước nhiệm vụ hiện tại.';
   };
 
   const startDisabled =
@@ -355,19 +355,19 @@ export default function SupermarketShoppingPage() {
     !scenarioId ||
     scenarioSteps.length === 0;
 
-  // ── Buddy 3D position (fixed in corner for supermarket) ──
-  const buddyPosition = { left: '70%', top: '56%' };
-  const buddy3DPosition = [1.3, -1.2, 1.5];
+  // ── Bolly 3D position (fixed in corner for supermarket) ──
+  const bollyPosition = { left: '70%', top: '56%' };
+  const bolly3DPosition = [1.3, -1.2, 1.5];
 
   return (
     <div className="supermarket-container app-shell">
       <BackgroundMusic src={bgMusicSrc} volume={0.2} />
-      {/* ── 3D Buddy character ── */}
+      {/* ── 3D Bolly character ── */}
       <AdventureScene
         gameState={gameState === 'not-started' ? 'not-started' : 'idle-at-table'}
         onArrivedAtTable={() => { }}
-        buddyPosition={buddy3DPosition}
-        buddyScale={0.6}
+        bollyPosition={bolly3DPosition}
+        bollyScale={0.6}
       />
 
       {/* ── Intro Story Panel (shown before game starts) ── */}
@@ -640,8 +640,8 @@ export default function SupermarketShoppingPage() {
         <SpeechBubble
           gameState={gameState === 'completed' ? 'completed' : 'idle-at-table'}
           message={feedbackMessage}
-          buddyPosition={buddyPosition}
-          scenarioDescription={activeStep?.buddyMessage || scenario?.description}
+          bollyPosition={bollyPosition}
+          scenarioDescription={activeStep?.bollyMessage || scenario?.description}
         />
       )}
 

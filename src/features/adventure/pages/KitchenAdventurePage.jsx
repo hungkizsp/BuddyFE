@@ -95,11 +95,11 @@ export default function KitchenAdventurePage() {
   const [missionStage, setMissionStage] = useState(0);
   const [preparedEggOnToast, setPreparedEggOnToast] = useState(false);
   const [potContents, setPotContents] = useState([]);
-  const [buddyPosition, setBuddyPosition] = useState({
+  const [bollyPosition, setBollyPosition] = useState({
     left: "67%",
     top: "47%",
   });
-  const [isDraggingBuddy, setIsDraggingBuddy] = useState(false);
+  const [isDraggingBolly, setIsDraggingBolly] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [missionPanelVisible, setMissionPanelVisible] = useState(true);
   const [xp, setXp] = useState(60);
@@ -108,7 +108,7 @@ export default function KitchenAdventurePage() {
   const [showFruitBasket, setShowFruitBasket] = useState(false);
   const [hasAppleFromBasket, setHasAppleFromBasket] = useState(false);
   const { childProfile, loadChildProfile } = useAuthStore();
-  const buddyDragStartRef = useRef({ x: 0, y: 0, left: 0, top: 0 });
+  const bollyDragStartRef = useRef({ x: 0, y: 0, left: 0, top: 0 });
 
   useEffect(() => {
     if (!showRewards || !childProfile?.id || !scenarioId) return;
@@ -202,7 +202,7 @@ export default function KitchenAdventurePage() {
       meaning: "Bánh mì kẹp trứng",
       image: resolveVocabularyImage("/images/vocabulary/egg-sandwich.png"),
       alt: "Egg Sandwich",
-      exampleSentence: "Buddy is eating an egg sandwich.",
+      exampleSentence: "Bolly is eating an egg sandwich.",
       vocabulary: null,
     };
   }, [itemsByWord.eggOnToast]);
@@ -267,11 +267,11 @@ export default function KitchenAdventurePage() {
     setPotContents([]);
     setHasAppleFromBasket(false);
     setShowFruitBasket(false);
-    setBuddyPosition({ left: "67%", top: "47%" });
+    setBollyPosition({ left: "67%", top: "47%" });
     setFeedbackMessage(
-      scenarioSteps[0]?.buddyMessage ||
+      scenarioSteps[0]?.bollyMessage ||
       scenario?.description ||
-      "Buddy đã sẵn sàng cho nhiệm vụ này.",
+      "Bolly đã sẵn sàng cho nhiệm vụ này.",
     );
     setShowRewards(false);
   };
@@ -281,9 +281,9 @@ export default function KitchenAdventurePage() {
       resetMission();
       setGameState("walking-to-table");
       setFeedbackMessage(
-        scenarioSteps[0]?.buddyMessage ||
+        scenarioSteps[0]?.bollyMessage ||
         scenario?.description ||
-        "Buddy đang đi đến bàn bếp.",
+        "Bolly đang đi đến bàn bếp.",
       );
     }
   };
@@ -330,7 +330,7 @@ export default function KitchenAdventurePage() {
     );
   };
 
-  const handleDropOnBuddy = (itemId) => {
+  const handleDropOnBolly = (itemId) => {
     if (gameState !== "idle-at-table") return;
 
     const item = tableItems.find((tableItem) => tableItem?.id === itemId);
@@ -340,7 +340,7 @@ export default function KitchenAdventurePage() {
     if (itemId === BREAD_ID || itemId === EGG_ID) {
       setFeedbackMessage(
         activeStep?.failResponse ||
-        `Buddy muốn ${eggDishItem.label || "món đã chuẩn bị"}, không chỉ mỗi ${word}.`,
+        `Bolly muốn ${eggDishItem.label || "món đã chuẩn bị"}, không chỉ mỗi ${word}.`,
       );
       return;
     }
@@ -354,7 +354,7 @@ export default function KitchenAdventurePage() {
         setGameState("completed");
         setFeedbackMessage(
           activeStep.successResponse ||
-          activeStep.buddyMessage ||
+          activeStep.bollyMessage ||
           "Hoàn thành nhiệm vụ.",
         );
         setShowRewards(true);
@@ -379,7 +379,7 @@ export default function KitchenAdventurePage() {
           );
         } else {
           setFeedbackMessage(
-            nextStep?.buddyMessage || activeStep?.successResponse,
+            nextStep?.bollyMessage || activeStep?.successResponse,
           );
         }
         removeItem(itemId);
@@ -400,7 +400,7 @@ export default function KitchenAdventurePage() {
 
     setFeedbackMessage(
       activeStep?.failResponse ||
-      `${word} không phải là thứ Buddy cần lúc này.`,
+      `${word} không phải là thứ Bolly cần lúc này.`,
     );
   };
 
@@ -457,7 +457,7 @@ export default function KitchenAdventurePage() {
 
       setTableItems((prev) => [...prev, eggDishItem]);
 
-      setFeedbackMessage(`${eggDishItem.label} đã sẵn sàng. Kéo nó đến chỗ Buddy.`);
+      setFeedbackMessage(`${eggDishItem.label} đã sẵn sàng. Kéo nó đến chỗ Bolly.`);
 
       return true;
     }
@@ -476,56 +476,56 @@ export default function KitchenAdventurePage() {
     if (gameState === "not-started")
       return scenario?.description || "Nhấn 'Bắt đầu nhiệm vụ' để bắt đầu.";
     if (gameState === "walking-to-table")
-      return "Buddy đang đi đến bàn...";
+      return "Bolly đang đi đến bàn...";
     if (gameState === "idle-at-table")
-      return activeStep?.buddyMessage || "Hoàn thành bước nhiệm vụ hiện tại.";
-    return "Hoàn thành nhiệm vụ. Buddy rất vui và no bụng.";
+      return activeStep?.bollyMessage || "Hoàn thành bước nhiệm vụ hiện tại.";
+    return "Hoàn thành nhiệm vụ. Bolly rất vui và no bụng.";
   };
 
-  const handleBuddyPointerDown = (e) => {
+  const handleBollyPointerDown = (e) => {
     e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
-    setIsDraggingBuddy(true);
-    buddyDragStartRef.current = {
+    setIsDraggingBolly(true);
+    bollyDragStartRef.current = {
       x: e.clientX,
       y: e.clientY,
-      left: parseFloat(buddyPosition.left),
-      top: parseFloat(buddyPosition.top),
+      left: parseFloat(bollyPosition.left),
+      top: parseFloat(bollyPosition.top),
     };
   };
 
-  const handleBuddyPointerMove = (e) => {
-    if (!isDraggingBuddy) return;
-    const deltaX = e.clientX - buddyDragStartRef.current.x;
-    const deltaY = e.clientY - buddyDragStartRef.current.y;
+  const handleBollyPointerMove = (e) => {
+    if (!isDraggingBolly) return;
+    const deltaX = e.clientX - bollyDragStartRef.current.x;
+    const deltaY = e.clientY - bollyDragStartRef.current.y;
     const left = Math.min(
       90,
       Math.max(
         10,
-        buddyDragStartRef.current.left + (deltaX / window.innerWidth) * 100,
+        bollyDragStartRef.current.left + (deltaX / window.innerWidth) * 100,
       ),
     );
     const top = Math.min(
       85,
       Math.max(
         15,
-        buddyDragStartRef.current.top + (deltaY / window.innerHeight) * 100,
+        bollyDragStartRef.current.top + (deltaY / window.innerHeight) * 100,
       ),
     );
-    setBuddyPosition({ left: `${left}%`, top: `${top}%` });
+    setBollyPosition({ left: `${left}%`, top: `${top}%` });
   };
 
-  const handleBuddyPointerUp = (e) => {
-    if (!isDraggingBuddy) return;
-    setIsDraggingBuddy(false);
+  const handleBollyPointerUp = (e) => {
+    if (!isDraggingBolly) return;
+    setIsDraggingBolly(false);
     if (e.currentTarget.hasPointerCapture(e.pointerId)) {
       e.currentTarget.releasePointerCapture(e.pointerId);
     }
   };
 
-  const buddy3DPosition = [
-    (parseFloat(buddyPosition.left) - 47) / 10,
-    -1.8 + (50 - parseFloat(buddyPosition.top)) / 10,
+  const bolly3DPosition = [
+    (parseFloat(bollyPosition.left) - 47) / 10,
+    -1.8 + (50 - parseFloat(bollyPosition.top)) / 10,
     0,
   ];
 
@@ -547,7 +547,7 @@ export default function KitchenAdventurePage() {
       <AdventureScene
         gameState={gameState}
         onArrivedAtTable={handleArrivedAtTable}
-        buddyPosition={buddy3DPosition}
+        bollyPosition={bolly3DPosition}
       />
 
       <button
@@ -555,7 +555,7 @@ export default function KitchenAdventurePage() {
         disabled={!canOpenBasket}
         onClick={() => {
           if (!canOpenBasket) {
-            setFeedbackMessage("Buddy chưa yêu cầu trái cây.");
+            setFeedbackMessage("Bolly chưa yêu cầu trái cây.");
             return;
           }
 
@@ -572,19 +572,19 @@ export default function KitchenAdventurePage() {
             <span>Nồi</span>
           </div>
           <div
-            className="buddy-drop-target"
-            style={{ left: buddyPosition.left, top: buddyPosition.top }}
+            className="bolly-drop-target"
+            style={{ left: bollyPosition.left, top: bollyPosition.top }}
           />
           <button
-            className="buddy-drag-handle"
-            style={{ left: buddyPosition.left, top: buddyPosition.top }}
-            onPointerDown={handleBuddyPointerDown}
-            onPointerMove={handleBuddyPointerMove}
-            onPointerUp={handleBuddyPointerUp}
-            onPointerCancel={handleBuddyPointerUp}
+            className="bolly-drag-handle"
+            style={{ left: bollyPosition.left, top: bollyPosition.top }}
+            onPointerDown={handleBollyPointerDown}
+            onPointerMove={handleBollyPointerMove}
+            onPointerUp={handleBollyPointerUp}
+            onPointerCancel={handleBollyPointerUp}
             type="button"
           >
-            Kéo Buddy
+            Kéo Bolly
           </button>
         </>
       )}
@@ -595,7 +595,7 @@ export default function KitchenAdventurePage() {
             key={item.id}
             item={item}
             position={ITEM_POSITIONS[index % ITEM_POSITIONS.length]}
-            onDropOnBuddy={handleDropOnBuddy}
+            onDropOnBolly={handleDropOnBolly}
             onDropOnItem={handleCombineItems}
             onDropOnPot={handleDropOnPot}
             disabled={gameState !== "idle-at-table"}
@@ -658,9 +658,9 @@ export default function KitchenAdventurePage() {
         <SpeechBubble
           gameState={gameState}
           message={feedbackMessage}
-          buddyPosition={buddyPosition}
+          bollyPosition={bollyPosition}
           scenarioDescription={
-            activeStep?.buddyMessage || scenario?.description
+            activeStep?.bollyMessage || scenario?.description
           }
         />
       )}

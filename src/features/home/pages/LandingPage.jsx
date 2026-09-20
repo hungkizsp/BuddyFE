@@ -1,12 +1,12 @@
 import { useRef, useEffect } from 'react'
 import { useAuthStore } from '../../auth/store/authStore'
-import MeetBuddyHero from '../components/landing/MeetBuddyHero'
-import WhyBuddySection from '../components/landing/WhyBuddySection'
+import MeetBollyHero from '../components/landing/MeetBollyHero'
+import WhyBollySection from '../components/landing/WhyBollySection'
 import LearnJourneySection from '../components/landing/LearnJourneySection'
-import TryBuddySection from '../components/landing/TryBuddySection'
+import TryBollySection from '../components/landing/TryBollySection'
 
 export default function LandingPage() {
-  const whyBuddyRef = useRef(null)
+  const whyBollyRef = useRef(null)
   const { currentUser, loadCurrentUser } = useAuthStore()
 
   useEffect(() => {
@@ -16,18 +16,18 @@ export default function LandingPage() {
   const displayName = currentUser?.nickname || 'Hung'
 
   const handleLearnMore = () => {
-    whyBuddyRef.current?.scrollIntoView({ behavior: 'smooth' })
+    whyBollyRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
     <div className="bg-[#010828] min-h-screen text-cream overflow-x-hidden relative">
       <div className="noise-overlay" />
-      <MeetBuddyHero onLearnMore={handleLearnMore} currentUser={currentUser} />
-      <div ref={whyBuddyRef}>
-        <WhyBuddySection username={displayName} currentUser={currentUser} />
+      <MeetBollyHero onLearnMore={handleLearnMore} currentUser={currentUser} />
+      <div ref={whyBollyRef}>
+        <WhyBollySection username={displayName} currentUser={currentUser} />
       </div>
       <LearnJourneySection currentUser={currentUser} />
-      <TryBuddySection username={displayName} currentUser={currentUser} />
+      <TryBollySection username={displayName} currentUser={currentUser} />
     </div>
   )
 }

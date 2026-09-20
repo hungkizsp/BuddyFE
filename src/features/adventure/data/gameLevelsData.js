@@ -2,7 +2,7 @@
    Game Levels Data
    Level 2 – Fruit Hunt  (🌳 Apple Orchard)     – Easy+
    Level 3 – Lunch Time  (🍔 Food Court)         – Medium
-   Level 4 – Buddy's Restaurant (🍽️ Fine Dining) – Medium+
+   Level 4 – Bolly's Restaurant (🍽️ Fine Dining) – Medium+
    ========================================================= */
 
 export const GAME_LEVELS = {
@@ -13,15 +13,15 @@ export const GAME_LEVELS = {
     id: 2,
     theme: 'orchard',
     name: "Fruit Hunt",
-    roomTitle: "🌳 Buddy's Apple Orchard",
+    roomTitle: "🌳 Bolly's Apple Orchard",
     levelLabel: "Level 2 – Fruit Hunt",
     difficulty: 'Easy+',
     difficultyColor: '#22c55e',
     backRoute: '/adventure/food-forest',
     xpPerFood: 15,
     missionInstruction: '🍎 Pick the ripe fruits!',
-    buddyInitialSpeech: "Let's pick fruits! Can you find the ripe ones for me? 🍎",
-    buddyWinSpeech: "Delicious! Thank you, fruit expert! 🍓",
+    bollyInitialSpeech: "Let's pick fruits! Can you find the ripe ones for me? 🍎",
+    bollyWinSpeech: "Delicious! Thank you, fruit expert! 🍓",
     hint: "Pick fruits that grow on trees or in the garden!",
     missions: [
       { id: 'm1', text: 'Find a tree fruit',   done: false },
@@ -65,8 +65,8 @@ export const GAME_LEVELS = {
     backRoute: '/adventure/food-forest',
     xpPerFood: 18,
     missionInstruction: '🍽️ Order the right food!',
-    buddyInitialSpeech: "I'm at the food court! Help me choose what to eat for lunch 🍔",
-    buddyWinSpeech: "Perfect order! This looks SO yummy! 😋",
+    bollyInitialSpeech: "I'm at the food court! Help me choose what to eat for lunch 🍔",
+    bollyWinSpeech: "Perfect order! This looks SO yummy! 😋",
     hint: "Order real food and drinks from the menu!",
     missions: [
       { id: 'm1', text: 'Order a hot meal',    done: false },
@@ -101,16 +101,16 @@ export const GAME_LEVELS = {
   4: {
     id: 4,
     theme: 'fancy',
-    name: "Buddy's Restaurant",
-    roomTitle: "🍽️ Buddy's Fine Restaurant",
-    levelLabel: "Level 4 – Buddy's Restaurant",
+    name: "Bolly's Restaurant",
+    roomTitle: "🍽️ Bolly's Fine Restaurant",
+    levelLabel: "Level 4 – Bolly's Restaurant",
     difficulty: 'Medium+',
     difficultyColor: '#8b5cf6',
     backRoute: '/adventure/food-forest',
     xpPerFood: 20,
     missionInstruction: '👨‍🍳 Find the fine dining dishes!',
-    buddyInitialSpeech: "Welcome to my restaurant! Help me pick the real food on the table 🍽️",
-    buddyWinSpeech: "Excellent! You are a true food expert! 👨‍🍳",
+    bollyInitialSpeech: "Welcome to my restaurant! Help me pick the real food on the table 🍽️",
+    bollyWinSpeech: "Excellent! You are a true food expert! 👨‍🍳",
     hint: "Find actual food dishes – cutlery and decorations are NOT food!",
     missions: [
       { id: 'm1', text: 'Find a main course', done: false },

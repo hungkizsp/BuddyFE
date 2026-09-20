@@ -17,7 +17,7 @@ export default function MissionPanel({
   if (gameState === 'walking-to-table') {
     statusText = 'Ongoing'
     badgeClass = 'ongoing'
-    instruction = customInstruction || description || 'Buddy is walking to the kitchen table.'
+    instruction = customInstruction || description || 'Bolly is walking to the kitchen table.'
     buttonText = 'Walking...'
     buttonDisabled = true
   } else if (gameState === 'idle-at-table') {
@@ -28,7 +28,7 @@ export default function MissionPanel({
   } else if (gameState === 'completed') {
     statusText = 'Completed'
     badgeClass = 'done'
-    instruction = customInstruction || description || 'Mission complete. Buddy is happy and full.'
+    instruction = customInstruction || description || 'Mission complete. Bolly is happy and full.'
     buttonText = 'Completed'
     buttonDisabled = true
   }

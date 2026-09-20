@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-export default function DraggableItem({ item, onDropOnBuddy, onDropOnItem, onDropOnPot, disabled, position }) {
+export default function DraggableItem({ item, onDropOnBolly, onDropOnItem, onDropOnPot, disabled, position }) {
   const [offset, setOffset] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [isBouncing, setIsBouncing] = useState(false)
@@ -28,10 +28,10 @@ export default function DraggableItem({ item, onDropOnBuddy, onDropOnItem, onDro
     const deltaY = e.clientY - dragStartRef.current.y
     setOffset({ x: deltaX, y: deltaY })
 
-    const buddyTarget = document.querySelector('.buddy-drop-target')
+    const bollyTarget = document.querySelector('.bolly-drop-target')
     const potTarget = document.querySelector('.pot-drop-zone')
 
-    ;[buddyTarget, potTarget].forEach((target) => {
+    ;[bollyTarget, potTarget].forEach((target) => {
       if (!target) return
       const rect = target.getBoundingClientRect()
       const inside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom
@@ -53,15 +53,15 @@ export default function DraggableItem({ item, onDropOnBuddy, onDropOnItem, onDro
       e.currentTarget.releasePointerCapture(e.pointerId)
     }
 
-    const buddyTarget = document.querySelector('.buddy-drop-target')
+    const bollyTarget = document.querySelector('.bolly-drop-target')
     let handled = false
 
-    if (buddyTarget) {
-      const rect = buddyTarget.getBoundingClientRect()
-      const insideBuddy = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom
-      if (insideBuddy) {
-        buddyTarget.classList.remove('drag-over')
-        onDropOnBuddy(item.id)
+    if (bollyTarget) {
+      const rect = bollyTarget.getBoundingClientRect()
+      const insideBolly = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom
+      if (insideBolly) {
+        bollyTarget.classList.remove('drag-over')
+        onDropOnBolly(item.id)
         handled = true
       }
     }
