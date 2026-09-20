@@ -252,7 +252,11 @@ export default function TopBar({ theme = 'light' }) {
                 <span className="popover-stat-icon">🤝</span>
                 <div className="popover-stat-info text-left">
                   <span className="popover-stat-label">Cấp độ Bolly</span>
+<<<<<<< HEAD
                   <span className="popover-stat-value">Cấp {stats.bollyLevel}</span>
+=======
+                  <span className="popover-stat-value">Cấp {stats.buddyLevel}</span>
+>>>>>>> 90ebad3 (update(rename): Rename all content game from buddy into bolly.)
                 </div>
               </div>
             </div>
