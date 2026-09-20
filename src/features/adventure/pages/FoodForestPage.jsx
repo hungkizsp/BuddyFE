@@ -75,7 +75,7 @@ export default function FoodForestPage() {
             .filter(Boolean)
           setCompletedIds(ids)
         })
-        .catch(() => {})
+        .catch(() => { })
     }
     window.addEventListener('focus', onFocus)
     return () => window.removeEventListener('focus', onFocus)

@@ -11,9 +11,6 @@ import HomePage from "../features/home/pages/HomePage";
 
 import AdventurePage from "../features/adventure/pages/AdventurePage";
 import FoodForestPage from "../features/adventure/pages/FoodForestPage";
-import BreakfastTroublePage from "../features/adventure/pages/BreakfastTroublePage";
-import GameRoomPage from "../features/adventure/pages/GameRoomPage";
-import GameLevelPage from "../features/adventure/pages/GameLevelPage";
 import KitchenAdventurePage from "../features/adventure/pages/KitchenAdventurePage";
 import SupermarketShoppingPage from "../features/adventure/pages/SupermarketShoppingPage";
 import FamilyRestaurantPage from "../features/adventure/pages/FamilyRestaurantPage";
@@ -104,7 +101,7 @@ export default function AppRouter() {
             </RequireAuth>
           }
         />
-        
+
         {/* Study Mode Routes */}
         <Route
           path="/study"
@@ -168,22 +165,6 @@ export default function AppRouter() {
 
         {/* Level 1 – Breakfast Trouble (intro + game room) */}
         <Route
-          path="/adventure/food-forest/breakfast-trouble"
-          element={
-            <RequireAuth>
-              <BreakfastTroublePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/adventure/food-forest/breakfast-trouble/play"
-          element={
-            <RequireAuth>
-              <GameRoomPage />
-            </RequireAuth>
-          }
-        />
-        <Route
           path="/adventure/food-forest/kitchen-adventure"
           element={
             <RequireAuth>
@@ -207,36 +188,6 @@ export default function AppRouter() {
           element={
             <RequireAuth>
               <FamilyRestaurantPage />
-            </RequireAuth>
-          }
-        />
-
-        {/* Level 2 – Fruit Hunt (Apple Orchard) */}
-        <Route
-          path="/adventure/food-forest/fruit-hunt/play"
-          element={
-            <RequireAuth>
-              <GameLevelPage levelId={2} />
-            </RequireAuth>
-          }
-        />
-
-        {/* Level 3 – Lunch Time (Food Court) */}
-        <Route
-          path="/adventure/food-forest/lunch-time/play"
-          element={
-            <RequireAuth>
-              <GameLevelPage levelId={3} />
-            </RequireAuth>
-          }
-        />
-
-        {/* Level 4 – Bolly's Restaurant (Fine Dining) */}
-        <Route
-          path="/adventure/food-forest/bollys-restaurant/play"
-          element={
-            <RequireAuth>
-              <GameLevelPage levelId={4} />
             </RequireAuth>
           }
         />
