@@ -59,7 +59,7 @@ export default function SideBar() {
       </div>
 
       <XpBar xp={displayXp} level={displayLevel} />
-
+      {/* 
       <div className="stats-grid">
         <div className="stat-chip">
           <span className="stat-icon">🪙</span>
@@ -81,7 +81,7 @@ export default function SideBar() {
           <span className="stat-val">Cấp {displayLevel}</span>
           <span className="stat-lbl">Cấp độ</span>
         </div>
-      </div>
+      </div> */}
 
       <nav className="sidebar-nav">
         <a
@@ -89,40 +89,40 @@ export default function SideBar() {
           className={`nav-item ${pathname === '/home' ? 'active' : ''}`}
           onClick={(e) => { e.preventDefault(); navigate('/home') }}
         >
-          <span>💬</span> Trò chuyện với Buddy
+          Trò chuyện với Buddy
         </a>
         <a
           href="/study"
           className={`nav-item ${pathname.startsWith('/study') ? 'active' : ''}`}
           onClick={(e) => { e.preventDefault(); navigate('/study') }}
         >
-          <span>📖</span> Các Chế Độ Học
+          Các Chế Độ Học
         </a>
         <a
           href="/adventure"
           className={`nav-item ${pathname.startsWith('/adventure') ? 'active' : ''}`}
           onClick={(e) => { e.preventDefault(); navigate('/adventure') }}
         >
-          <span>🗺️</span> Bản Đồ Phiêu Lưu
+          Bản Đồ Phiêu Lưu
         </a>
-        <a
+        {/* <a
           href="/character-creator"
           className={`nav-item ${pathname === '/character-creator' ? 'active' : ''}`}
           onClick={(e) => { e.preventDefault(); navigate('/character-creator') }}
         >
           <span>🎨</span> Tạo Nhân Vật
-        </a>
+        </a> */}
         <a
           href="/notifications"
           className={`nav-item ${pathname === '/notifications' ? 'active' : ''}`}
           onClick={(e) => { e.preventDefault(); navigate('/notifications') }}
         >
-          <span>🔔</span> Thông Báo
+          Thông Báo
         </a>
       </nav>
 
       <button className="logout-btn" onClick={handleLogout}>
-        <span>🚪</span> Đăng Xuất
+        Đăng Xuất
       </button>
     </aside>
   )

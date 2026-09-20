@@ -158,7 +158,7 @@ export default function TopBar({ theme = 'light' }) {
     '--topbar-border': 'rgba(255, 255, 255, 0.08)',
     '--topbar-hover-bg': 'rgba(255, 255, 255, 0.08)',
     '--topbar-icon': 'rgba(255, 255, 255, 0.6)',
-    
+
     // Popover
     '--popover-bg': '#1e293b',
     '--popover-border': 'rgba(255, 255, 255, 0.08)',
@@ -175,7 +175,7 @@ export default function TopBar({ theme = 'light' }) {
     '--topbar-border': `${BRAND.blue}12`,
     '--topbar-hover-bg': '#EEF6FF',
     '--topbar-icon': BRAND.navy + '55',
-    
+
     // Popover
     '--popover-bg': 'rgba(255, 255, 255, 0.95)',
     '--popover-border': 'rgba(15, 23, 42, 0.08)',

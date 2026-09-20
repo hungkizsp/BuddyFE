@@ -54,7 +54,7 @@ export default function FruitBasketPopup({ show, fruits = [], onClose, onSelectF
 
         <div className="fruit-basket-popup-footer">
           <button className="fruit-basket-return-btn" type="button" onClick={onClose}>
-            {returnText} ↩️
+            {returnText} ↩
           </button>
         </div>
       </div>
