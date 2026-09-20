@@ -12,7 +12,7 @@ const WORLDS_DATA = [
   {
     videoUrl: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_054411_511c1b7a-fb2f-42ef-bf6c-32c0b1a06e79.mp4',
     title: 'Vương Quốc Động Vật',
-    desc: 'Khám phá sở thú và trang trại cùng Buddy. Học tên các loài động vật, mô tả đặc điểm và luyện mẫu câu "The elephant is big and grey."',
+    desc: 'Khám phá sở thú và trang trại cùng Bolly. Học tên các loài động vật, mô tả đặc điểm và luyện mẫu câu "The elephant is big and grey."',
     vocab: '52 Từ vựng',
     scenarios: '8 Kịch bản',
     difficulty: 'Trung bình',
@@ -20,7 +20,7 @@ const WORLDS_DATA = [
   {
     videoUrl: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_055427_ac7035b5-9f3b-4289-86fc-941b2432317d.mp4',
     title: 'Cuộc Phiêu Lưu Ở Chợ',
-    desc: 'Cùng Buddy đi mua sắm! Luyện tập chữ số, màu sắc, kích cỡ và giao dịch đời thực. "How much is this red shirt?" — vừa học vừa chơi.',
+    desc: 'Cùng Bolly đi mua sắm! Luyện tập chữ số, màu sắc, kích cỡ và giao dịch đời thực. "How much is this red shirt?" — vừa học vừa chơi.',
     vocab: '38 Từ vựng',
     scenarios: '5 Kịch bản',
     difficulty: 'Dễ (Cơ bản)',
@@ -86,7 +86,7 @@ export default function LearnJourneySection({ currentUser }) {
 
         {/* Section description */}
         <p className="font-mono text-[14px] lg:text-[16px] uppercase text-cream/90 max-w-[800px] leading-relaxed mb-12 text-readable">
-          Mỗi thế giới là một môi trường học tập theo chủ đề, nơi các bé thực hành tiếng Anh qua các kịch bản nhập vai sinh động. Từ vựng được tiếp thu tự nhiên qua hội thoại thay vì học vẹt. Buddy sẽ đồng hành hướng dẫn từng bước và điều chỉnh độ khó phù hợp với bé.
+          Mỗi thế giới là một môi trường học tập theo chủ đề, nơi các bé thực hành tiếng Anh qua các kịch bản nhập vai sinh động. Từ vựng được tiếp thu tự nhiên qua hội thoại thay vì học vẹt. Bolly sẽ đồng hành hướng dẫn từng bước và điều chỉnh độ khó phù hợp với bé.
         </p>
 
         {/* ── WORLD CARD GRID ── */}
@@ -157,13 +157,13 @@ export default function LearnJourneySection({ currentUser }) {
               {
                 num: '01',
                 title: 'Chào hỏi cá nhân hóa',
-                sub: 'Buddy nhận diện hồ sơ của bé, ghi nhớ buổi học trước và thiết lập mục tiêu bài học mới dựa trên tiến trình cá nhân.',
+                sub: 'Bolly nhận diện hồ sơ của bé, ghi nhớ buổi học trước và thiết lập mục tiêu bài học mới dựa trên tiến trình cá nhân.',
                 color: '#6FFF00',
               },
               {
                 num: '02',
                 title: 'Nhập vai vào kịch bản',
-                sub: 'Bé bước vào thế giới phiêu lưu (như Khu Rừng Thức Ăn) và trò chuyện trực tiếp cùng Buddy bằng giọng nói.',
+                sub: 'Bé bước vào thế giới phiêu lưu (như Khu Rừng Thức Ăn) và trò chuyện trực tiếp cùng Bolly bằng giọng nói.',
                 color: '#b724ff',
               },
               {
@@ -181,7 +181,7 @@ export default function LearnJourneySection({ currentUser }) {
               {
                 num: '05',
                 title: 'Session Memory Saved',
-                sub: 'Everything you practiced — words mastered, areas of difficulty, time spent, pronunciation scores — is saved to your child profile in SQL Server. Tomorrow, Buddy picks up exactly where you left off. The moment the session ends, our backend engine writes a structured database entry to SQL Server. This learning footprint documents every word spoken, pronunciation scores, time spent, and error categories. This persistent memory allows the AI system to build an evolutionary model of the child\'s skills. When they return tomorrow, the system automatically adapts, generating custom reviews for weak spots before introducing new lessons, ensuring a continuous, personalized learning journey.',
+                sub: 'Everything you practiced — words mastered, areas of difficulty, time spent, pronunciation scores — is saved to your child profile in SQL Server. Tomorrow, Bolly picks up exactly where you left off. The moment the session ends, our backend engine writes a structured database entry to SQL Server. This learning footprint documents every word spoken, pronunciation scores, time spent, and error categories. This persistent memory allows the AI system to build an evolutionary model of the child\'s skills. When they return tomorrow, the system automatically adapts, generating custom reviews for weak spots before introducing new lessons, ensuring a continuous, personalized learning journey.',
                 color: '#6FFF00',
               },
             ].map((step) => (

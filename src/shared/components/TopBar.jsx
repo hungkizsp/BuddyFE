@@ -138,7 +138,7 @@ export default function TopBar({ theme = 'light' }) {
   // Fallbacks
   const user = currentUser || {}
   const profile = childProfile || {}
-  const stats = profileStats || { vocabularyCount: 0, achievementCount: 0, buddyLevel: 1 }
+  const stats = profileStats || { vocabularyCount: 0, achievementCount: 0, bollyLevel: 1 }
 
   const nickname = profile.nickname || user.nickname || 'Bạn nhỏ'
   const displayLevel = profile.level ?? user.level ?? 1
@@ -252,7 +252,7 @@ export default function TopBar({ theme = 'light' }) {
                 <span className="popover-stat-icon">🤝</span>
                 <div className="popover-stat-info text-left">
                   <span className="popover-stat-label">Cấp độ Bolly</span>
-                  <span className="popover-stat-value">Cấp {stats.buddyLevel}</span>
+                  <span className="popover-stat-value">Cấp {stats.bollyLevel}</span>
                 </div>
               </div>
             </div>

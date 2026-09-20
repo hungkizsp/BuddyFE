@@ -19,7 +19,7 @@ const PIPELINE_NODES = [
   },
   {
     step: '04',
-    name: 'Buddy Decision',
+    name: 'Bolly Decision',
     sub: 'Spring Boot Engine',
     desc: 'Determines the responsive emotion, animation triggers, XP rewards, and streaks.'
   },
@@ -41,7 +41,7 @@ const TECH_STACK = [
   { name: 'Three.js / Fiber', type: '3D Render Canvas' }
 ]
 
-export default function InsideBuddySection() {
+export default function InsideBollySection() {
   return (
     <section className="relative bg-[#020c35] text-cream py-24 px-6 sm:px-12 lg:px-20 overflow-hidden border-t border-white/5">
       {/* Background gradients */}
@@ -53,7 +53,7 @@ export default function InsideBuddySection() {
         <div className="text-center max-w-[800px] mx-auto mb-20">
           <span className="font-mono text-neon text-sm uppercase tracking-widest font-semibold">Under The Hood</span>
           <h2 className="font-grotesk text-[40px] sm:text-[60px] uppercase mt-4 mb-6 leading-tight">
-            Inside Buddy's Brain
+            Inside Bolly's Brain
           </h2>
           <p className="font-mono text-sm sm:text-base text-cream/60 uppercase leading-relaxed max-w-[600px] mx-auto">
             Understanding the technology flow that turns raw speech into an empathetic, rewarding conversation.

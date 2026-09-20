@@ -50,7 +50,7 @@ const WHY_DIFFERENT = [
   },
 ]
 
-export default function WhyBuddySection({ username = 'Hung' }) {
+export default function WhyBollySection({ username = 'Hung' }) {
   const [selectedEmotion, setSelectedEmotion] = useState('happy')
   const em = EMOTION_LOGIC[selectedEmotion]
 
@@ -80,7 +80,7 @@ export default function WhyBuddySection({ username = 'Hung' }) {
             </h2>
             {/* Cursive Accent overlay */}
             <span className="font-condiment text-[40px] sm:text-[76px] text-neon mix-blend-exclusion opacity-90 absolute bottom-[-10px] right-[-20px] -rotate-1 normal-case leading-none pointer-events-none text-glow">
-              Buddy
+              Bolly
             </span>
           </div>
 
@@ -115,12 +115,12 @@ export default function WhyBuddySection({ username = 'Hung' }) {
                 <span className="text-neon block mb-1">Session #14 — Yesterday</span>
                 <span className="text-cream/50">{username} practiced: </span>
                 <span className="text-cream font-bold">Fruits vocabulary — Apple, Banana, Orange, Grape</span>
-                <span className="text-cream/30 block mt-1">Pronunciation accuracy: 78% → Buddy noted "R" sounds need practice</span>
+                <span className="text-cream/30 block mt-1">Pronunciation accuracy: 78% → Bolly noted "R" sounds need practice</span>
               </div>
               <div className="text-center text-neon text-lg">↓</div>
               <div className="bg-[#6FFF00]/10 p-4 rounded-[16px] border border-[#6FFF00]/20">
                 <span className="text-neon block mb-1">Session #15 — Today</span>
-                <span className="text-cream font-bold block">{`Buddy says: "Welcome back, ${username}! Yesterday you learned 4 new fruits. Today let's practice the ones you found tricky — especially 'grape' and 'orange.' Ready?"`}</span>
+                <span className="text-cream font-bold block">{`Bolly says: "Welcome back, ${username}! Yesterday you learned 4 new fruits. Today let's practice the ones you found tricky — especially 'grape' and 'orange.' Ready?"`}</span>
                 <span className="text-cream/30 block mt-1">→ Automatically loads targeted review before new content</span>
               </div>
             </div>
@@ -167,7 +167,7 @@ export default function WhyBuddySection({ username = 'Hung' }) {
           
           {/* Left: Who is this for? */}
           <div className="max-w-[420px]">
-            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-3 text-glow">Who is Buddy for?</span>
+            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-3 text-glow">Who is Bolly for?</span>
             <div className="space-y-3 font-mono text-[13px] uppercase text-cream/70 leading-relaxed text-readable">
               <p>→ Vietnamese children aged 4–12 who are learning English as a second language</p>
               <p>→ Parents who want a safe, screen-time-positive learning experience</p>

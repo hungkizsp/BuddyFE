@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import useScenarios from '../hooks/useScenarios'
 import useWorlds from '../hooks/useWorlds'
 import Button from '../../../shared/components/ui/Button'
-import BuddyModel from '../../../shared/components/BuddyModel'
+import BollyModel from '../../../shared/components/BollyModel'
 import MissionHeader from '../components/MissionHeader'
 import MissionCarousel from '../components/MissionCarousel'
 import '../styles/FoodForestPage.css'
@@ -135,7 +135,7 @@ export default function FoodForestPage() {
           <ambientLight intensity={1.4} color="#fffbf0" />
           <directionalLight position={[6, 8, 4]} intensity={1.8} color="#fff2d1" castShadow />
           <directionalLight position={[-6, 2, 2]} intensity={0.6} color="#e0f2fe" />
-          <BuddyModel position={[-1.6, -1.0, 1.0]} scale={[0.45, 0.45, 0.35]} />
+          <BollyModel position={[-1.6, -1.0, 1.0]} scale={[0.45, 0.45, 0.35]} />
         </Canvas>
       </div>
 

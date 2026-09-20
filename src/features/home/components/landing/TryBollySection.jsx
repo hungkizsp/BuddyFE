@@ -75,11 +75,11 @@ const FAQ_ITEMS = [
   },
 ]
 
-export default function TryBuddySection({ username = 'Hung', currentUser }) {
+export default function TryBollySection({ username = 'Hung', currentUser }) {
   const userInitial = username.charAt(0).toUpperCase()
 
   const socialLinks = [
-    { Icon: MailIcon, href: "mailto:buddyenglish@fpt.edu.vn", target: "_self" },
+    { Icon: MailIcon, href: "mailto:bollyenglish@fpt.edu.vn", target: "_self" },
     { Icon: TwitterIcon, href: "https://x.com", target: "_blank" },
     { Icon: GithubIcon, href: "https://github.com/dagowlol/Exe101_Project", target: "_blank" }
   ]
@@ -237,7 +237,7 @@ export default function TryBuddySection({ username = 'Hung', currentUser }) {
             <h2 className="font-grotesk text-[36px] sm:text-[56px] uppercase leading-[1.05] text-cream text-glow">
               Frequently asked
             </h2>
-            <span className="font-mono text-[13px] uppercase text-cream/60 text-readable">Got more questions? Contact us at buddyenglish@fpt.edu.vn</span>
+            <span className="font-mono text-[13px] uppercase text-cream/60 text-readable">Got more questions? Contact us at bollyenglish@fpt.edu.vn</span>
           </div>
 
           <div className="flex flex-col gap-4 max-w-[1000px] mx-auto">
@@ -279,7 +279,7 @@ export default function TryBuddySection({ username = 'Hung', currentUser }) {
               <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon text-glow font-bold">Links</span>
               {[
                 { name: 'GitHub Repository', href: 'https://github.com/dagowlol/Exe101_Project', isExternal: true },
-                { name: 'API Documentation', href: 'https://github.com/dagowlol/Exe101_Project/blob/main/buddy_english_be/README.md', isExternal: true },
+                { name: 'API Documentation', href: 'https://github.com/dagowlol/Exe101_Project/blob/main/bolly_english_be/README.md', isExternal: true },
                 { name: 'FPT University', href: 'https://fpt.edu.vn', isExternal: true },
                 { name: 'Privacy Policy', href: '#faq', isExternal: false }
               ].map((link) => (

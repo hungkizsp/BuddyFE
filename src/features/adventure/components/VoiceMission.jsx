@@ -24,7 +24,7 @@ function scoreColour(value) {
  * Props:
  *  expectedSentence  – string from activeStep
  *  onSuccess()       – advance to next step (called when Return is clicked)
- *  onFail(transcript)– callback on failure (can be used to update parent/buddy text)
+ *  onFail(transcript)– callback on failure (can be used to update parent/bolly text)
  *  onEvaluate(data)  – callback when evaluation completes successfully
  *  disabled          – freeze interaction
  */

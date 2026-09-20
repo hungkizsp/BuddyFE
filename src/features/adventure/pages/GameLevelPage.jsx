@@ -186,7 +186,7 @@ function WinModal({ level, xp, onBack }) {
         <div className="gl-modal__stars">⭐⭐⭐</div>
         <h2 className="gl-modal__title">Bé Đã Thắng Màn Này! 🎉</h2>
         <p className="gl-modal__level">{level.name}</p>
-        <p className="gl-modal__sub">{level.buddyWinSpeech}</p>
+        <p className="gl-modal__sub">{level.bollyWinSpeech}</p>
         <div className="gl-modal__xp">Nhận được +{xp} XP!</div>
         <Button variant="secondary" className="gl-modal__btn" id="btn-modal-back" onClick={onBack}>
           ← Trở Về Bản Đồ
@@ -283,13 +283,13 @@ export default function GameLevelPage({ levelId }) {
           <span className="gl-level-tag__diff">{level.difficulty}</span>
         </div>
 
-        {/* Buddy avatar */}
-        <div className="gl-buddy-card">
-          <div className={`gl-buddy-card__avatar gl-buddy-card__avatar--${level.theme}`}>
+        {/* Bolly avatar */}
+        <div className="gl-bolly-card">
+          <div className={`gl-bolly-card__avatar gl-bolly-card__avatar--${level.theme}`}>
             {allDone ? '🥳' : '😊'}
           </div>
-          <div className="gl-buddy-card__speech">
-            {allDone ? level.buddyWinSpeech : level.buddyInitialSpeech}
+          <div className="gl-bolly-card__speech">
+            {allDone ? level.bollyWinSpeech : level.bollyInitialSpeech}
           </div>
         </div>
 
@@ -332,9 +332,9 @@ export default function GameLevelPage({ levelId }) {
           {/* Theme decorations */}
           <SceneDecorations theme={level.theme} />
 
-          {/* Buddy character */}
-          <div className={`gl-buddy-room gl-buddy-room--${level.theme}`}>
-            <div className="gl-buddy-room__face">{allDone ? '🥳' : '😊'}</div>
+          {/* Bolly character */}
+          <div className={`gl-bolly-room gl-bolly-room--${level.theme}`}>
+            <div className="gl-bolly-room__face">{allDone ? '🥳' : '😊'}</div>
           </div>
 
           {/* Feedback toast */}
@@ -375,7 +375,7 @@ export default function GameLevelPage({ levelId }) {
         {/* Hint bar */}
         <div className="gl-hint">
           <span className="gl-hint__icon">💡</span>
-          <strong className="gl-hint__label">Gợi Ý Của Buddy:</strong>
+          <strong className="gl-hint__label">Gợi Ý Của Bolly:</strong>
           <span className="gl-hint__text">{level.hint}</span>
         </div>
       </main>
@@ -407,9 +407,9 @@ export default function GameLevelPage({ levelId }) {
           )}
         </div>
 
-        <div className="gl-buddyhint-card">
-          <p className="gl-buddyhint-card__title">🤫 Gợi Ý Của Buddy</p>
-          <p className="gl-buddyhint-card__text">{level.hint}</p>
+        <div className="gl-bollyhint-card">
+          <p className="gl-bollyhint-card__title">🤫 Gợi Ý Của Bolly</p>
+          <p className="gl-bollyhint-card__text">{level.hint}</p>
         </div>
       </aside>
     </div>

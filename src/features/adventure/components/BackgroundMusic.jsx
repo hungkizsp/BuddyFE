@@ -57,7 +57,7 @@ const BackgroundMusic = ({ src, volume = 0.3 }) => {
             className="background-music-toggle"
             onClick={toggleMute}
             aria-label={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
-            title={isMuted ? "Bật âm thanh (Nhạc nền & Buddy nhại tiếng)" : "Tắt âm thanh (Nhạc nền & Buddy nhại tiếng)"}
+            title={isMuted ? "Bật âm thanh (Nhạc nền & Bolly nhại tiếng)" : "Tắt âm thanh (Nhạc nền & Bolly nhại tiếng)"}
         >
             {isMuted ? '🔇' : '🔊'}
         </button>

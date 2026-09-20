@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls } from '@react-three/drei'
-import DynamicBuddyModel from '../../../shared/components/DynamicBuddyModel'
+import DynamicBollyModel from '../../../shared/components/DynamicBollyModel'
 import { useCharacterGeneration } from '../hooks/useCharacterGeneration'
 import { getMyCharacters } from '../../../shared/api/characterApi'
 import { useAuthStore } from '../../auth/store/authStore'
@@ -119,7 +119,7 @@ export default function CharacterCreatorPage() {
           </button>
         <div className="character-creator__title-wrap">
           <div className="character-creator__title">Tạo Nhân Vật AI</div>
-          <div className="character-creator__subtitle">Tự tay thiết kế người bạn Buddy độc đáo với trí tuệ nhân tạo AI</div>
+          <div className="character-creator__subtitle">Tự tay thiết kế người bạn Bolly độc đáo với trí tuệ nhân tạo AI</div>
         </div>
         <div style={{ width: 120 }} />
       </header>
@@ -228,7 +228,7 @@ export default function CharacterCreatorPage() {
                 <directionalLight position={[5, 10, 5]} intensity={1.2} />
                 <pointLight position={[-5, 5, -5]} intensity={0.5} color="#b724ff" />
                 <Suspense fallback={null}>
-                  <DynamicBuddyModel modelPath={selectedModel} scale={1.8} position={[0, -1, 0]} />
+                  <DynamicBollyModel modelPath={selectedModel} scale={1.8} position={[0, -1, 0]} />
                   <Environment preset="night" />
                 </Suspense>
                 <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={1.5} />

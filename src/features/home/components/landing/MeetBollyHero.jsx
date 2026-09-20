@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
 import { Link } from 'react-router-dom'
-import SharedBuddyModel from '../../../../shared/components/BuddyModel'
+import SharedBollyModel from '../../../../shared/components/BollyModel'
 
 const MailIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -30,7 +30,7 @@ const NAV_LINKS = [
   { name: 'FAQ', href: '#faq' }
 ]
 
-function InteractiveBuddy({ reaction }) {
+function InteractiveBolly({ reaction }) {
   const group = useRef()
   const [isMobile, setIsMobile] = useState(false)
   const startTimeRef = useRef(0)
@@ -83,12 +83,12 @@ function InteractiveBuddy({ reaction }) {
 
   return (
     <group ref={group} position={[0, -1.1, 0]} scale={1.35}>
-      <SharedBuddyModel />
+      <SharedBollyModel />
     </group>
   )
 }
 
-function BuddyScene({ reaction }) {
+function BollyScene({ reaction }) {
   return (
     <Canvas camera={{ position: [0, 1.2, 4.2], fov: 40 }} gl={{ alpha: true, antialias: true }}>
       <ambientLight intensity={2.0} />
@@ -96,7 +96,7 @@ function BuddyScene({ reaction }) {
       <directionalLight position={[-3, 2, -3]} intensity={0.6} color="#6060ff" />
       <Environment preset="city" />
       <Suspense fallback={null}>
-        <InteractiveBuddy reaction={reaction} />
+        <InteractiveBolly reaction={reaction} />
       </Suspense>
     </Canvas>
   )
@@ -106,7 +106,7 @@ function SocialIcons() {
   return (
     <>
       <a
-        href="mailto:buddyenglish@fpt.edu.vn"
+        href="mailto:bollyenglish@fpt.edu.vn"
         className="liquid-glass w-[56px] h-[56px] rounded-[1rem] flex items-center justify-center hover:bg-white/10 transition-all duration-300 text-cream"
       >
         <MailIcon />
@@ -131,7 +131,7 @@ function SocialIcons() {
   )
 }
 
-export default function MeetBuddyHero({ onLearnMore, currentUser }) {
+export default function MeetBollyHero({ onLearnMore, currentUser }) {
   const [bubbleText, setBubbleText] = useState("Hi there! I'm Bolly — your AI English speaking companion. I listen, I remember, and I grow with you every day!")
   const [reaction, setReaction] = useState(null)
 
@@ -163,9 +163,9 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
         src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_045634_e1c98c76-1265-4f5c-882a-4276f2080894.mp4"
       />
 
-      {/* 3D Buddy Canvas */}
+      {/* 3D Bolly Canvas */}
       <div className="absolute inset-0 left-[35%] z-10 pointer-events-none md:pointer-events-auto">
-        <BuddyScene reaction={reaction} />
+        <BollyScene reaction={reaction} />
       </div>
 
       {/* Main Container — sits above video-darken overlay (z-index > 1) */}
@@ -252,7 +252,7 @@ export default function MeetBuddyHero({ onLearnMore, currentUser }) {
         <div className="absolute right-[4%] lg:right-[6%] top-[14%] lg:top-[18%] max-w-[260px] sm:max-w-[300px] liquid-glass rounded-2xl rounded-tr-none p-5 z-30">
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-wider text-neon font-bold">Buddy online</span>
+            <span className="font-mono text-[10px] uppercase tracking-wider text-neon font-bold">Bolly online</span>
           </div>
           <p className="font-mono text-[13px] text-cream leading-relaxed">{bubbleText}</p>
           <div className="flex gap-2 mt-3">

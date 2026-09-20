@@ -97,7 +97,7 @@ function WinModal({ onBack, xp }) {
         <div className="gr-modal__stars">⭐⭐⭐</div>
         <div className="gr-modal__emoji">🎉</div>
         <h2 className="gr-modal__title">Đã Tìm Thấy Bữa Sáng! 🎉</h2>
-        <p className="gr-modal__sub">Giỏi lắm! Buddy đã no bụng và vui vẻ rồi 😊</p>
+        <p className="gr-modal__sub">Giỏi lắm! Bolly đã no bụng và vui vẻ rồi 😊</p>
         <div className="gr-modal__xp">Nhận được +{xp} XP!</div>
         <Button variant="secondary" className="gr-modal__btn" onClick={onBack}>← Trở Về Bản Đồ</Button>
       </div>
@@ -171,13 +171,13 @@ export default function GameRoomPage() {
         </Button>
         <div className="gr-sidebar__tag">Phiêu lưu 1 – Bữa Sáng Rắc Rối</div>
 
-        {/* Buddy avatar */}
-        <div className="gr-buddy-card">
-          <div className="gr-buddy-card__avatar">😊</div>
-          <div className="gr-buddy-card__speech">
+        {/* Bolly avatar */}
+        <div className="gr-bolly-card">
+          <div className="gr-bolly-card__avatar">😊</div>
+          <div className="gr-bolly-card__speech">
             {allMissionsDone
-              ? "Cảm ơn bé! Buddy no bụng rồi nè! 🥰"
-              : 'Ôi không! Bụng Buddy đang cồn cào! Bé tìm đồ ĂN giúp Buddy với! 🍽️'}
+              ? "Cảm ơn bé! Bolly no bụng rồi nè! 🥰"
+              : 'Ôi không! Bụng Bolly đang cồn cào! Bé tìm đồ ĂN giúp Bolly với! 🍽️'}
           </div>
         </div>
 
@@ -205,7 +205,7 @@ export default function GameRoomPage() {
 
         {/* Room title bar */}
         <div className="gr-topbar">
-          <h1 className="gr-topbar__title">🍳 Căn Bếp Bữa Sáng Của Buddy</h1>
+          <h1 className="gr-topbar__title">🍳 Căn Bếp Bữa Sáng Của Bolly</h1>
           <div className="gr-topbar__mission">
             🍽️ Tìm đồ ăn ngon lành
             <span className="gr-topbar__stars">☆☆☆</span>
@@ -240,9 +240,9 @@ export default function GameRoomPage() {
             </div>
           </div>
 
-          {/* Buddy character in room */}
-          <div className="gr-buddy-room">
-            <div className="gr-buddy-room__face">😊</div>
+          {/* Bolly character in room */}
+          <div className="gr-bolly-room">
+            <div className="gr-bolly-room__face">😊</div>
           </div>
 
           {/* Feedback toast */}
@@ -266,7 +266,7 @@ export default function GameRoomPage() {
         {/* Hint bar */}
         <div className="gr-hint">
           <span className="gr-hint__icon">💡</span>
-          <span className="gr-hint__label">Gợi Ý Của Buddy:</span>
+          <span className="gr-hint__label">Gợi Ý Của Bolly:</span>
           <span className="gr-hint__text">Hãy tìm món ăn mà bé có thể bỏ vào miệng thưởng thức nhé!</span>
         </div>
       </main>
@@ -291,9 +291,9 @@ export default function GameRoomPage() {
           </div>
         </div>
 
-        <div className="gr-buddyhint-card">
-          <p className="gr-buddyhint-card__title">🤫 Gợi Ý Của Buddy</p>
-          <p className="gr-buddyhint-card__text">
+        <div className="gr-bollyhint-card">
+          <p className="gr-bollyhint-card__title">🤫 Gợi Ý Của Bolly</p>
+          <p className="gr-bollyhint-card__text">
             Hãy tìm món ăn mà bé có thể bỏ vào miệng thưởng thức nhé!
           </p>
         </div>

@@ -3,7 +3,7 @@ import { useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from "three";
 import idleGlb from '../../../assets/Meshy_AI_demo1_biped/Meshy_AI_Animation_Idle_12_withSkin.glb?url';
 import waveGlb from '../../../assets/Meshy_AI_demo1_biped/wave.glb?url';
-export default function BuddyCharacter({ gameState, onArrivedAtTable, position, scale }) {
+export default function BollyCharacter({ gameState, onArrivedAtTable, position, scale }) {
   const groupRef = useRef();
   const idleGltf = useGLTF(idleGlb);
   const waveGltf = useGLTF(waveGlb);

@@ -56,8 +56,8 @@
   letter-spacing: 0.2px;
 }
 
-/* Buddy card */
-.gr-buddy-card {
+/* Bolly card */
+.gr-bolly-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,8 +67,8 @@
   border-radius: 16px;
   border: 1.5px solid #e5e7eb;
 }
-.gr-buddy-card__avatar { font-size: 52px; line-height: 1; animation: gr-buddy-bob 2.5s ease-in-out infinite; }
-.gr-buddy-card__speech {
+.gr-bolly-card__avatar { font-size: 52px; line-height: 1; animation: gr-bolly-bob 2.5s ease-in-out infinite; }
+.gr-bolly-card__speech {
   font-size: 12px;
   font-weight: 700;
   color: #374151;
@@ -76,7 +76,7 @@
   line-height: 1.5;
 }
 
-@keyframes gr-buddy-bob {
+@keyframes gr-bolly-bob {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-6px); }
 }
@@ -301,8 +301,8 @@
   border-radius: 0 0 4px 4px;
 }
 
-/* Buddy in room */
-.gr-buddy-room {
+/* Bolly in room */
+.gr-bolly-room {
   position: absolute;
   bottom: 31%;
   left: 50%;
@@ -311,15 +311,15 @@
   flex-direction: column;
   align-items: center;
   pointer-events: none;
-  animation: gr-buddy-room-bob 3s ease-in-out infinite;
+  animation: gr-bolly-room-bob 3s ease-in-out infinite;
   z-index: 5;
 }
-.gr-buddy-room__face {
+.gr-bolly-room__face {
   font-size: 56px;
   line-height: 1;
   filter: drop-shadow(0 8px 20px rgba(0,0,0,0.15));
 }
-@keyframes gr-buddy-room-bob {
+@keyframes gr-bolly-room-bob {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50%       { transform: translateX(-50%) translateY(-8px); }
 }
@@ -516,15 +516,15 @@
   color: #f97316;
 }
 
-/* Buddy hint */
-.gr-buddyhint-card {
+/* Bolly hint */
+.gr-bollyhint-card {
   background: #fef9ee;
   border-radius: 14px;
   padding: 10px;
   border: 1.5px solid #fde68a;
 }
-.gr-buddyhint-card__title { margin: 0 0 5px; font-size: 12px; font-weight: 800; color: #92400e; }
-.gr-buddyhint-card__text { margin: 0; font-size: 11px; font-weight: 600; color: #78350f; line-height: 1.5; }
+.gr-bollyhint-card__title { margin: 0 0 5px; font-size: 12px; font-weight: 800; color: #92400e; }
+.gr-bollyhint-card__text { margin: 0; font-size: 11px; font-weight: 600; color: #78350f; line-height: 1.5; }
 
 /* ==========================================================
    WIN MODAL

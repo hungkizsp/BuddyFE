@@ -16,7 +16,7 @@ export function useTalkingTom(enabled = true) {
   const currentEchoAudioRef = useRef(null);
 
   const isRecordingRef = useRef(false);
-  const isBuddySpeakingRef = useRef(false);
+  const isBollySpeakingRef = useRef(false);
   const animationFrameIdRef = useRef(null);
   const streamRef = useRef(null);
 
@@ -25,7 +25,7 @@ export function useTalkingTom(enabled = true) {
       setIsListening(false);
       setIsSpeaking(false);
       isRecordingRef.current = false;
-      isBuddySpeakingRef.current = false;
+      isBollySpeakingRef.current = false;
       return;
     }
 
@@ -80,8 +80,8 @@ export function useTalkingTom(enabled = true) {
       const checkVolume = () => {
         if (!isComponentMounted) return;
 
-        if (isBuddySpeakingRef.current) {
-          // Pause monitoring while buddy is playing back to avoid feedback loop
+        if (isBollySpeakingRef.current) {
+          // Pause monitoring while bolly is playing back to avoid feedback loop
           animationFrameIdRef.current = requestAnimationFrame(checkVolume);
           return;
         }
@@ -130,7 +130,7 @@ export function useTalkingTom(enabled = true) {
     };
 
     const playEcho = (blob) => {
-      isBuddySpeakingRef.current = true;
+      isBollySpeakingRef.current = true;
       setIsSpeaking(true);
 
       const url = URL.createObjectURL(blob);
@@ -144,7 +144,7 @@ export function useTalkingTom(enabled = true) {
       audio.onended = () => {
         currentEchoAudioRef.current = null;
         if (!isComponentMounted) return;
-        isBuddySpeakingRef.current = false;
+        isBollySpeakingRef.current = false;
         setIsSpeaking(false);
         URL.revokeObjectURL(url);
       };
@@ -153,7 +153,7 @@ export function useTalkingTom(enabled = true) {
         console.error("Talking Tom audio play failed", e);
         currentEchoAudioRef.current = null;
         if (!isComponentMounted) return;
-        isBuddySpeakingRef.current = false;
+        isBollySpeakingRef.current = false;
         setIsSpeaking(false);
       });
     };

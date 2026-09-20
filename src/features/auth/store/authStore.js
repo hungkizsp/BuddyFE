@@ -143,23 +143,23 @@ export const useAuthStore = create((set, get) => ({
 
     profileStatsPromise = (async () => {
       try {
-        // Fetch vocabulary, achievements, and buddy profiles concurrently in parallel
-        const [vocabRes, achievementRes, buddyRes] = await Promise.all([
+        // Fetch vocabulary, achievements, and bolly profiles concurrently in parallel
+        const [vocabRes, achievementRes, bollyRes] = await Promise.all([
           axiosClient.get(`/progress/vocabularies?childId=${childId}`),
           axiosClient.get(`/child-achievements?childId=${childId}`),
-          axiosClient.get('/buddy/profiles'),
+          axiosClient.get('/bolly/profiles'),
         ])
 
         const vocabularyCount = vocabRes.data.data?.length || 0
         const achievementCount =
           achievementRes.data.data?.filter((a) => a.earnedAt != null).length || 0
-        const myBuddy = buddyRes.data.data?.find((b) => b.childId === childId)
-        const buddyLevel = myBuddy ? myBuddy.level : 1
+        const myBolly = bollyRes.data.data?.find((b) => b.childId === childId)
+        const bollyLevel = myBolly ? myBolly.level : 1
 
         const stats = {
           vocabularyCount,
           achievementCount,
-          buddyLevel,
+          bollyLevel,
         }
 
         set({ profileStats: stats })
