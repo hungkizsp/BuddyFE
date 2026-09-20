@@ -131,11 +131,7 @@ function SocialIcons() {
   )
 }
 
-<<<<<<< HEAD:src/features/home/components/landing/MeetBollyHero.jsx
 export default function MeetBollyHero({ onLearnMore, currentUser }) {
-=======
-export default function MeetBuddyHero({ onLearnMore, currentUser }) {
->>>>>>> 90ebad3 (update(rename): Rename all content game from buddy into bolly.):src/features/home/components/landing/MeetBuddyHero.jsx
   const [bubbleText, setBubbleText] = useState("Hi there! I'm Bolly — your AI English speaking companion. I listen, I remember, and I grow with you every day!")
   const [reaction, setReaction] = useState(null)
 

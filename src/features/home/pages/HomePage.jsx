@@ -65,11 +65,7 @@ export default function HomePage() {
   const [messages, setMessages] = useState([
     {
       id: 1,
-<<<<<<< HEAD
       role: 'bolly',
-=======
-      role: 'buddy',
->>>>>>> 90ebad3 (update(rename): Rename all content game from buddy into bolly.)
       text: `Chào bé! 👋 Mình là Bolly, bạn đồng hành học tiếng Anh của bé đây! Bé đã sẵn sàng học điều mới hôm nay chưa?`,
     },
   ])
@@ -116,11 +112,7 @@ export default function HomePage() {
 
       setMessages((prev) => [
         ...prev,
-<<<<<<< HEAD
         { id: Date.now() + 1, role: 'bolly', text: data.reply || 'Hmm, để Bolly suy nghĩ chút nha... 🤔' },
-=======
-        { id: Date.now() + 1, role: 'buddy', text: data.reply || 'Hmm, để Bolly suy nghĩ chút nha... 🤔' },
->>>>>>> 90ebad3 (update(rename): Rename all content game from buddy into bolly.)
       ])
 
       setBollyMood('HAPPY')
@@ -138,11 +130,7 @@ export default function HomePage() {
         ...prev,
         {
           id: Date.now() + 1,
-<<<<<<< HEAD
           role: 'bolly',
-=======
-          role: 'buddy',
->>>>>>> 90ebad3 (update(rename): Rename all content game from buddy into bolly.)
           text: "Ôi! Bolly gặp chút trục trặc khi suy nghĩ 😅. Bé thử lại nhé!",
         },
       ])
@@ -173,11 +161,7 @@ export default function HomePage() {
           <BollyAvatar mood={bollyMood} isTyping={isSending} modelPath={childProfile?.activeCustomCharacterUrl} />
           <div className="chat-header-info">
             <h1>Bolly</h1>
-<<<<<<< HEAD
             <p className={`bolly-status ${isSending ? 'typing' : 'online'}`}>
-=======
-            <p className={`buddy-status ${isSending ? 'typing' : 'online'}`}>
->>>>>>> 90ebad3 (update(rename): Rename all content game from buddy into bolly.)
               {isSending ? 'Bolly đang suy nghĩ...' : '● Đang hoạt động & sẵn sàng học cùng bé!'}
             </p>
           </div>
