@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useAuthStore } from "../features/auth/store/authStore";
 import { stopBackgroundMusic } from "../features/adventure/components/BackgroundMusic";
 
+import RequireAuth, { GuestOnlyRoute } from "./AuthGuard";
 import LoginPage from "../features/auth/pages/LoginPage";
 import SignupPage from "../features/auth/pages/SignupPage";
 import LandingPage from "../features/home/pages/LandingPage";
@@ -37,13 +38,12 @@ function GlobalMusicController() {
 }
 
 export default function AppRouter() {
-  const loadChildProfile = useAuthStore((s) => s.loadChildProfile);
+  const loadCurrentUser = useAuthStore((s) => s.loadCurrentUser);
 
-  // Load the child profile once when the app boots.
-  // In dev mode (no auth required) the backend still returns profile data,
-  // so childProfile will be populated even without an explicit login.
+  // Attempt to restore any existing session on boot.
+  // On success this also loads the child profile via loadCurrentUser.
   useEffect(() => {
-    loadChildProfile();
+    loadCurrentUser();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -52,43 +52,194 @@ export default function AppRouter() {
       <Routes>
         {/* Redirect root to the new landing page */}
         <Route path="/" element={<Navigate to="/landing" replace />} />
-        <Route path="/landing" element={<LandingPage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<SignupPage />} />
-        <Route path="/notifications" element={<NotificationPage />} />
-        <Route path="/character-creator" element={<CharacterCreatorPage />} />
+
+        {/* Guest-only routes */}
+        <Route
+          path="/landing"
+          element={
+            <GuestOnlyRoute>
+              <LandingPage />
+            </GuestOnlyRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <GuestOnlyRoute>
+              <LoginPage />
+            </GuestOnlyRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <GuestOnlyRoute>
+              <SignupPage />
+            </GuestOnlyRoute>
+          }
+        />
+
+        {/* Protected routes */}
+        <Route
+          path="/home"
+          element={
+            <RequireAuth>
+              <HomePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <RequireAuth>
+              <NotificationPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/character-creator"
+          element={
+            <RequireAuth>
+              <CharacterCreatorPage />
+            </RequireAuth>
+          }
+        />
         
         {/* Study Mode Routes */}
-        <Route path="/study" element={<StudyHubPage />} />
-        <Route path="/study/:categoryId/flashcards" element={<FlashcardModePage />} />
-        <Route path="/study/:categoryId/learn" element={<LearnModePage />} />
-        <Route path="/study/:categoryId/test" element={<TestModePage />} />
-        <Route path="/study/:categoryId/match" element={<MatchModePage />} />
+        <Route
+          path="/study"
+          element={
+            <RequireAuth>
+              <StudyHubPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/study/:categoryId/flashcards"
+          element={
+            <RequireAuth>
+              <FlashcardModePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/study/:categoryId/learn"
+          element={
+            <RequireAuth>
+              <LearnModePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/study/:categoryId/test"
+          element={
+            <RequireAuth>
+              <TestModePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/study/:categoryId/match"
+          element={
+            <RequireAuth>
+              <MatchModePage />
+            </RequireAuth>
+          }
+        />
 
         {/* Adventure Hub */}
-        <Route path="/adventure" element={<AdventurePage />} />
+        <Route
+          path="/adventure"
+          element={
+            <RequireAuth>
+              <AdventurePage />
+            </RequireAuth>
+          }
+        />
         {/* Food Forest World */}
-        <Route path="/adventure/food-forest" element={<FoodForestPage />} />
+        <Route
+          path="/adventure/food-forest"
+          element={
+            <RequireAuth>
+              <FoodForestPage />
+            </RequireAuth>
+          }
+        />
 
         {/* Level 1 – Breakfast Trouble (intro + game room) */}
-        <Route path="/adventure/food-forest/breakfast-trouble" element={<BreakfastTroublePage />} />
-        <Route path="/adventure/food-forest/breakfast-trouble/play" element={<GameRoomPage />} />
-        <Route path="/adventure/food-forest/kitchen-adventure" element={<KitchenAdventurePage />} />
+        <Route
+          path="/adventure/food-forest/breakfast-trouble"
+          element={
+            <RequireAuth>
+              <BreakfastTroublePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/adventure/food-forest/breakfast-trouble/play"
+          element={
+            <RequireAuth>
+              <GameRoomPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/adventure/food-forest/kitchen-adventure"
+          element={
+            <RequireAuth>
+              <KitchenAdventurePage />
+            </RequireAuth>
+          }
+        />
         {/* Level 2 – Supermarket Shopping */}
-        <Route path="/adventure/food-forest/supermarket-shopping" element={<SupermarketShoppingPage />} />
+        <Route
+          path="/adventure/food-forest/supermarket-shopping"
+          element={
+            <RequireAuth>
+              <SupermarketShoppingPage />
+            </RequireAuth>
+          }
+        />
 
         {/* Family Restaurant */}
-        <Route path="/adventure/food-forest/family-restaurant" element={<FamilyRestaurantPage />} />
+        <Route
+          path="/adventure/food-forest/family-restaurant"
+          element={
+            <RequireAuth>
+              <FamilyRestaurantPage />
+            </RequireAuth>
+          }
+        />
 
         {/* Level 2 – Fruit Hunt (Apple Orchard) */}
-        <Route path="/adventure/food-forest/fruit-hunt/play" element={<GameLevelPage levelId={2} />} />
+        <Route
+          path="/adventure/food-forest/fruit-hunt/play"
+          element={
+            <RequireAuth>
+              <GameLevelPage levelId={2} />
+            </RequireAuth>
+          }
+        />
 
         {/* Level 3 – Lunch Time (Food Court) */}
-        <Route path="/adventure/food-forest/lunch-time/play" element={<GameLevelPage levelId={3} />} />
+        <Route
+          path="/adventure/food-forest/lunch-time/play"
+          element={
+            <RequireAuth>
+              <GameLevelPage levelId={3} />
+            </RequireAuth>
+          }
+        />
 
         {/* Level 4 – Bolly's Restaurant (Fine Dining) */}
-        <Route path="/adventure/food-forest/bollys-restaurant/play" element={<GameLevelPage levelId={4} />} />
+        <Route
+          path="/adventure/food-forest/bollys-restaurant/play"
+          element={
+            <RequireAuth>
+              <GameLevelPage levelId={4} />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
