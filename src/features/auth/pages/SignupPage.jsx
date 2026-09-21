@@ -1,7 +1,9 @@
 import { useState, useMemo } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import PageShell from '../../../shared/components/ui/PageShell'
+import GoogleLoginButton from '../components/GoogleLoginButton'
+import OtpVerificationModal from '../components/OtpVerificationModal'
 
 const initialForm = {
   username: '',
@@ -26,12 +28,13 @@ function getPasswordStrength(password) {
 }
 
 function SignupPage() {
-  const navigate = useNavigate()
   const signup = useAuthStore((state) => state.signup)
   const isLoading = useAuthStore((state) => state.isLoading)
   const [form, setForm] = useState(initialForm)
   const [error, setError] = useState('')
   const [showPw, setShowPw] = useState(false)
+  const [isOtpOpen, setIsOtpOpen] = useState(false)
+  const [registeredEmail, setRegisteredEmail] = useState('')
 
   const strength = useMemo(() => getPasswordStrength(form.password), [form.password])
 
@@ -58,7 +61,8 @@ function SignupPage() {
         email: form.email.trim(),
         password: form.password,
       })
-      navigate('/home', { replace: true })
+      setRegisteredEmail(form.email.trim())
+      setIsOtpOpen(true)
     } catch (signupError) {
       setError(signupError.message)
     }
@@ -68,10 +72,10 @@ function SignupPage() {
     <PageShell>
       <div className="min-h-screen flex items-center justify-center px-4 py-12">
         {/* Signup Card */}
-        <div className="w-full max-w-[460px] glass-simple rounded-3xl p-8 sm:p-10 border border-white/10">
+        <div className="w-full max-w-[460px] glass-simple rounded-3xl p-8 sm:p-10 border border-white/10 shadow-2xl">
           {/* Brand */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-simple border border-white/10 mb-6">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-simple border border-white/10 mb-4">
               <span className="text-2xl">🦉</span>
               <span className="font-grotesk text-sm font-bold uppercase tracking-wider text-neon">
                 BollyEnglish
@@ -83,6 +87,19 @@ function SignupPage() {
             <p className="font-mono text-sm text-cream/50 uppercase">
               Bắt đầu hành trình tiếng Anh ngay hôm nay
             </p>
+          </div>
+
+          {/* Google Sign-In */}
+          <div className="mb-6">
+            <GoogleLoginButton />
+            <div className="relative my-6 text-center">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/10"></div>
+              </div>
+              <span className="relative px-3 bg-[#0e1320] text-cream/30 font-mono text-xs uppercase">
+                Hoặc bằng Email
+              </span>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -260,6 +277,12 @@ function SignupPage() {
           </form>
         </div>
       </div>
+
+      <OtpVerificationModal
+        isOpen={isOtpOpen}
+        email={registeredEmail}
+        onClose={() => setIsOtpOpen(false)}
+      />
     </PageShell>
   )
 }

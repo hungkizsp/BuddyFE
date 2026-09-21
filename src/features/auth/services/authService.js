@@ -6,8 +6,33 @@ export const authService = {
     return response.data.data
   },
 
+  async loginWithGoogle(data) {
+    const response = await axiosClient.post('/auth/google', data)
+    return response.data.data
+  },
+
   async signup(data) {
     const response = await axiosClient.post('/auth/register', data)
+    return response.data.data
+  },
+
+  async verifyEmail(data) {
+    const response = await axiosClient.post('/auth/verify-email', data)
+    return response.data.data
+  },
+
+  async resendOtp(email) {
+    const response = await axiosClient.post(`/auth/resend-otp?email=${encodeURIComponent(email)}`)
+    return response.data.data
+  },
+
+  async forgotPassword(data) {
+    const response = await axiosClient.post('/auth/forgot-password', data)
+    return response.data.data
+  },
+
+  async resetPassword(data) {
+    const response = await axiosClient.post('/auth/reset-password', data)
     return response.data.data
   },
 

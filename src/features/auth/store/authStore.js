@@ -24,7 +24,32 @@ export const useAuthStore = create((set, get) => ({
         isLoading: false,
         error: null,
       })
-      // Fetch child profile automatically after successful login
+      await get().loadChildProfile()
+      return user
+    } catch (error) {
+      set({
+        currentUser: null,
+        childProfile: null,
+        profileStats: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: error.message,
+      })
+      throw error
+    }
+  },
+
+  loginWithGoogle: async ({ idToken, email, name }) => {
+    set({ isLoading: true, error: null })
+
+    try {
+      const user = await authService.loginWithGoogle({ idToken, email, name })
+      set({
+        currentUser: user,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      })
       await get().loadChildProfile()
       return user
     } catch (error) {
@@ -47,12 +72,10 @@ export const useAuthStore = create((set, get) => ({
       const user = await authService.signup({ nickname: username, email, password })
       set({
         currentUser: user,
-        isAuthenticated: true,
+        isAuthenticated: false, // Wait for email OTP verification
         isLoading: false,
         error: null,
       })
-      // Fetch child profile automatically after successful signup
-      await get().loadChildProfile()
       return user
     } catch (error) {
       set({
@@ -63,6 +86,58 @@ export const useAuthStore = create((set, get) => ({
         isLoading: false,
         error: error.message,
       })
+      throw error
+    }
+  },
+
+  verifyEmail: async ({ email, otp }) => {
+    set({ isLoading: true, error: null })
+
+    try {
+      const user = await authService.verifyEmail({ email, otp })
+      set({
+        currentUser: user,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      })
+      await get().loadChildProfile()
+      return user
+    } catch (error) {
+      set({ isLoading: false, error: error.message })
+      throw error
+    }
+  },
+
+  resendOtp: async (email) => {
+    try {
+      await authService.resendOtp(email)
+    } catch (error) {
+      console.error('Failed to resend OTP:', error)
+      throw error
+    }
+  },
+
+  forgotPassword: async ({ email }) => {
+    set({ isLoading: true, error: null })
+
+    try {
+      await authService.forgotPassword({ email })
+      set({ isLoading: false, error: null })
+    } catch (error) {
+      set({ isLoading: false, error: error.message })
+      throw error
+    }
+  },
+
+  resetPassword: async ({ email, otp, newPassword }) => {
+    set({ isLoading: true, error: null })
+
+    try {
+      await authService.resetPassword({ email, otp, newPassword })
+      set({ isLoading: false, error: null })
+    } catch (error) {
+      set({ isLoading: false, error: error.message })
       throw error
     }
   },
@@ -78,7 +153,6 @@ export const useAuthStore = create((set, get) => ({
         isLoading: false,
         error: null,
       })
-      // Load child profile details
       await get().loadChildProfile()
       return user
     } catch (error) {
@@ -143,7 +217,6 @@ export const useAuthStore = create((set, get) => ({
 
     profileStatsPromise = (async () => {
       try {
-        // Fetch vocabulary, achievements, and bolly profiles concurrently in parallel
         const [vocabRes, achievementRes, bollyRes] = await Promise.all([
           axiosClient.get(`/progress/vocabularies?childId=${childId}`),
           axiosClient.get(`/child-achievements?childId=${childId}`),
@@ -175,4 +248,3 @@ export const useAuthStore = create((set, get) => ({
     return profileStatsPromise
   },
 }))
-

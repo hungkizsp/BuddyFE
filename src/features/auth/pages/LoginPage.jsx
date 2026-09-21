@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import PageShell from '../../../shared/components/ui/PageShell'
+import GoogleLoginButton from '../components/GoogleLoginButton'
+import ForgotPasswordModal from '../components/ForgotPasswordModal'
 
 const initialForm = {
   email: '',
@@ -16,6 +18,7 @@ function LoginPage() {
   const [form, setForm] = useState(initialForm)
   const [error, setError] = useState('')
   const [showPw, setShowPw] = useState(false)
+  const [isForgotOpen, setIsForgotOpen] = useState(false)
 
   const handleChange = (event) => {
     const { name, value, checked, type } = event.target
@@ -40,14 +43,22 @@ function LoginPage() {
     }
   }
 
+  const fillTestAccount = () => {
+    setForm({
+      email: 'testuser@buddy.com',
+      password: 'password123',
+      rememberMe: true,
+    })
+  }
+
   return (
     <PageShell>
       <div className="min-h-screen flex items-center justify-center px-4 py-12">
         {/* Login Card */}
-        <div className="w-full max-w-[460px] glass-simple rounded-3xl p-8 sm:p-10 border border-white/10">
+        <div className="w-full max-w-[460px] glass-simple rounded-3xl p-8 sm:p-10 border border-white/10 shadow-2xl">
           {/* Brand */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-simple border border-white/10 mb-6">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-simple border border-white/10 mb-4">
               <span className="text-2xl">🦉</span>
               <span className="font-grotesk text-sm font-bold uppercase tracking-wider text-neon">
                 BollyEnglish
@@ -61,6 +72,30 @@ function LoginPage() {
             </p>
           </div>
 
+          {/* Quick Demo Fill Button */}
+          <div className="mb-6">
+            <button
+              type="button"
+              onClick={fillTestAccount}
+              className="w-full py-2.5 px-4 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary font-mono text-xs uppercase font-bold transition-all flex items-center justify-center gap-2"
+            >
+              ⚡ Điền nhanh tài khoản Test (testuser@buddy.com)
+            </button>
+          </div>
+
+          {/* Google Sign-In */}
+          <div className="mb-6">
+            <GoogleLoginButton />
+            <div className="relative my-6 text-center">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/10"></div>
+              </div>
+              <span className="relative px-3 bg-[#0e1320] text-cream/30 font-mono text-xs uppercase">
+                Hoặc bằng Email
+              </span>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <label className="block">
@@ -72,7 +107,7 @@ function LoginPage() {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                placeholder="child@gmail.com"
+                placeholder="testuser@buddy.com"
                 autoComplete="email"
                 required
                 className="
@@ -131,12 +166,13 @@ function LoginPage() {
                 />
                 <span className="font-mono text-xs uppercase">Ghi nhớ đăng nhập</span>
               </label>
-              <Link
-                to="/forgot-password"
-                className="font-mono text-xs text-primary/70 hover:text-primary uppercase transition-colors"
+              <button
+                type="button"
+                onClick={() => setIsForgotOpen(true)}
+                className="font-mono text-xs text-primary/80 hover:text-primary uppercase transition-colors"
               >
                 Quên mật khẩu?
-              </Link>
+              </button>
             </div>
 
             {/* Error */}
@@ -182,6 +218,11 @@ function LoginPage() {
           </form>
         </div>
       </div>
+
+      <ForgotPasswordModal
+        isOpen={isForgotOpen}
+        onClose={() => setIsForgotOpen(false)}
+      />
     </PageShell>
   )
 }
