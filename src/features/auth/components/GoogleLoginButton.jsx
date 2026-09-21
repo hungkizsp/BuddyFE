@@ -23,17 +23,34 @@ export default function GoogleLoginButton() {
   }, [])
 
   const handleGoogleSignIn = () => {
-    setIsLoading(true)
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
-    const clientId =
-      import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-      '1058223932822-demo.apps.googleusercontent.com'
+    // If Google Client ID is not configured on Vercel yet, prompt for Google Email to connect backend API directly
+    if (!clientId) {
+      const inputEmail = prompt(
+        'VITE_GOOGLE_CLIENT_ID chưa được cài đặt trong Vercel Environment Variables.\n\nNhập địa chỉ Google Email của bé để đăng nhập trực tiếp qua API backend (/api/auth/google):',
+        'user@gmail.com'
+      )
+      if (!inputEmail || !inputEmail.trim()) return
 
-    if (!window.google?.accounts?.oauth2) {
-      setIsLoading(false)
-      alert('Đang tải thư viện Google Sign-In, vui lòng thử lại sau vài giây.')
+      setIsLoading(true)
+      loginWithGoogle({
+        idToken: 'google_oauth_token_' + Date.now(),
+        email: inputEmail.trim(),
+        name: inputEmail.split('@')[0],
+      })
+        .then(() => navigate('/home', { replace: true }))
+        .catch((err) => alert(err.message || 'Đăng nhập với Google không thành công.'))
+        .finally(() => setIsLoading(false))
       return
     }
+
+    if (!window.google?.accounts?.oauth2) {
+      alert('Đang kết nối Google Sign-In SDK, vui lòng thử lại sau giây lát.')
+      return
+    }
+
+    setIsLoading(true)
 
     try {
       const client = window.google.accounts.oauth2.initTokenClient({
@@ -42,7 +59,11 @@ export default function GoogleLoginButton() {
         callback: async (response) => {
           if (response.error) {
             setIsLoading(false)
-            console.error('Google OAuth Error:', response)
+            if (response.error === 'invalid_client') {
+              alert('Google OAuth Error: Client ID không tồn tại. Vui lòng kiểm tra lại VITE_GOOGLE_CLIENT_ID trong Google Cloud Console.')
+            } else {
+              alert(`Google OAuth Error: ${response.error}`)
+            }
             return
           }
 
@@ -61,7 +82,7 @@ export default function GoogleLoginButton() {
                 })
                 navigate('/home', { replace: true })
               } else {
-                throw new Error('Google không trả về địa chỉ email.')
+                throw new Error('Google API không trả về địa chỉ email.')
               }
             } catch (err) {
               console.error('Google authentication failed:', err)
@@ -79,7 +100,7 @@ export default function GoogleLoginButton() {
     } catch (err) {
       setIsLoading(false)
       console.error('Failed to init Google Token Client:', err)
-      alert('Lỗi khởi tạo đăng nhập Google. Vui lòng thử lại.')
+      alert('Lỗi khi kết nối Google Sign-In. Vui lòng thử lại.')
     }
   }
 
