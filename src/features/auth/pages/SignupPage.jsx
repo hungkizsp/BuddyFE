@@ -33,6 +33,7 @@ function SignupPage() {
   const [form, setForm] = useState(initialForm)
   const [error, setError] = useState('')
   const [showPw, setShowPw] = useState(false)
+  const [showConfirmPw, setShowConfirmPw] = useState(false)
   const [isOtpOpen, setIsOtpOpen] = useState(false)
   const [registeredEmail, setRegisteredEmail] = useState('')
 
@@ -214,24 +215,33 @@ function SignupPage() {
               <span className="font-mono text-xs text-cream/50 uppercase tracking-wider mb-2 block">
                 Xác nhận mật khẩu
               </span>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                placeholder="Nhập lại mật khẩu"
-                autoComplete="new-password"
-                required
-                minLength={6}
-                className="
-                  w-full px-4 py-3.5 rounded-xl
-                  bg-white/[0.04] border border-white/10
-                  text-cream font-nunito text-base
-                  placeholder:text-cream/25
-                  outline-none transition-all duration-200
-                  focus:border-primary/50 focus:bg-white/[0.06] focus:shadow-glow
-                "
-              />
+              <div className="relative">
+                <input
+                  type={showConfirmPw ? 'text' : 'password'}
+                  name="confirmPassword"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Nhập lại mật khẩu"
+                  autoComplete="new-password"
+                  required
+                  minLength={6}
+                  className="
+                    w-full px-4 py-3.5 pr-12 rounded-xl
+                    bg-white/[0.04] border border-white/10
+                    text-cream font-nunito text-base
+                    placeholder:text-cream/25
+                    outline-none transition-all duration-200
+                    focus:border-primary/50 focus:bg-white/[0.06] focus:shadow-glow
+                  "
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPw(!showConfirmPw)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-cream/40 hover:text-cream/70 transition-colors text-sm"
+                >
+                  {showConfirmPw ? '🙈' : '👁️'}
+                </button>
+              </div>
             </label>
 
             {/* Error */}

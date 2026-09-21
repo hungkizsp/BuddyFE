@@ -18,6 +18,9 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const user = await authService.login({ email, password })
+      if (user?.accessToken) {
+        localStorage.setItem('access_token', user.accessToken)
+      }
       set({
         currentUser: user,
         isAuthenticated: true,
@@ -44,6 +47,9 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const user = await authService.loginWithGoogle({ idToken, email, name })
+      if (user?.accessToken) {
+        localStorage.setItem('access_token', user.accessToken)
+      }
       set({
         currentUser: user,
         isAuthenticated: true,
@@ -70,6 +76,9 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const user = await authService.signup({ nickname: username, email, password })
+      if (user?.accessToken) {
+        localStorage.setItem('access_token', user.accessToken)
+      }
       set({
         currentUser: user,
         isAuthenticated: false, // Wait for email OTP verification
@@ -95,6 +104,9 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const user = await authService.verifyEmail({ email, otp })
+      if (user?.accessToken) {
+        localStorage.setItem('access_token', user.accessToken)
+      }
       set({
         currentUser: user,
         isAuthenticated: true,
@@ -171,6 +183,7 @@ export const useAuthStore = create((set, get) => ({
     try {
       await authService.logout()
     } finally {
+      localStorage.removeItem('access_token')
       childProfilePromise = null
       profileStatsPromise = null
       set({

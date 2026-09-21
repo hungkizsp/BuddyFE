@@ -8,6 +8,17 @@ const axiosClient = axios.create({
   },
 })
 
+axiosClient.interceptors.request.use(
+  (config) => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => Promise.reject(error)
+)
+
 // Variables to handle simultaneous requests during token refresh
 let isRefreshing = false
 let failedQueue = []

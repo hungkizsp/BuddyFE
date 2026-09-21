@@ -43,13 +43,6 @@ function LoginPage() {
     }
   }
 
-  const fillTestAccount = () => {
-    setForm({
-      email: 'testuser@buddy.com',
-      password: 'password123',
-      rememberMe: true,
-    })
-  }
 
   return (
     <PageShell>
@@ -72,16 +65,6 @@ function LoginPage() {
             </p>
           </div>
 
-          {/* Quick Demo Fill Button */}
-          <div className="mb-6">
-            <button
-              type="button"
-              onClick={fillTestAccount}
-              className="w-full py-2.5 px-4 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary font-mono text-xs uppercase font-bold transition-all flex items-center justify-center gap-2"
-            >
-              ⚡ Điền nhanh tài khoản Test (testuser@buddy.com)
-            </button>
-          </div>
 
           {/* Google Sign-In */}
           <div className="mb-6">
