@@ -162,8 +162,40 @@ export default function AppRouter() {
             </RequireAuth>
           }
         />
+        <Route
+          path="/adventure/foodforest"
+          element={
+            <RequireAuth>
+              <FoodForestPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/food-forest"
+          element={
+            <RequireAuth>
+              <FoodForestPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/foodforest"
+          element={
+            <RequireAuth>
+              <FoodForestPage />
+            </RequireAuth>
+          }
+        />
 
-        {/* Level 1 – Breakfast Trouble (intro + game room) */}
+        {/* Level 1 – Breakfast Trouble / Kitchen Adventure */}
+        <Route
+          path="/adventure/food-forest/breakfast-trouble"
+          element={
+            <RequireAuth>
+              <KitchenAdventurePage />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/adventure/food-forest/kitchen-adventure"
           element={
@@ -172,6 +204,39 @@ export default function AppRouter() {
             </RequireAuth>
           }
         />
+        <Route
+          path="/adventure/kitchen-adventure"
+          element={
+            <RequireAuth>
+              <KitchenAdventurePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/adventure/kitchenadventure"
+          element={
+            <RequireAuth>
+              <KitchenAdventurePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/kitchen-adventure"
+          element={
+            <RequireAuth>
+              <KitchenAdventurePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/kitchenadventure"
+          element={
+            <RequireAuth>
+              <KitchenAdventurePage />
+            </RequireAuth>
+          }
+        />
+
         {/* Level 2 – Supermarket Shopping */}
         <Route
           path="/adventure/food-forest/supermarket-shopping"
@@ -182,9 +247,41 @@ export default function AppRouter() {
           }
         />
 
-        {/* Family Restaurant */}
+        {/* Level 3 – Family Restaurant */}
         <Route
           path="/adventure/food-forest/family-restaurant"
+          element={
+            <RequireAuth>
+              <FamilyRestaurantPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/adventure/family-restaurant"
+          element={
+            <RequireAuth>
+              <FamilyRestaurantPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/adventure/familyrestaurant"
+          element={
+            <RequireAuth>
+              <FamilyRestaurantPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/family-restaurant"
+          element={
+            <RequireAuth>
+              <FamilyRestaurantPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/familyrestaurant"
           element={
             <RequireAuth>
               <FamilyRestaurantPage />

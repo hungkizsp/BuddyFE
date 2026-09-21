@@ -27,14 +27,41 @@ export default function FoodForestPage() {
 
   const { scenarios, loading: scenariosLoading, error: scenariosError } = useScenarios(foodForest?.id)
 
+  const defaultMissions = [
+    {
+      id: 1,
+      name: 'Breakfast Trouble',
+      tooltip: 'Bữa Sáng Rắc Rối - Giúp Bolly tìm và nhận biết các món ăn sáng!',
+      difficulty: 'EASY',
+      scenario: { id: 1, title: 'Breakfast Trouble', description: 'Bữa Sáng Rắc Rối - Giúp Bolly tìm và nhận biết các món ăn sáng!' },
+    },
+    {
+      id: 2,
+      name: 'Supermarket Shopping',
+      tooltip: 'Đi Siêu Thị - Cùng Bolly mua sắm thực phẩm cho gia đình!',
+      difficulty: 'MEDIUM',
+      scenario: { id: 2, title: 'Supermarket Shopping', description: 'Đi Siêu Thị - Cùng Bolly mua sắm thực phẩm cho gia đình!' },
+    },
+    {
+      id: 3,
+      name: 'Family Restaurant',
+      tooltip: 'Nhà Hàng Gia Đình - Thử tài gọi món và phục vụ tại nhà hàng!',
+      difficulty: 'HARD',
+      scenario: { id: 3, title: 'Family Restaurant', description: 'Nhà Hàng Gia Đình - Thử tài gọi món và phục vụ tại nhà hàng!' },
+    },
+  ]
+
   const missions = useMemo(
-    () => scenarios.map((scenario) => ({
-      id: scenario.id,
-      name: scenario.title,
-      tooltip: scenario.description,
-      difficulty: scenario.difficulty,
-      scenario,
-    })),
+    () => {
+      if (!scenarios || scenarios.length === 0) return defaultMissions
+      return scenarios.map((scenario) => ({
+        id: scenario.id,
+        name: scenario.title,
+        tooltip: scenario.description,
+        difficulty: scenario.difficulty,
+        scenario,
+      }))
+    },
     [scenarios],
   )
 
@@ -82,14 +109,14 @@ export default function FoodForestPage() {
   }, [childProfile])
 
   const getScenarioPath = (title) => {
-    if (!title) return '/adventure/food-forest/kitchen-adventure'
+    if (!title) return '/adventure/food-forest/breakfast-trouble'
     const t = title.toLowerCase()
     if (t.includes('breakfast')) return '/adventure/food-forest/breakfast-trouble'
     if (t.includes('supermarket') || t.includes('mua sắm') || t.includes('siêu thị'))
       return '/adventure/food-forest/supermarket-shopping'
     if (t.includes('restaurant') || t.includes('nhà hàng'))
       return '/adventure/food-forest/family-restaurant'
-    return '/adventure/food-forest/kitchen-adventure'
+    return '/adventure/food-forest/breakfast-trouble'
   }
 
   const handleMissionClick = (mission) => {
