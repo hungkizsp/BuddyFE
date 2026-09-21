@@ -74,10 +74,17 @@ axiosClient.interceptors.response.use(
       }
     }
 
-    const message =
+    let message =
       error.response?.data?.message ||
-      error.response?.data?.error ||
-      'Something went wrong. Please try again.'
+      error.response?.data?.error
+
+    if (!message) {
+      if (!error.response) {
+        message = 'Không thể kết nối đến máy chủ Backend (http://localhost:8080). Vui lòng đảm bảo Spring Boot Backend đang chạy.'
+      } else {
+        message = 'Có lỗi xảy ra. Vui lòng thử lại.'
+      }
+    }
 
     return Promise.reject({
       ...error,
