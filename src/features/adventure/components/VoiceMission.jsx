@@ -283,14 +283,14 @@ export default function VoiceMission({
           </div>
 
           {/* Transcript */}
-          {transcript && (
+          {/* {transcript && (
             <div
               className={`voice-mission__transcript ${passed ? 'voice-mission__transcript--success' : 'voice-mission__transcript--fail'}`}
             >
               <span className="voice-mission__transcript-label">Bạn đã nói:</span>
               <p>"{transcript}"</p>
             </div>
-          )}
+          )} */}
 
           {/* Semantic error (scenario 3 only) */}
           {Number(scenarioId) === 3 && errorMsg && !passed && (
