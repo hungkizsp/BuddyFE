@@ -147,7 +147,7 @@ export const useAuthStore = create((set, get) => ({
         const [vocabRes, achievementRes, bollyRes] = await Promise.all([
           axiosClient.get(`/progress/vocabularies?childId=${childId}`),
           axiosClient.get(`/child-achievements?childId=${childId}`),
-          axiosClient.get('/bolly/profiles'),
+          axiosClient.get('/buddy/profiles'),
         ])
 
         const vocabularyCount = vocabRes.data.data?.length || 0

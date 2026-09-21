@@ -7,7 +7,6 @@ import SpeechBubble from '../components/SpeechBubble';
 import RewardPopup from '../components/RewardPopup';
 import VoiceMission from '../components/VoiceMission';
 import RestaurantProgress from '../components/RestaurantProgress';
-import OrderFeedbackPopup from '../components/OrderFeedbackPopup';
 
 import useScenarioSteps from '../hooks/useScenarioSteps';
 import useScenarioVocabulary from '../hooks/useScenarioVocabulary';
