@@ -10,6 +10,7 @@ export const useAuthStore = create((set, get) => ({
   childProfile: null,
   profileStats: null,
   isAuthenticated: false,
+  isInitializing: true,  // true until the initial session check completes
   isLoading: false,
   error: null,
 
@@ -162,6 +163,7 @@ export const useAuthStore = create((set, get) => ({
       set({
         currentUser: user,
         isAuthenticated: true,
+        isInitializing: false,
         isLoading: false,
         error: null,
       })
@@ -173,6 +175,7 @@ export const useAuthStore = create((set, get) => ({
         childProfile: null,
         profileStats: null,
         isAuthenticated: false,
+        isInitializing: false,
         isLoading: false,
       })
       return null

@@ -34,6 +34,40 @@ function GlobalMusicController() {
   return null;
 }
 
+function RootRedirect() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isInitializing = useAuthStore((s) => s.isInitializing);
+
+  if (isInitializing) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: '#010828',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        gap: '16px',
+      }}>
+        <div style={{
+          width: '48px',
+          height: '48px',
+          borderRadius: '50%',
+          border: '3px solid rgba(255,255,255,0.1)',
+          borderTopColor: '#7c3aed',
+          animation: 'spin 0.8s linear infinite',
+        }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <p style={{ color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace', fontSize: '12px', letterSpacing: '2px' }}>
+          ĐANG TẢI...
+        </p>
+      </div>
+    );
+  }
+
+  return <Navigate to={isAuthenticated ? '/home' : '/landing'} replace />;
+}
+
 export default function AppRouter() {
   const loadCurrentUser = useAuthStore((s) => s.loadCurrentUser);
 
@@ -47,8 +81,8 @@ export default function AppRouter() {
     <BrowserRouter>
       <GlobalMusicController />
       <Routes>
-        {/* Redirect root to the new landing page */}
-        <Route path="/" element={<Navigate to="/landing" replace />} />
+        {/* Smart root redirect: wait for session check then decide */}
+        <Route path="/" element={<RootRedirect />} />
 
         {/* Guest-only routes */}
         <Route
