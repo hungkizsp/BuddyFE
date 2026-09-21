@@ -15,5 +15,8 @@ export default defineConfig({
     // are available on the namespace import at runtime.
     include: ['microsoft-cognitiveservices-speech-sdk'],
   },
+  build: {
+    chunkSizeWarningLimit: 2000,
+  },
 })
 
