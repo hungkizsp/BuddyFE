@@ -90,7 +90,7 @@ axiosClient.interceptors.response.use(
         const targetHost = import.meta.env.VITE_API_URL || 'http://localhost:8080'
         message = `Không thể kết nối đến máy chủ Backend (${targetHost}). Vui lòng đảm bảo máy chủ Backend đang chạy.`
       } else {
-        message = 'Có lỗi xảy ra. Vui lòng thử lại.'
+        message = `Máy chủ phản hồi lỗi (${error.response.status}): ${error.response.statusText || 'Vui lòng thử lại.'}`
       }
     }
 
