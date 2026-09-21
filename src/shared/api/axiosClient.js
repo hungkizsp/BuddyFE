@@ -80,7 +80,8 @@ axiosClient.interceptors.response.use(
 
     if (!message) {
       if (!error.response) {
-        message = 'Không thể kết nối đến máy chủ Backend (http://localhost:8080). Vui lòng đảm bảo Spring Boot Backend đang chạy.'
+        const targetHost = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+        message = `Không thể kết nối đến máy chủ Backend (${targetHost}). Vui lòng đảm bảo máy chủ Backend đang chạy.`
       } else {
         message = 'Có lỗi xảy ra. Vui lòng thử lại.'
       }
