@@ -352,6 +352,23 @@ export default function FamilyRestaurantPage() {
       {/* ── Intro Story Panel (shown before game starts) ── */}
       {gameState === 'not-started' && (
         <div className="rest-intro-overlay">
+          <button
+            type="button"
+            className="rest-intro-start-btn"
+            onClick={handleStartMission}
+            disabled={startDisabled}
+          >
+            🚀 Bắt đầu!
+          </button>
+
+          <button
+            type="button"
+            className="rest-intro-back-link"
+            onClick={() => navigate('/adventure/food-forest')}
+          >
+            ← Quay lại bản đồ
+          </button>
+
           <div className="rest-intro-label">
             <span>Tình huống 3 – Nhà Hàng Gia Đình</span>
           </div>
@@ -364,25 +381,6 @@ export default function FamilyRestaurantPage() {
               draggable={false}
             />
           </div>
-
-          <button
-            type="button"
-            className="rest-intro-start-btn"
-            onClick={handleStartMission}
-            disabled={startDisabled}
-          >
-            <span className="rest-intro-start-btn__icon"></span>
-            <span>Bắt đầu!</span>
-            <span className="rest-intro-start-btn__arrow"></span>
-          </button>
-
-          <button
-            type="button"
-            className="rest-intro-back-link"
-            onClick={() => navigate('/adventure/food-forest')}
-          >
-            ← Quay lại bản đồ
-          </button>
         </div>
       )}
 

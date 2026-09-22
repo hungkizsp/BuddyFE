@@ -391,6 +391,23 @@ export default function SupermarketShoppingPage() {
       {/* ── Intro Story Panel (shown before game starts) ── */}
       {gameState === 'not-started' && (
         <div className="sm-intro-overlay">
+          <button
+            type="button"
+            className="sm-intro-start-btn"
+            onClick={handleStartMission}
+            disabled={startDisabled}
+          >
+            🚀 Bắt đầu!
+          </button>
+
+          <button
+            type="button"
+            className="sm-intro-back-link"
+            onClick={() => navigate('/adventure/food-forest')}
+          >
+            ← Quay lại bản đồ
+          </button>
+
           <div className="sm-intro-label">
             <span>Tình huống 2 – Supermarket Shopping</span>
           </div>
@@ -403,23 +420,6 @@ export default function SupermarketShoppingPage() {
               draggable={false}
             />
           </div>
-
-          <button
-            type="button"
-            className="sm-intro-start-btn"
-            onClick={handleStartMission}
-            disabled={startDisabled}
-          >
-            <span>Bắt đầu!</span>
-          </button>
-
-          <button
-            type="button"
-            className="sm-intro-back-link"
-            onClick={() => navigate('/adventure/food-forest')}
-          >
-            ← Back to map
-          </button>
         </div>
       )}
 
