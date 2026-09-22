@@ -961,10 +961,48 @@
 }
 
 /* ─── Responsive adjustments ─────────────────────────────── */
-@media (max-width: 768px) {
+
+/* ── Tablet (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .hud-header {
+    padding: 0 14px;
+    top: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .hud-title-container {
+    padding: 8px 14px;
+    border-radius: 14px;
+  }
+
+  .hud-title-forest { font-size: 13px; }
+  .hud-title-level  { font-size: 16px; }
+
+  .stat-card {
+    padding: 8px 14px;
+    font-size: 15px;
+    border-radius: 14px;
+    gap: 8px;
+  }
+
   .sm-voice-panel {
-    max-width: 100%;
-    padding: 22px 20px;
+    width: min(460px, 88vw);
+    padding: 16px 24px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .sm-checklist-wrapper {
+    top: 12%;
+    left: 4%;
+  }
+
+  .shopping-scene {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .hotspot__label {
@@ -972,6 +1010,120 @@
     padding: 3px 8px;
   }
 }
+
+/* ── Mobile (≤ 640px) ── */
+@media (max-width: 640px) {
+  /* HUD */
+  .hud-header {
+    top: 8px;
+    padding: 0 8px;
+    gap: 5px;
+    align-items: flex-start;
+  }
+
+  .hud-title-container {
+    padding: 5px 10px;
+    border-radius: 12px;
+    max-width: 52vw;
+  }
+
+  .hud-title-forest { font-size: 10px; }
+  .hud-title-level  { font-size: 12px; }
+
+  .hud-stats-container { gap: 5px; }
+
+  .stat-card {
+    padding: 5px 9px;
+    font-size: 12px;
+    border-radius: 11px;
+    gap: 5px;
+  }
+
+  .stat-icon { font-size: 16px; }
+
+  /* Shopping scene – full-width card */
+  .shopping-scene {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(98vw, 420px);
+    height: min(72vh, 480px);
+    border-radius: 20px;
+    border-width: 4px;
+  }
+
+  .shopping-scene--snack_dairy {
+    width: min(90vw, 340px);
+    height: min(76vh, 480px);
+  }
+
+  /* Checklist – compact top-left */
+  .sm-checklist-wrapper {
+    top: 70px;
+    left: 8px;
+  }
+
+  .shopping-checklist {
+    min-width: 150px;
+    padding: 12px 12px;
+    border-radius: 16px;
+  }
+
+  .shopping-checklist__title  { font-size: 13px; }
+  .shopping-checklist__item   { font-size: 12px; gap: 6px; }
+  .shopping-checklist__icon   { font-size: 14px; }
+
+  /* Voice panel – centered overlay */
+  .sm-voice-panel {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(340px, 94vw);
+    padding: 16px 18px 20px;
+    border-radius: 22px;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+
+  .sm-voice-panel__title { font-size: 18px; }
+  .sm-voice-panel__icon  { font-size: 36px; }
+
+  /* Voice button */
+  .voice-btn {
+    width: 100px;
+    height: 100px;
+  }
+
+  .voice-btn__icon  { font-size: 28px; }
+  .voice-btn__label { font-size: 11px; }
+
+  /* Expected sentence */
+  .voice-mission__expected { font-size: 15px; }
+
+  /* Score pills – more compact */
+  .voice-mission__score-pill {
+    min-width: 56px;
+    padding: 8px 6px;
+  }
+
+  .voice-mission__score-pill-value { font-size: 18px; }
+
+  /* Hotspot labels – always visible on touch */
+  .hotspot__label {
+    font-size: 10px;
+    opacity: 1;
+    bottom: calc(100% + 4px);
+  }
+
+  /* Back-to-map button */
+  .back-to-map-btn {
+    bottom: 14px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
+
 
 /* ─── Pronunciation Evaluate Button ──────────────────────────── */
 .voice-mission__evaluate-btn {

@@ -33,6 +33,8 @@ import orderPerson from '../../../assets/order_person.png';
 import menuImg from '../../../assets/menu2.png';
 import familyResMini from '../../../assets/mini-1/family_restaurant_mini.png'
 import BackgroundMusic from '../components/BackgroundMusic';
+import LandscapeOverlay from '../components/LandscapeOverlay';
+import useAdventureOrientation from '../hooks/useAdventureOrientation';
 import bgMusicSrc from '../../../assets/Music/Kitchen_Floor_Carnival.mp3';
 
 // Mapping bước → nhóm món trong thực đơn mới (menu2)
@@ -72,8 +74,16 @@ export default function FamilyRestaurantPage() {
   const [completedStepIndexes, setCompletedStepIndexes] = useState(new Set());
   const [feedbackPopup, setFeedbackPopup] = useState({ show: false, type: 'success', message: '' });
   const [waiterClicked, setWaiterClicked] = useState(false);
-
   const advanceTimerRef = useRef(null);
+  const containerRef = useRef(null);
+  const { isMobile, isPortrait, isFullscreen, requestFullscreen, exitFullscreen } =
+    useAdventureOrientation(containerRef);
+
+  // Auto-enter fullscreen on mount for mobile devices
+  useEffect(() => {
+    if (isMobile) requestFullscreen();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]);
 
   useEffect(() => {
     if (routeScenario || !scenarioId) return undefined;
@@ -323,7 +333,14 @@ export default function FamilyRestaurantPage() {
   const bolly3DPosition = [1.5, -1.2, 1.5];
 
   return (
-    <div className="restaurant-container app-shell">
+    <div ref={containerRef} className="restaurant-container app-shell">
+      <LandscapeOverlay
+        isMobile={isMobile}
+        isPortrait={isPortrait}
+        isFullscreen={isFullscreen}
+        onRequestFullscreen={requestFullscreen}
+        onExitFullscreen={exitFullscreen}
+      />
       <BackgroundMusic src={bgMusicSrc} volume={0.2} />
       <AdventureScene
         gameState={gameState === 'not-started' ? 'not-started' : 'idle-at-table'}

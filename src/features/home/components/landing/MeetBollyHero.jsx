@@ -134,6 +134,7 @@ function SocialIcons() {
 export default function MeetBollyHero({ onLearnMore, currentUser }) {
   const [bubbleText, setBubbleText] = useState("Hi there! I'm Bolly — your AI English speaking companion. I listen, I remember, and I grow with you every day!")
   const [reaction, setReaction] = useState(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const triggerReaction = (text, type) => {
     setBubbleText(text)
@@ -164,21 +165,78 @@ export default function MeetBollyHero({ onLearnMore, currentUser }) {
       />
 
       {/* 3D Bolly Canvas */}
-      <div className="absolute inset-0 left-[35%] z-10 pointer-events-none md:pointer-events-auto">
+      <div className="absolute inset-0 left-0 md:left-[35%] z-10 pointer-events-none md:pointer-events-auto opacity-70 md:opacity-100">
         <BollyScene reaction={reaction} />
       </div>
 
+      {/* Mobile Menu Backdrop & Drawer */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-[#010828]/80 backdrop-blur-md z-50 lg:hidden animate-fade-in"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className="absolute top-0 right-0 w-[280px] max-w-[80vw] h-full liquid-glass border-l border-white/10 p-6 flex flex-col justify-between"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div>
+              <div className="flex items-center justify-between pb-6 border-b border-white/10">
+                <span className="font-grotesk font-bold text-neon uppercase text-base">Menu</span>
+                <button
+                  type="button"
+                  className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-cream hover:bg-white/20 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                  aria-label="Đóng menu"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-4 mt-6">
+                {navLinks.map((link) => (
+                  link.isRoute ? (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="font-grotesk text-base uppercase text-cream hover:text-neon transition-colors py-2"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="font-grotesk text-base uppercase text-cream hover:text-neon transition-colors py-2"
+                    >
+                      {link.name}
+                    </a>
+                  )
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-white/10">
+              <div className="flex gap-4 justify-center">
+                <SocialIcons />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Container — sits above video-darken overlay (z-index > 1) */}
-      <div className="relative z-20 w-full max-w-[1831px] mx-auto px-6 sm:px-10 lg:px-16 flex flex-col min-h-screen justify-between pb-10">
+      <div className="relative z-20 w-full max-w-[1831px] mx-auto px-4 sm:px-8 lg:px-16 flex flex-col min-h-screen justify-between pb-10">
         
         {/* ── HEADER ── */}
-        <div className="flex items-center justify-between pt-7">
+        <div className="flex items-center justify-between pt-5 sm:pt-7">
           {/* Logo */}
-          <Link to={currentUser ? "/home" : "/landing"} className="font-grotesk text-xl uppercase text-cream tracking-widest text-glow hover:text-neon transition-colors duration-200">
+          <Link to={currentUser ? "/home" : "/landing"} className="font-grotesk text-lg sm:text-xl uppercase text-cream tracking-widest text-glow hover:text-neon transition-colors duration-200">
             BollyEnglish
           </Link>
 
-          {/* Navigation */}
+          {/* Navigation (Desktop) */}
           <nav className="liquid-glass hidden lg:flex items-center gap-10 rounded-[28px] px-[52px] py-[24px]">
             {navLinks.map((link) => (
               link.isRoute ? (
@@ -205,51 +263,65 @@ export default function MeetBollyHero({ onLearnMore, currentUser }) {
           <div className="hidden lg:flex flex-col gap-3">
             <SocialIcons />
           </div>
+
+          {/* Mobile Menu Hamburger (Mobile/Tablet) */}
+          <button
+            type="button"
+            className="lg:hidden p-2 rounded-xl liquid-glass text-cream flex items-center justify-center hover:text-neon transition-colors"
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Mở menu điều hướng"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
         </div>
 
         {/* ── HERO CONTENT ── */}
-        <div className="flex-1 flex flex-col justify-center py-10">
+        <div className="flex-1 flex flex-col justify-center py-8 sm:py-10">
           <div className="relative w-full max-w-[780px] lg:ml-32">
-            <h1 className="font-grotesk text-[44px] sm:text-[68px] md:text-[82px] lg:text-[100px] uppercase leading-[1.05] md:leading-[1] text-cream text-glow">
+            <h1 className="font-grotesk text-[32px] xs:text-[40px] sm:text-[60px] md:text-[76px] lg:text-[96px] uppercase leading-[1.08] md:leading-[1] text-cream text-glow">
               Beyond classrooms<br />
               and ( their ) familiar limits
             </h1>
 
             {/* Script overlay */}
-            <span className="font-condiment text-[28px] sm:text-[42px] md:text-[56px] text-neon -rotate-1 mix-blend-exclusion opacity-90 absolute right-4 lg:right-[20px] bottom-[-20px] leading-none normal-case pointer-events-none text-glow">
+            <span className="font-condiment text-[24px] xs:text-[30px] sm:text-[42px] md:text-[54px] text-neon -rotate-1 mix-blend-exclusion opacity-90 absolute right-2 sm:right-4 lg:right-[20px] bottom-[-18px] sm:bottom-[-20px] leading-none normal-case pointer-events-none text-glow">
               speak with Bolly
             </span>
           </div>
 
           {/* Sub-description */}
-          <p className="font-mono text-[14px] sm:text-[16px] uppercase text-cream/80 max-w-[560px] mt-8 lg:ml-32 leading-relaxed text-readable">
+          <p className="font-mono text-[13px] sm:text-[15px] uppercase text-cream/80 max-w-[560px] mt-6 sm:mt-8 lg:ml-32 leading-relaxed text-readable">
             An AI-powered speaking companion designed for Vietnamese children aged 4–12. Bolly uses real-time speech recognition, adaptive memory, and emotional intelligence to help kids practice English naturally — anytime, anywhere, without fear of judgment.
           </p>
 
           {/* CTA buttons */}
-          <div className="flex gap-4 mt-8 lg:ml-32">
+          <div className="flex flex-wrap gap-3 sm:gap-4 mt-6 sm:mt-8 lg:ml-32">
             {currentUser ? (
-              <Link to="/home" className="inline-block px-8 py-4 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
+              <Link to="/home" className="inline-block px-6 py-3.5 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-xs sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
                 Go to Dashboard
               </Link>
             ) : (
-              <Link to="/register" className="inline-block px-8 py-4 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
+              <Link to="/register" className="inline-block px-6 py-3.5 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-xs sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
                 Try Bolly Free
               </Link>
             )}
-            <button onClick={onLearnMore} className="liquid-glass px-8 py-4 sm:px-10 sm:py-5 font-grotesk text-sm sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
+            <button onClick={onLearnMore} className="liquid-glass px-6 py-3.5 sm:px-10 sm:py-5 font-grotesk text-xs sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
               Learn More
             </button>
           </div>
 
           {/* Social Icons (Mobile) */}
-          <div className="flex lg:hidden gap-3 mt-10 justify-start">
+          <div className="flex lg:hidden gap-3 mt-8 justify-start">
             <SocialIcons />
           </div>
         </div>
 
         {/* ── SPEECH BUBBLE ── */}
-        <div className="absolute right-[4%] lg:right-[6%] top-[14%] lg:top-[18%] max-w-[260px] sm:max-w-[300px] liquid-glass rounded-2xl rounded-tr-none p-5 z-30">
+        <div className="hidden sm:block absolute right-[4%] lg:right-[6%] top-[12%] lg:top-[18%] max-w-[240px] sm:max-w-[300px] liquid-glass rounded-2xl rounded-tr-none p-4 sm:p-5 z-30">
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             <span className="font-mono text-[10px] uppercase tracking-wider text-neon font-bold">Bolly online</span>

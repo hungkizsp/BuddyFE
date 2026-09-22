@@ -48,10 +48,10 @@ export default function NotificationPage() {
     <div className="home-root app-shell">
       <SideBar />
 
-      <main className="chat-main" style={{ overflowY: 'auto', flex: 1, paddingBottom: '40px' }}>
+      <main className="chat-main" style={{ overflowY: 'auto', flex: 1, paddingBottom: '80px' }}>
         <TopBar theme="dark" />
 
-        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-10 lg:px-16 py-6 sm:py-8">
           {/* Header */}
           <SectionHeader
             title="🔔 Thông Báo"

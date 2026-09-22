@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../features/auth/store/authStore'
+import { useUIStore } from '../shared/store/uiStore'
+import MobileBottomNav from './MobileBottomNav'
 
 function XpBar({ xp, level }) {
   const xpForNext = level * 100
@@ -19,10 +21,33 @@ export default function SideBar() {
   const navigate = useNavigate()
   const location = useLocation()
   const { currentUser, childProfile, logout } = useAuthStore()
+  const { isMobileSidebarOpen, closeMobileSidebar } = useUIStore()
+
+  // Close drawer on route change
+  useEffect(() => {
+    closeMobileSidebar()
+  }, [location.pathname, closeMobileSidebar])
+
+  // Close drawer on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isMobileSidebarOpen) {
+        closeMobileSidebar()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isMobileSidebarOpen, closeMobileSidebar])
 
   const handleLogout = async () => {
+    closeMobileSidebar()
     await logout()
     navigate('/login')
+  }
+
+  const handleNav = (path) => {
+    closeMobileSidebar()
+    navigate(path)
   }
 
   const user = currentUser || {}
@@ -38,92 +63,93 @@ export default function SideBar() {
   const pathname = location.pathname
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-brand cursor-pointer" onClick={() => navigate('/home')}>
-        <span className="brand-icon">🦉</span>
-        <span className="brand-name">BollyEnglish</span>
-      </div>
+    <>
+      {/* Backdrop overlay for mobile/tablet drawer */}
+      {isMobileSidebarOpen && (
+        <div
+          className="sidebar-backdrop"
+          onClick={closeMobileSidebar}
+          aria-hidden="true"
+        />
+      )}
 
-      <div className="profile-card">
-        <div className="profile-avatar" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {avatarUrl ? (
-            <img src={avatarUrl} alt={nickname} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-          ) : (
-            nickname[0]?.toUpperCase() || '?'
-          )}
-        </div>
-        <div className="profile-info">
-          <p className="profile-name">{nickname}</p>
-          <p className="profile-level">Nhà thám hiểm Cấp {displayLevel}</p>
-        </div>
-      </div>
+      <aside className={`sidebar ${isMobileSidebarOpen ? 'drawer-open' : ''}`}>
+        <div className="sidebar-header-row">
+          <div className="sidebar-brand cursor-pointer" onClick={() => handleNav('/home')}>
+            <span className="brand-icon">🦉</span>
+            <span className="brand-name">BollyEnglish</span>
+          </div>
 
-      <XpBar xp={displayXp} level={displayLevel} />
-      {/* 
-      <div className="stats-grid">
-        <div className="stat-chip">
-          <span className="stat-icon">🪙</span>
-          <span className="stat-val">{displayCoins}</span>
-          <span className="stat-lbl">Xu</span>
+          {/* Close button visible only on mobile/tablet drawer */}
+          <button
+            type="button"
+            className="sidebar-close-btn"
+            onClick={closeMobileSidebar}
+            aria-label="Đóng menu"
+          >
+            ✕
+          </button>
         </div>
-        <div className="stat-chip">
-          <span className="stat-icon">⭐</span>
-          <span className="stat-val">{displayXp}</span>
-          <span className="stat-lbl">XP</span>
-        </div>
-        <div className="stat-chip">
-          <span className="stat-icon">🔥</span>
-          <span className="stat-val">{displayStreak}</span>
-          <span className="stat-lbl">Chuỗi ngày</span>
-        </div>
-        <div className="stat-chip">
-          <span className="stat-icon">🏆</span>
-          <span className="stat-val">Cấp {displayLevel}</span>
-          <span className="stat-lbl">Cấp độ</span>
-        </div>
-      </div> */}
 
-      <nav className="sidebar-nav">
-        <a
-          href="/home"
-          className={`nav-item ${pathname === '/home' ? 'active' : ''}`}
-          onClick={(e) => { e.preventDefault(); navigate('/home') }}
-        >
-          Trò chuyện với Bolly
-        </a>
-        <a
-          href="/study"
-          className={`nav-item ${pathname.startsWith('/study') ? 'active' : ''}`}
-          onClick={(e) => { e.preventDefault(); navigate('/study') }}
-        >
-          Các Chế Độ Học
-        </a>
-        <a
-          href="/adventure"
-          className={`nav-item ${pathname.startsWith('/adventure') ? 'active' : ''}`}
-          onClick={(e) => { e.preventDefault(); navigate('/adventure') }}
-        >
-          Bản Đồ Phiêu Lưu
-        </a>
-        {/* <a
-          href="/character-creator"
-          className={`nav-item ${pathname === '/character-creator' ? 'active' : ''}`}
-          onClick={(e) => { e.preventDefault(); navigate('/character-creator') }}
-        >
-          <span>🎨</span> Tạo Nhân Vật
-        </a> */}
-        <a
-          href="/notifications"
-          className={`nav-item ${pathname === '/notifications' ? 'active' : ''}`}
-          onClick={(e) => { e.preventDefault(); navigate('/notifications') }}
-        >
-          Thông Báo
-        </a>
-      </nav>
+        <div className="profile-card">
+          <div className="profile-avatar" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {avatarUrl ? (
+              <img src={avatarUrl} alt={nickname} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+            ) : (
+              nickname[0]?.toUpperCase() || '?'
+            )}
+          </div>
+          <div className="profile-info">
+            <p className="profile-name">{nickname}</p>
+            <p className="profile-level">Nhà thám hiểm Cấp {displayLevel}</p>
+          </div>
+        </div>
 
-      <button className="logout-btn" onClick={handleLogout}>
-        Đăng Xuất
-      </button>
-    </aside>
+        <XpBar xp={displayXp} level={displayLevel} />
+
+        <nav className="sidebar-nav">
+          <a
+            href="/home"
+            className={`nav-item ${pathname === '/home' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); handleNav('/home') }}
+          >
+            <span className="nav-icon">💬</span>
+            <span>Trò chuyện với Bolly</span>
+          </a>
+          <a
+            href="/study"
+            className={`nav-item ${pathname.startsWith('/study') ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); handleNav('/study') }}
+          >
+            <span className="nav-icon">📚</span>
+            <span>Các Chế Độ Học</span>
+          </a>
+          <a
+            href="/adventure"
+            className={`nav-item ${pathname.startsWith('/adventure') || pathname.startsWith('/food-forest') || pathname.startsWith('/foodforest') ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); handleNav('/adventure') }}
+          >
+            <span className="nav-icon">🗺️</span>
+            <span>Bản Đồ Phiêu Lưu</span>
+          </a>
+          <a
+            href="/notifications"
+            className={`nav-item ${pathname === '/notifications' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); handleNav('/notifications') }}
+          >
+            <span className="nav-icon">🔔</span>
+            <span>Thông Báo</span>
+          </a>
+        </nav>
+
+        <button className="logout-btn" onClick={handleLogout}>
+          Đăng Xuất
+        </button>
+      </aside>
+
+      {/* Global mobile bottom navigation for mobile screens */}
+      <MobileBottomNav />
+    </>
   )
 }
+

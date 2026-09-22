@@ -111,9 +111,9 @@ export default function FlashcardModePage() {
       />
 
       {/* Main workspace */}
-      <main className="flex-1 flex flex-col items-center justify-center p-6 md:p-12 max-w-4xl mx-auto w-full">
+      <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-12 max-w-4xl mx-auto w-full">
         {currentVocab && (
-          <div className="w-full flex flex-col gap-8">
+          <div className="w-full flex flex-col gap-5 sm:gap-8">
             <FlashcardViewer
               vocab={currentVocab}
               childId={childId}
@@ -121,10 +121,10 @@ export default function FlashcardModePage() {
             />
 
             {/* Answer control buttons */}
-            <div className="flex justify-center gap-6 max-w-xl mx-auto w-full select-none">
+            <div className="flex justify-center gap-3 sm:gap-6 max-w-xl mx-auto w-full select-none">
               <button
                 onClick={() => handleResponse(false)}
-                className="flex-1 py-4 rounded-2xl bg-danger/10 hover:bg-danger/20 border-2 border-danger/40 text-danger hover:border-danger hover:scale-[1.02] active:scale-[0.98] font-grotesk font-bold text-base transition-all flex flex-col items-center gap-1 shadow-soft"
+                className="flex-1 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-danger/10 hover:bg-danger/20 border-2 border-danger/40 text-danger hover:border-danger hover:scale-[1.02] active:scale-[0.98] font-grotesk font-bold text-sm sm:text-base transition-all flex flex-col items-center gap-1 shadow-soft"
               >
                 <span>❌</span>
                 <span>Cần Học Lại</span>
@@ -132,7 +132,7 @@ export default function FlashcardModePage() {
 
               <button
                 onClick={() => handleResponse(true)}
-                className="flex-1 py-4 rounded-2xl bg-neon/10 hover:bg-neon/20 border-2 border-neon/40 text-neon hover:border-neon hover:scale-[1.02] active:scale-[0.98] font-grotesk font-bold text-base transition-all flex flex-col items-center gap-1 shadow-soft"
+                className="flex-1 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-neon/10 hover:bg-neon/20 border-2 border-neon/40 text-neon hover:border-neon hover:scale-[1.02] active:scale-[0.98] font-grotesk font-bold text-sm sm:text-base transition-all flex flex-col items-center gap-1 shadow-soft"
               >
                 <span>✅</span>
                 <span>Đã Thuộc Rồi!</span>

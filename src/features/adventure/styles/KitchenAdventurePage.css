@@ -839,3 +839,291 @@
   border-color: #94a3b8;
   transform: translateX(-50%) translateY(-2px);
 }
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE – Tablet (≤ 1024px)
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .hud-header {
+    padding: 0 16px;
+    top: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .hud-title-container {
+    padding: 8px 16px;
+    border-radius: 14px;
+  }
+
+  .hud-title-forest {
+    font-size: 13px;
+  }
+
+  .hud-title-level {
+    font-size: 16px;
+  }
+
+  .hud-stats-container {
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 8px 14px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+
+  .mission-panel-wrapper {
+    width: 280px;
+    bottom: 16px;
+    left: 16px;
+    padding: 16px;
+  }
+
+  .mic-button-wrapper {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .mic-btn {
+    width: 62px;
+    height: 62px;
+    font-size: 24px;
+  }
+
+  .mission-panel-toggle-wrapper {
+    bottom: 0px;
+    left: 16px;
+  }
+
+  .back-to-map-btn {
+    bottom: 16px;
+    font-size: 13px;
+    padding: 6px 14px;
+  }
+
+  .food-image {
+    width: 68px;
+    height: 68px;
+  }
+
+  .food-card-copy {
+    width: 100px;
+  }
+
+  .fruit-basket-drop-zone {
+    width: 140px;
+    height: 120px;
+    font-size: 12px;
+  }
+
+  .pot-drop-zone {
+    width: 130px;
+    height: 110px;
+    font-size: 12px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE – Mobile (≤ 640px)
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .hud-header {
+    top: 8px;
+    padding: 0 10px;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .hud-title-container {
+    padding: 6px 12px;
+    border-radius: 12px;
+    max-width: 55vw;
+  }
+
+  .hud-title-forest {
+    font-size: 11px;
+  }
+
+  .hud-title-level {
+    font-size: 13px;
+    margin-top: 1px;
+  }
+
+  .hud-stats-container {
+    gap: 6px;
+  }
+
+  .stat-card {
+    padding: 6px 10px;
+    font-size: 13px;
+    border-radius: 12px;
+    gap: 6px;
+  }
+
+  .stat-icon {
+    font-size: 18px;
+  }
+
+  /* Mission panel becomes centered bottom sheet on mobile */
+  .mission-panel-wrapper {
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(360px, 94vw);
+    border-radius: 20px 20px 0 0;
+    border-bottom: none;
+    padding: 14px 16px 20px;
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+
+  .mission-panel-toggle-wrapper {
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+  }
+
+  .mission-toggle-btn {
+    border-radius: 12px 12px 0 0;
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+
+  .mission-panel-header {
+    font-size: 15px;
+  }
+
+  .mission-instruction {
+    font-size: 13px;
+  }
+
+  .mission-description {
+    font-size: 12px;
+  }
+
+  .mission-start-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  /* Mic button – smaller, clear of mission panel */
+  .mic-button-wrapper {
+    bottom: auto;
+    top: 70px;
+    right: 10px;
+  }
+
+  .mic-btn {
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
+    border-width: 2px;
+  }
+
+  /* Back button */
+  .back-to-map-btn {
+    bottom: auto;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 10px;
+    display: none; /* Hidden on mobile to save space; accessible via mission panel */
+  }
+
+  /* Food items – smaller so they fit kitchen scene */
+  .food-image {
+    width: 54px;
+    height: 54px;
+  }
+
+  .food-card-copy {
+    width: 84px;
+    font-size: 11px;
+  }
+
+  .food-card-word {
+    font-size: 11px;
+  }
+
+  .food-card-meaning {
+    font-size: 9px;
+  }
+
+  /* Drop zones – smaller */
+  .fruit-basket-drop-zone {
+    width: 100px;
+    height: 90px;
+    font-size: 11px;
+    padding: 6px 4px 4px;
+    border-radius: 16px;
+  }
+
+  .pot-drop-zone {
+    width: 100px;
+    height: 90px;
+    font-size: 11px;
+  }
+
+  /* Speech bubble – narrower */
+  .speech-bubble {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 18px;
+  }
+
+  .speech-bubble-text {
+    font-size: 13px;
+  }
+
+  /* Reward popup – full width */
+  .reward-card {
+    width: 95%;
+    padding: 28px 20px;
+    border-radius: 24px;
+  }
+
+  .reward-title {
+    font-size: 24px;
+  }
+
+  .reward-stars {
+    font-size: 30px;
+  }
+
+  .reward-item-pill {
+    min-width: 90px;
+    padding: 12px;
+  }
+
+  .reward-item-emoji {
+    font-size: 26px;
+  }
+
+  .reward-item-value {
+    font-size: 17px;
+  }
+
+  /* Fruit basket popup */
+  .fruit-basket-popup-modal {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .fruit-basket-popup-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .fruit-basket-option-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .fruit-basket-option-name {
+    font-size: 12px;
+  }
+}

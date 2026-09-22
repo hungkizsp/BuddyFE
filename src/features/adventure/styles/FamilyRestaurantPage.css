@@ -370,7 +370,14 @@
   to { opacity: 1; }
 }
 
-@media (max-width: 900px) {
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE – Tablet (≤ 1024px)
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .restaurant-progress {
+    top: 5%;
+  }
+
   .restaurant-progress__label {
     display: none;
   }
@@ -379,8 +386,13 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: min(420px, 92vw);
-    max-height: 82vh;
+    width: min(440px, 90vw);
+    max-height: 84vh;
+  }
+
+  @keyframes rest-slide-in {
+    from { opacity: 0; transform: translate(-50%, calc(-50% + 24px)); }
+    to   { opacity: 1; transform: translate(-50%, -50%); }
   }
 
   .rest-menu-panel {
@@ -402,6 +414,99 @@
     height: 80px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE – Mobile (≤ 640px)
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Progress stepper – compact pills */
+  .restaurant-progress {
+    top: 8px;
+    width: 95vw;
+  }
+
+  .restaurant-progress__list {
+    padding: 4px 10px;
+    gap: 6px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .restaurant-progress__item {
+    font-size: 10px;
+    padding: 4px 8px;
+    flex-shrink: 0;
+  }
+
+  .restaurant-progress__label {
+    display: none;
+  }
+
+  .restaurant-progress__icon {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+
+  /* Voice panel – full-screen bottom sheet */
+  .rest-voice-panel {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(360px, 96vw);
+    max-height: 86vh;
+    border-radius: 22px;
+    padding: 14px 14px 18px;
+    overflow-y: auto;
+  }
+
+  .rest-voice-panel__icon  { font-size: 28px; }
+  .rest-voice-panel__title { font-size: 15px; }
+
+  .rest-voice-panel .voice-btn {
+    width: 90px;
+    height: 90px;
+  }
+
+  .rest-voice-panel .voice-mission__expected {
+    font-size: 13px;
+  }
+
+  /* Menu panel – centered */
+  .rest-menu-panel {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(180px, 55vw);
+    max-height: 60vh;
+    pointer-events: none;
+  }
+
+  /* Counter and dining table – scaled to fit small screen */
+  .rest-counter {
+    left: 60%;
+    top: 8%;
+    width: min(90px, 20vw);
+  }
+
+  .rest-dining-table {
+    left: 4%;
+    bottom: 10%;
+    width: min(120px, 28vw);
+    height: 60px;
+  }
+
+  /* Feedback card */
+  .order-feedback-card {
+    padding: 22px 20px;
+    border-radius: 22px;
+  }
+
+  .order-feedback-card__icon    { font-size: 40px; }
+  .order-feedback-card__message { font-size: 15px; }
+}
+
+
 
 /* ─── Intro Story Panel ─────────────────────────────────────── */
 .rest-intro-overlay {

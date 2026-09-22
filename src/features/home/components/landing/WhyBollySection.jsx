@@ -67,19 +67,19 @@ export default function WhyBollySection({ username = 'Hung' }) {
       />
 
       {/* Main Container — above darken overlay */}
-      <div className="relative z-10 w-full max-w-[1831px] mx-auto px-6 sm:px-10 lg:px-16 py-20 lg:py-32" style={{ position: 'relative', zIndex: 10 }}>
+      <div className="relative z-10 w-full max-w-[1831px] mx-auto px-4 sm:px-10 lg:px-16 py-12 sm:py-20 lg:py-32" style={{ position: 'relative', zIndex: 10 }}>
         
         {/* ── TOP ROW ── */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 lg:gap-0 mb-16">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-0 mb-12 sm:mb-16">
           
           {/* Left: Heading */}
           <div className="relative">
-            <h2 className="font-grotesk text-[36px] sm:text-[68px] uppercase leading-[1.05] text-cream text-glow">
+            <h2 className="font-grotesk text-[30px] sm:text-[56px] lg:text-[68px] uppercase leading-[1.08] text-cream text-glow">
               Meet your<br />
               AI companion
             </h2>
             {/* Cursive Accent overlay */}
-            <span className="font-condiment text-[40px] sm:text-[76px] text-neon mix-blend-exclusion opacity-90 absolute bottom-[-10px] right-[-20px] -rotate-1 normal-case leading-none pointer-events-none text-glow">
+            <span className="font-condiment text-[32px] sm:text-[64px] lg:text-[76px] text-neon mix-blend-exclusion opacity-90 absolute bottom-[-8px] sm:bottom-[-10px] right-[-10px] sm:right-[-20px] -rotate-1 normal-case leading-none pointer-events-none text-glow">
               Bolly
             </span>
           </div>

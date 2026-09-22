@@ -32,7 +32,7 @@ export default function FlashcardViewer({ vocab, childId, onSpeak }) {
   };
 
   return (
-    <div className="w-full max-w-xl aspect-[3/2] min-h-[350px] cursor-pointer group perspective-1000 mx-auto select-none">
+    <div className="w-full max-w-xl aspect-auto sm:aspect-[3/2] min-h-[330px] sm:min-h-[360px] cursor-pointer group perspective-1000 mx-auto select-none">
       <div
         className={`relative w-full h-full duration-700 transform-style-3d ${
           flipped ? 'rotate-y-180' : ''
@@ -40,24 +40,24 @@ export default function FlashcardViewer({ vocab, childId, onSpeak }) {
         onClick={() => setFlipped(!flipped)}
       >
         {/* FRONT SIDE (Word & phonetic) */}
-        <div className="absolute inset-0 w-full h-full bg-slate-900/90 border-2 border-slate-800 rounded-3xl p-8 flex flex-col justify-between items-center shadow-glass backface-hidden">
+        <div className="absolute inset-0 w-full h-full bg-slate-900/90 border-2 border-slate-800 rounded-3xl p-5 sm:p-8 flex flex-col justify-between items-center shadow-glass backface-hidden">
           <div className="w-full flex justify-end">
             <span className="font-mono text-xs text-cream/30 uppercase tracking-widest">
               Front
             </span>
           </div>
 
-          <div className="flex flex-col items-center gap-4 my-auto">
-            <h2 className="font-grotesk text-4xl md:text-5xl font-bold tracking-wide text-cream text-center uppercase">
+          <div className="flex flex-col items-center gap-3 sm:gap-4 my-auto">
+            <h2 className="font-grotesk text-3xl sm:text-4xl md:text-5xl font-bold tracking-wide text-cream text-center uppercase">
               {vocab.word}
             </h2>
             {vocab.phonetic && (
-              <p className="font-mono text-base md:text-lg text-primary">{vocab.phonetic}</p>
+              <p className="font-mono text-sm sm:text-base md:text-lg text-primary">{vocab.phonetic}</p>
             )}
 
             <button
               onClick={playAudio}
-              className="mt-4 w-12 h-12 rounded-full bg-primary/20 hover:bg-primary/30 border border-primary/40 text-primary flex items-center justify-center transition-all hover:scale-110 shadow-glow"
+              className="mt-2 sm:mt-4 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-primary/20 hover:bg-primary/30 border border-primary/40 text-primary flex items-center justify-center transition-all hover:scale-110 shadow-glow"
               title="Pronounce word"
             >
               🔊
@@ -70,7 +70,7 @@ export default function FlashcardViewer({ vocab, childId, onSpeak }) {
         </div>
 
         {/* BACK SIDE (Meaning, example & image) */}
-        <div className="absolute inset-0 w-full h-full bg-slate-900/95 border-2 border-primary/30 rounded-3xl p-8 flex flex-col justify-between items-center shadow-glow rotate-y-180 backface-hidden select-text">
+        <div className="absolute inset-0 w-full h-full bg-slate-900/95 border-2 border-primary/30 rounded-3xl p-5 sm:p-8 flex flex-col justify-between items-center shadow-glow rotate-y-180 backface-hidden select-text overflow-y-auto sm:overflow-hidden">
           <div className="w-full flex justify-between items-center select-none">
             <span className="font-mono text-xs text-primary uppercase tracking-widest">
               Back (Meaning)
@@ -84,10 +84,10 @@ export default function FlashcardViewer({ vocab, childId, onSpeak }) {
             </button>
           </div>
 
-          <div className="w-full flex flex-col md:flex-row gap-6 my-auto items-center">
+          <div className="w-full flex flex-col sm:flex-row gap-4 sm:gap-6 my-auto items-center">
             {/* Image (if exists) */}
             {vocab.imageUrl && (
-              <div className="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden bg-slate-800 flex-shrink-0 border border-slate-700 select-none">
+              <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden bg-slate-800 flex-shrink-0 border border-slate-700 select-none">
                 <img
                   src={vocab.imageUrl}
                   alt={vocab.word}

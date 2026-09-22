@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 import AdventureScene from '../components/AdventureScene';
@@ -9,6 +9,8 @@ import ShoppingCounter from '../components/ShoppingCounter';
 import ShoppingChecklist from '../components/ShoppingChecklist';
 import VoiceMission from '../components/VoiceMission';
 import BackgroundMusic from '../components/BackgroundMusic';
+import LandscapeOverlay from '../components/LandscapeOverlay';
+import useAdventureOrientation from '../hooks/useAdventureOrientation';
 import bgMusicSrc from '../../../assets/Music/After_the_Boss_Fight.mp3';
 
 import useScenarioSteps from '../hooks/useScenarioSteps';
@@ -134,6 +136,15 @@ export default function SupermarketShoppingPage() {
   const [isCounterPersonClicked, setIsCounterPersonClicked] = useState(false);
   const [evaluationDone, setEvaluationDone] = useState(false);
   const [voiceMatched, setVoiceMatched] = useState(false);
+  const containerRef = useRef(null);
+  const { isMobile, isPortrait, isFullscreen, requestFullscreen, exitFullscreen } =
+    useAdventureOrientation(containerRef);
+
+  // Auto-enter fullscreen on mount for mobile devices
+  useEffect(() => {
+    if (isMobile) requestFullscreen();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]);
 
   // ── Update profile when reward is shown (stage completed) ──
   useEffect(() => {
@@ -360,7 +371,14 @@ export default function SupermarketShoppingPage() {
   const bolly3DPosition = [1.3, -1.2, 1.5];
 
   return (
-    <div className="supermarket-container app-shell">
+    <div ref={containerRef} className="supermarket-container app-shell">
+      <LandscapeOverlay
+        isMobile={isMobile}
+        isPortrait={isPortrait}
+        isFullscreen={isFullscreen}
+        onRequestFullscreen={requestFullscreen}
+        onExitFullscreen={exitFullscreen}
+      />
       <BackgroundMusic src={bgMusicSrc} volume={0.2} />
       {/* ── 3D Bolly character ── */}
       <AdventureScene

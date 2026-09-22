@@ -1,0 +1,88 @@
+/**
+ * LandscapeOverlay
+ *
+ * Shows a beautiful full-screen overlay instructing the player to rotate
+ * their device when the game is played in portrait mode on a mobile device.
+ * Also includes a "Fullscreen" toggle button for when the device is already
+ * in landscape.
+ *
+ * @param {object} props
+ * @param {boolean} props.isPortrait
+ * @param {boolean} props.isMobile
+ * @param {boolean} props.isFullscreen
+ * @param {Function} props.onRequestFullscreen
+ * @param {Function} props.onExitFullscreen
+ */
+
+import './LandscapeOverlay.css';
+
+export default function LandscapeOverlay({
+  isPortrait,
+  isMobile,
+  isFullscreen,
+  onRequestFullscreen,
+  onExitFullscreen,
+}) {
+  /* ── Rotate overlay – only shown on mobile in portrait ── */
+  if (isMobile && isPortrait) {
+    return (
+      <div className="ls-overlay" role="dialog" aria-modal="true" aria-label="Rotate your device">
+        {/* Animated phone icon */}
+        <div className="ls-overlay__icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="ls-overlay__phone">
+            <rect x="8" y="4" width="28" height="48" rx="5" stroke="white" strokeWidth="3.5" fill="none" />
+            <circle cx="22" cy="46" r="2.5" fill="white" />
+            <path
+              d="M44 20 C44 20 54 20 54 32 C54 44 44 44 44 44"
+              stroke="rgba(255,255,255,0.4)"
+              strokeWidth="3"
+              strokeLinecap="round"
+              fill="none"
+            />
+            <path
+              d="M48 36 L54 44 L44 44"
+              stroke="rgba(255,255,255,0.4)"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <div className="ls-overlay__arrow" aria-hidden="true">↻</div>
+        </div>
+
+        <h2 className="ls-overlay__title">Xoay Màn Hình</h2>
+        <p className="ls-overlay__desc">
+          Hãy xoay ngang điện thoại<br />để bắt đầu cuộc phiêu lưu! 🎮
+        </p>
+
+        {/* Tapping fullscreen here helps bypass auto-rotate restriction on some devices */}
+        <button
+          type="button"
+          className="ls-overlay__fs-btn"
+          onClick={onRequestFullscreen}
+        >
+          <span className="ls-overlay__fs-icon">⛶</span>
+          Chế độ toàn màn hình
+        </button>
+      </div>
+    );
+  }
+
+  /* ── Fullscreen toggle button – always visible on mobile landscape ── */
+  if (isMobile) {
+    return (
+      <button
+        type="button"
+        className="ls-fs-toggle"
+        title={isFullscreen ? 'Thoát toàn màn hình' : 'Toàn màn hình'}
+        onClick={isFullscreen ? onExitFullscreen : onRequestFullscreen}
+        aria-label={isFullscreen ? 'Thoát toàn màn hình' : 'Toàn màn hình'}
+      >
+        {isFullscreen ? '✕' : '⛶'}
+      </button>
+    );
+  }
+
+  return null;
+}
+

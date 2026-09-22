@@ -93,10 +93,10 @@ export default function StudyHubPage() {
       <SideBar />
 
       {/* ── Main content workspace ── */}
-      <main className="chat-main" style={{ overflowY: 'auto', paddingBottom: '40px' }}>
+      <main className="chat-main" style={{ overflowY: 'auto', paddingBottom: '80px' }}>
         <TopBar theme="dark" />
 
-        <div className="max-w-6xl mx-auto px-6 py-8 space-y-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-8 sm:space-y-10">
           <div>
             <h1 className="font-grotesk text-3xl font-bold text-cream mb-2 flex items-center gap-3">
               🧠 Trung Tâm Ôn Tập

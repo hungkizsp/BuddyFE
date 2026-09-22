@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../features/auth/store/authStore'
 import { useNotificationStore } from '../../features/notification/store/notificationStore'
+import { useUIStore } from '../../shared/store/uiStore'
 import '../styles/TopBar.css'
 
 export const BRAND = {
@@ -12,6 +13,29 @@ export const BRAND = {
 }
 
 // ── SVG Icons ───────────────────────────────────────────────────────────────
+
+function MenuIcon({ size = 18, className, style }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      style={style}
+    >
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  )
+}
+
 
 function Zap({ size = 12, className, style }) {
   return (
@@ -101,6 +125,7 @@ export default function TopBar({ theme = 'light' }) {
   const navigate = useNavigate()
   const { currentUser, childProfile, profileStats, logout } = useAuthStore()
   const { unreadCount, notifications, fetchNotifications, markAllAsRead, markAsRead } = useNotificationStore()
+  const toggleMobileSidebar = useUIStore((s) => s.toggleMobileSidebar)
 
   const [profileOpen, setProfileOpen] = useState(false)
   const [bellOpen, setBellOpen] = useState(false)
@@ -198,102 +223,115 @@ export default function TopBar({ theme = 'light' }) {
 
   return (
     <header
-      className="h-13 flex items-center justify-between px-5 flex-shrink-0 relative topbar-header"
+      className="h-13 flex items-center justify-between px-3 sm:px-5 flex-shrink-0 relative topbar-header"
       style={{ ...themeStyles, height: 52, zIndex: 100 }}
     >
-      {/* User Section (Trigger popover on click) */}
-      <div className="topbar-container" ref={profileRef}>
-        <div
-          className="flex items-center gap-2.5 topbar-profile-trigger"
-          onClick={() => setProfileOpen((prev) => !prev)}
+      {/* Left: Hamburger (Tablet/Mobile) + User Section (Trigger popover on click) */}
+      <div className="flex items-center gap-1 sm:gap-2">
+        {/* Mobile/Tablet Menu Drawer Toggle Button */}
+        <button
+          type="button"
+          className="lg:hidden w-8 h-8 rounded-xl flex items-center justify-center topbar-action-btn"
+          onClick={toggleMobileSidebar}
+          aria-label="Mở menu"
+          title="Mở menu"
         >
+          <MenuIcon size={20} />
+        </button>
+
+        <div className="topbar-container" ref={profileRef}>
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-black"
-            style={{ background: `linear-gradient(135deg, ${BRAND.yellow}, #FFB83F)`, color: BRAND.navy }}
+            className="flex items-center gap-2 topbar-profile-trigger"
+            onClick={() => setProfileOpen((prev) => !prev)}
           >
-            {initial}
-          </div>
-          <div className="leading-none text-left">
-            <div className="text-sm font-extrabold" style={{ color: 'var(--topbar-text)' }}>
-              {nickname}
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-black flex-shrink-0"
+              style={{ background: `linear-gradient(135deg, ${BRAND.yellow}, #FFB83F)`, color: BRAND.navy }}
+            >
+              {initial}
             </div>
-            <div className="text-[10px] font-semibold mt-0.5" style={{ color: 'var(--topbar-sub)' }}>
-              Nhà thám hiểm Cấp {displayLevel}
+            <div className="leading-none text-left hidden xs:block">
+              <div className="text-xs sm:text-sm font-extrabold truncate max-w-[100px] sm:max-w-[140px]" style={{ color: 'var(--topbar-text)' }}>
+                {nickname}
+              </div>
+              <div className="text-[9px] sm:text-[10px] font-semibold mt-0.5" style={{ color: 'var(--topbar-sub)' }}>
+                Cấp {displayLevel}
+              </div>
             </div>
           </div>
+
+          {/* Detailed Stats Popover */}
+          {profileOpen && (
+            <div className="base-popover profile-popover" style={{ left: 0 }}>
+              <div className="profile-popover-header">
+                <div className="profile-popover-title">{nickname}</div>
+                <div className="profile-popover-subtitle">Nhà thám hiểm Cấp {displayLevel}</div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <div className="popover-stat-card">
+                  <span className="popover-stat-icon">📚</span>
+                  <div className="popover-stat-info text-left">
+                    <span className="popover-stat-label">Từ vựng đã học</span>
+                    <span className="popover-stat-value">{stats.vocabularyCount} từ</span>
+                  </div>
+                </div>
+
+                <div className="popover-stat-card">
+                  <span className="popover-stat-icon">🏆</span>
+                  <div className="popover-stat-info text-left">
+                    <span className="popover-stat-label">Thành tích đạt được</span>
+                    <span className="popover-stat-value">{stats.achievementCount} thành tích</span>
+                  </div>
+                </div>
+
+                <div className="popover-stat-card">
+                  <span className="popover-stat-icon">🤝</span>
+                  <div className="popover-stat-info text-left">
+                    <span className="popover-stat-label">Cấp độ Bolly</span>
+                    <span className="popover-stat-value">Cấp {stats.bollyLevel}</span>
+                  </div>
+                </div>
+              </div>
+
+              <button className="popover-logout-btn" onClick={handleLogout}>
+                Đăng xuất 🚪
+              </button>
+            </div>
+          )}
         </div>
-
-        {/* Detailed Stats Popover */}
-        {profileOpen && (
-          <div className="base-popover profile-popover" style={{ left: 0 }}>
-            <div className="profile-popover-header">
-              <div className="profile-popover-title">{nickname}</div>
-              <div className="profile-popover-subtitle">Nhà thám hiểm Cấp {displayLevel}</div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="popover-stat-card">
-                <span className="popover-stat-icon">📚</span>
-                <div className="popover-stat-info text-left">
-                  <span className="popover-stat-label">Từ vựng đã học</span>
-                  <span className="popover-stat-value">{stats.vocabularyCount} từ</span>
-                </div>
-              </div>
-
-              <div className="popover-stat-card">
-                <span className="popover-stat-icon">🏆</span>
-                <div className="popover-stat-info text-left">
-                  <span className="popover-stat-label">Thành tích đạt được</span>
-                  <span className="popover-stat-value">{stats.achievementCount} thành tích</span>
-                </div>
-              </div>
-
-              <div className="popover-stat-card">
-                <span className="popover-stat-icon">🤝</span>
-                <div className="popover-stat-info text-left">
-                  <span className="popover-stat-label">Cấp độ Bolly</span>
-                  <span className="popover-stat-value">Cấp {stats.bollyLevel}</span>
-                </div>
-              </div>
-            </div>
-
-            <button className="popover-logout-btn" onClick={handleLogout}>
-              Đăng xuất 🚪
-            </button>
-          </div>
-        )}
       </div>
 
-      {/* Center stats pills */}
-      <div className="flex items-center gap-2">
+      {/* Center stats pills - Responsive for mobile & tablet */}
+      <div className="flex items-center gap-1 sm:gap-2">
         <div
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full topbar-stat-pill"
+          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full topbar-stat-pill"
           style={{ background: xpBg }}
           title="Kinh nghiệm tích lũy (XP)"
         >
-          <Zap size={12} style={{ color: xpColor }} />
-          <span className="text-xs font-extrabold" style={{ color: xpColor }}>
-            {displayXp.toLocaleString()} XP
+          <Zap size={11} style={{ color: xpColor }} />
+          <span className="text-[11px] sm:text-xs font-extrabold" style={{ color: xpColor }}>
+            {displayXp.toLocaleString()} <span className="hidden md:inline">XP</span>
           </span>
         </div>
         <div
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full topbar-stat-pill"
+          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full topbar-stat-pill"
           style={{ background: coinBg }}
           title="Số xu hiện tại (Coins)"
         >
-          <span className="text-xs">🪙</span>
-          <span className="text-xs font-extrabold" style={{ color: coinColor }}>
+          <span className="text-[11px] sm:text-xs">🪙</span>
+          <span className="text-[11px] sm:text-xs font-extrabold" style={{ color: coinColor }}>
             {displayCoins.toLocaleString()}
           </span>
         </div>
         <div
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full topbar-stat-pill"
+          className="hidden sm:flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full topbar-stat-pill"
           style={{ background: streakBg }}
           title="Chuỗi học tập liên tục (Streak)"
         >
-          <Flame size={12} style={{ color: streakColor }} />
-          <span className="text-xs font-extrabold" style={{ color: streakColor }}>
-            {displayStreak} ngày
+          <Flame size={11} style={{ color: streakColor }} />
+          <span className="text-[11px] sm:text-xs font-extrabold" style={{ color: streakColor }}>
+            {displayStreak} <span className="hidden md:inline">ngày</span>
           </span>
         </div>
       </div>
@@ -303,6 +341,7 @@ export default function TopBar({ theme = 'light' }) {
         <button
           className="w-8 h-8 rounded-full flex items-center justify-center transition-colors topbar-action-btn relative"
           onClick={() => setBellOpen((prev) => !prev)}
+          aria-label="Thông báo"
         >
           <Bell size={15} style={{ color: 'var(--topbar-icon)' }} />
           {unreadCount > 0 && (
@@ -316,7 +355,7 @@ export default function TopBar({ theme = 'light' }) {
         {/* Notifications Dropdown Popup */}
         {bellOpen && (
           <div
-            className="absolute top-full right-0 mt-2 w-80 rounded-2xl shadow-xl z-[999] overflow-hidden base-popover notification-popover"
+            className="absolute top-full right-0 mt-2 w-[calc(100vw-28px)] max-w-xs sm:w-80 rounded-2xl shadow-xl z-[999] overflow-hidden base-popover notification-popover"
             style={{ animation: 'popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1)', padding: 0 }}
           >
             {/* Header */}

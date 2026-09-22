@@ -7,6 +7,8 @@ import MissionPanel from "../components/MissionPanel";
 import RewardPopup from "../components/RewardPopup";
 import FruitBasketPopup from "../components/FruitBasketPopup";
 import BackgroundMusic from "../components/BackgroundMusic";
+import LandscapeOverlay from "../components/LandscapeOverlay";
+import useAdventureOrientation from "../hooks/useAdventureOrientation";
 import bgMusicSrc from "../../../assets/Music/After_the_Boss_Fight.mp3";
 import useScenarioSteps from "../hooks/useScenarioSteps";
 import useScenarioVocabulary from "../hooks/useScenarioVocabulary";
@@ -109,6 +111,17 @@ export default function KitchenAdventurePage() {
   const [hasAppleFromBasket, setHasAppleFromBasket] = useState(false);
   const { childProfile, loadChildProfile } = useAuthStore();
   const bollyDragStartRef = useRef({ x: 0, y: 0, left: 0, top: 0 });
+  const containerRef = useRef(null);
+  const { isMobile, isPortrait, isFullscreen, requestFullscreen, exitFullscreen } =
+    useAdventureOrientation(containerRef);
+
+  // Auto-enter fullscreen when the game page mounts on a mobile device
+  useEffect(() => {
+    if (isMobile) {
+      requestFullscreen();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]);
 
   useEffect(() => {
     if (!showRewards || !childProfile?.id || !scenarioId) return;
@@ -542,7 +555,14 @@ export default function KitchenAdventurePage() {
 
   const canOpenBasket = activeStep?.expectedEntity === "APPLE";
   return (
-    <div className="kitchen-adv-container app-shell">
+    <div ref={containerRef} className="kitchen-adv-container app-shell">
+      <LandscapeOverlay
+        isMobile={isMobile}
+        isPortrait={isPortrait}
+        isFullscreen={isFullscreen}
+        onRequestFullscreen={requestFullscreen}
+        onExitFullscreen={exitFullscreen}
+      />
       <BackgroundMusic src={bgMusicSrc} volume={0.2} />
       <AdventureScene
         gameState={gameState}
