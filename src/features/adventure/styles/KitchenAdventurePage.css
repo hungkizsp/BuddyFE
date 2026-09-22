@@ -823,11 +823,12 @@
   box-shadow: 0 2px 0 #1e293b;
 }
 
-.back-to-map-btn {
-  position: absolute;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
+.kitchen-adv-container .back-to-map-btn {
+  position: absolute !important;
+  top: auto !important;
+  bottom: 25px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
   font-family: var(--font-game);
   font-size: 14px;
   background: rgba(255, 255, 255, 0.9);
@@ -841,7 +842,7 @@
   transition: all 0.2s ease;
 }
 
-.back-to-map-btn:hover {
+.kitchen-adv-container .back-to-map-btn:hover {
   background: #f1f5f9;
   color: #1e293b;
   border-color: #94a3b8;
@@ -905,10 +906,10 @@
     left: 16px;
   }
 
-  .back-to-map-btn {
-    bottom: 16px;
-    font-size: 13px;
-    padding: 6px 14px;
+  .kitchen-adv-container .back-to-map-btn {
+    bottom: 16px !important;
+    font-size: 13px !important;
+    padding: 6px 14px !important;
   }
 
   .food-image {
@@ -1031,11 +1032,11 @@
   }
 
   /* Back button */
-  .back-to-map-btn {
-    bottom: auto;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
+  .kitchen-adv-container .back-to-map-btn {
+    bottom: auto !important;
+    top: 8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     font-size: 12px;
     padding: 5px 12px;
     border-radius: 10px;

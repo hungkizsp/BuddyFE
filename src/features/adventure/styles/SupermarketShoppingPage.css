@@ -1120,7 +1120,7 @@
   }
 
   /* Back-to-map button */
-  .back-to-map-btn {
+  .supermarket-container .back-to-map-btn {
     bottom: 14px;
     font-size: 12px;
     padding: 6px 12px;
@@ -1622,8 +1622,8 @@
     font-size: 14px;
   }
 
-  /* Fixed Back to Map Button – top left */
-  .back-to-map-btn {
+  /* Fixed Back to Map Button - top left */
+  .supermarket-container .back-to-map-btn {
     top: 4px !important;
     left: 4px !important;
     font-size: 10px !important;

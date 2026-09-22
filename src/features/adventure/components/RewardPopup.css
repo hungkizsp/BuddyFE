@@ -137,6 +137,51 @@
   box-shadow: 0 2px 0 #b45309, 0 4px 10px rgba(245, 158, 11, 0.25);
 }
 
+/* Base Style for Global Back Button (Top Left) */
+.back-to-map-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 9000;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  background: rgba(15, 23, 42, 0.88);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.18s ease;
+  pointer-events: auto;
+  user-select: none;
+}
+
+.back-to-map-btn:hover {
+  background: rgba(30, 41, 59, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.back-to-map-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 640px) {
+  .back-to-map-btn {
+    top: 10px;
+    left: 10px;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
 
 /* Landscape / Mobile viewport optimization */
 @media (max-height: 520px) {

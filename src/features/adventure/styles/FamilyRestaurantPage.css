@@ -695,7 +695,7 @@
 
   .stat-icon { font-size: 14px; }
 
-  .back-to-map-btn {
+  .restaurant-container .back-to-map-btn {
     top: 4px !important;
     left: 4px !important;
     font-size: 10px !important;
