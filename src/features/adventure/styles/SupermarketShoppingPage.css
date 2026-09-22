@@ -1689,23 +1689,22 @@
     font-size: 12px;
   }
 
-  /* Right Side / Center: Counter Modal (.shopping-scene) */
+  /* Centered Counter Modal (.shopping-scene) */
   .shopping-scene {
-    position: absolute;
-    right: 6px;
-    left: auto;
+    position: fixed;
     top: 50%;
-    transform: translateY(-50%);
-    width: min(480px, 66vw);
-    height: min(310px, 86vh);
-    border-radius: 16px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(520px, 88vw);
+    height: min(340px, 88vh);
+    border-radius: 18px;
     border-width: 4px;
-    z-index: 50;
+    z-index: 500;
   }
 
   .shopping-scene--snack_dairy {
-    width: min(360px, 58vw);
-    height: min(310px, 86vh);
+    width: min(380px, 80vw);
+    height: min(340px, 88vh);
   }
 
   .shopping-scene__return-btn {

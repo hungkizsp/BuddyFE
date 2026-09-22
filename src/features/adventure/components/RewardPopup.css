@@ -137,31 +137,6 @@
   box-shadow: 0 2px 0 #b45309, 0 4px 10px rgba(245, 158, 11, 0.25);
 }
 
-/* Landscape / Mobile viewport optimization */
-@media (max-height: 520px) {
-  .reward-popup-overlay {
-    padding: 8px 12px 16px;
-  }
-  .reward-card {
-    padding: 14px 16px 14px;
-    gap: 8px;
-    max-height: calc(100dvh - 16px);
-  }
-  .reward-stars {
-    font-size: 1.6rem;
-  }
-  .reward-title {
-    font-size: 1.15rem;
-  }
-  .reward-items-container {
-    gap: 6px;
-  }
-  .reward-item-pill {
-    padding: 6px 12px;
-  }
-  .reward-item-value {
-    font-size: 0.88rem;
-  }
 /* Floating Back to Map Button - Always visible & on top */
 .back-to-map-btn {
   position: fixed;
@@ -199,6 +174,37 @@
   transform: translateY(1px);
 }
 
+/* Landscape / Mobile viewport optimization */
+@media (max-height: 520px) {
+  .reward-popup-overlay {
+    padding: 8px 12px 16px;
+  }
+  .reward-card {
+    padding: 14px 16px 14px;
+    gap: 8px;
+    max-height: calc(100dvh - 16px);
+  }
+  .reward-stars {
+    font-size: 1.6rem;
+  }
+  .reward-title {
+    font-size: 1.15rem;
+  }
+  .reward-items-container {
+    gap: 6px;
+  }
+  .reward-item-pill {
+    padding: 6px 12px;
+  }
+  .reward-item-value {
+    font-size: 0.88rem;
+  }
+  .reward-close-btn {
+    padding: 9px 20px;
+    font-size: 0.92rem;
+  }
+}
+
 @media (max-width: 640px) {
   .back-to-map-btn {
     top: 10px;
@@ -207,4 +213,3 @@
     padding: 6px 12px;
   }
 }
-
