@@ -689,7 +689,10 @@ export default function KitchenAdventurePage() {
         show={showRewards}
         xpReward={20}
         coinReward={10}
-        onClose={() => setShowRewards(false)}
+        onClose={() => {
+          setShowRewards(false);
+          navigate("/adventure/food-forest");
+        }}
       />
 
       <FruitBasketPopup

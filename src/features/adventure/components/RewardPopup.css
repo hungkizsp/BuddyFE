@@ -1,0 +1,210 @@
+/* =========================================================
+   RewardPopup.css
+   Standalone CSS for Mission Complete / Reward Modal
+   ========================================================= */
+
+.reward-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 12px 32px;
+}
+
+.reward-card {
+  position: relative;
+  width: min(480px, 94vw);
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 24px 20px 20px;
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border: 4px solid #f59e0b;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 4px rgba(245, 158, 11, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: reward-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes reward-pop {
+  0% {
+    transform: scale(0.7) translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.reward-stars {
+  font-size: 2.2rem;
+  letter-spacing: 6px;
+  animation: reward-stars-bounce 1.2s infinite ease-in-out alternate;
+  line-height: 1;
+}
+
+@keyframes reward-stars-bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-4px); }
+}
+
+.reward-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.reward-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.reward-item-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
+.reward-item-emoji {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.reward-item-value {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.xp-color {
+  color: #fbbf24;
+}
+
+.coin-color {
+  color: #38bdf8;
+}
+
+.reward-close-btn {
+  width: 100%;
+  max-width: 280px;
+  padding: 12px 24px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1e293b;
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #b45309, 0 10px 20px rgba(245, 158, 11, 0.35);
+  transition: all 0.15s ease;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.reward-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #b45309, 0 14px 24px rgba(245, 158, 11, 0.45);
+}
+
+.reward-close-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #b45309, 0 4px 10px rgba(245, 158, 11, 0.25);
+}
+
+/* Landscape / Mobile viewport optimization */
+@media (max-height: 520px) {
+  .reward-popup-overlay {
+    padding: 8px 12px 16px;
+  }
+  .reward-card {
+    padding: 14px 16px 14px;
+    gap: 8px;
+    max-height: calc(100dvh - 16px);
+  }
+  .reward-stars {
+    font-size: 1.6rem;
+  }
+  .reward-title {
+    font-size: 1.15rem;
+  }
+  .reward-items-container {
+    gap: 6px;
+  }
+  .reward-item-pill {
+    padding: 6px 12px;
+  }
+  .reward-item-value {
+    font-size: 0.88rem;
+  }
+/* Floating Back to Map Button - Always visible & on top */
+.back-to-map-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 9000;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  background: rgba(15, 23, 42, 0.88);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.18s ease;
+  pointer-events: auto;
+  user-select: none;
+}
+
+.back-to-map-btn:hover {
+  background: #1e293b;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  transform: translateY(-2px);
+}
+
+.back-to-map-btn:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 640px) {
+  .back-to-map-btn {
+    top: 10px;
+    left: 10px;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}
+

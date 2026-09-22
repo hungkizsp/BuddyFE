@@ -1,20 +1,24 @@
 /**
  * LandscapeOverlay
  *
- * Shows a beautiful full-screen overlay instructing the player to rotate
- * their device when the game is played in portrait mode on a mobile device.
- * Also includes a "Fullscreen" toggle button for when the device is already
- * in landscape.
- *
- * @param {object} props
- * @param {boolean} props.isPortrait
- * @param {boolean} props.isMobile
- * @param {boolean} props.isFullscreen
- * @param {Function} props.onRequestFullscreen
- * @param {Function} props.onExitFullscreen
+ * - Portrait + mobile  → Full-screen "please rotate" overlay with a
+ *   tap-to-fullscreen button (works as user gesture on Android Chrome).
+ * - Landscape + mobile + fullscreen → small ✕ exit button (bottom-right,
+ *   clear of the mute button which sits top-right).
+ * - Landscape + mobile + NOT fullscreen → nothing rendered (avoid cluttering
+ *   the game UI with a button that silently fails on iOS Safari).
  */
 
 import './LandscapeOverlay.css';
+
+/** True when the Fullscreen API is available at all (not on iOS Safari). */
+function canFullscreen() {
+  return !!(
+    document.fullscreenEnabled ||
+    document.webkitFullscreenEnabled ||
+    document.mozFullScreenEnabled
+  );
+}
 
 export default function LandscapeOverlay({
   isPortrait,
@@ -55,34 +59,36 @@ export default function LandscapeOverlay({
           Hãy xoay ngang điện thoại<br />để bắt đầu cuộc phiêu lưu! 🎮
         </p>
 
-        {/* Tapping fullscreen here helps bypass auto-rotate restriction on some devices */}
-        <button
-          type="button"
-          className="ls-overlay__fs-btn"
-          onClick={onRequestFullscreen}
-        >
-          <span className="ls-overlay__fs-icon">⛶</span>
-          Chế độ toàn màn hình
-        </button>
+        {/* Only show fullscreen button if the API is supported (not iOS Safari) */}
+        {canFullscreen() && (
+          <button
+            type="button"
+            className="ls-overlay__fs-btn"
+            onClick={onRequestFullscreen}
+          >
+            <span className="ls-overlay__fs-icon">⛶</span>
+            Chế độ toàn màn hình
+          </button>
+        )}
       </div>
     );
   }
 
-  /* ── Fullscreen toggle button – always visible on mobile landscape ── */
-  if (isMobile) {
+  /* ── Exit-fullscreen button – only when actually in fullscreen ── */
+  /* Placed bottom-right to avoid overlapping the mute button (top-right) */
+  if (isMobile && isFullscreen) {
     return (
       <button
         type="button"
         className="ls-fs-toggle"
-        title={isFullscreen ? 'Thoát toàn màn hình' : 'Toàn màn hình'}
-        onClick={isFullscreen ? onExitFullscreen : onRequestFullscreen}
-        aria-label={isFullscreen ? 'Thoát toàn màn hình' : 'Toàn màn hình'}
+        title="Thoát toàn màn hình"
+        onClick={onExitFullscreen}
+        aria-label="Thoát toàn màn hình"
       >
-        {isFullscreen ? '✕' : '⛶'}
+        ✕
       </button>
     );
   }
 
   return null;
 }
-

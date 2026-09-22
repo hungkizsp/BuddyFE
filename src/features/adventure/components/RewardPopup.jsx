@@ -1,4 +1,5 @@
 import EmoteShooter from './EmoteShooter';
+import './RewardPopup.css';
 
 export default function RewardPopup({ show, xpReward, coinReward, onClose }) {
   if (!show) return null;
@@ -25,7 +26,7 @@ export default function RewardPopup({ show, xpReward, coinReward, onClose }) {
         </div>
 
         <button className="reward-close-btn" onClick={onClose}>
-          Nhận quà!
+          🎉 Nhận quà & Quay lại bản đồ
         </button>
       </div>
     </div>

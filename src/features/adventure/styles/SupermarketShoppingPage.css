@@ -51,18 +51,18 @@
 /* ─── Shopping Scene (replaces old grid counter) ─────────── */
 .shopping-scene {
   position: absolute;
-  top: 15%;
-  left: 20%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: min(750px, 88vw);
-  height: min(500px, 78vh);
+  width: min(720px, 92vw);
+  height: min(480px, 80vh);
   border-radius: 28px;
   border: 6px solid #1e293b;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
   background: #fffdf9;
   overflow: hidden;
   pointer-events: auto;
-  z-index: 7;
+  z-index: 100;
   animation: sm-slide-up 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
 }
 
@@ -77,8 +77,8 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;     /* fills the scene div */
-  object-position: center top;
+  object-fit: fill;      /* fills the scene div completely without cropping images */
+  object-position: center;
   pointer-events: none;
   user-select: none;
   border-radius: 0;
@@ -369,22 +369,25 @@
 /* ─── Voice Mission Panel ─────────────────────────────────── */
 .sm-voice-panel {
   position: absolute;
-  top: 0%;
-  left: 30%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: min(540px, 80vw);
-  background: rgba(255, 255, 255, 0.94);
+  width: min(520px, 92vw);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(12px);
   border-radius: 28px;
   border: 3px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 20px 60px var(--sm-shadow);
-  padding: 0px 36px;
+  padding: 20px 24px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0px;
+  gap: 10px;
   pointer-events: auto;
-  z-index: 8;
+  z-index: 100;
 }
 .counter-person-img{
   /* position: relative; */
@@ -1434,11 +1437,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  justify-content: flex-start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100dvh;
   background: #fff8eb;
   font-family: 'Nunito', 'Inter', ui-sans-serif, system-ui, sans-serif;
-  padding: 32px 24px 24px;
+  padding: 24px 16px 32px;
   gap: 0;
   animation: sm-intro-fade-in 0.4s ease both;
 }
@@ -1589,3 +1594,190 @@
 .sm-intro-back-link:hover {
   color: #6b7280;
 }
+
+/* ===================================================================
+   MOBILE LANDSCAPE / SMALL HEIGHT VIEWPORTS (≤ 520px height)
+   Fixes all overlaps on mobile phones held horizontally
+   =================================================================== */
+@media (max-height: 520px) {
+  /* HUD Header – compact top bar */
+  .hud-header {
+    top: 4px;
+    padding: 0 48px 0 60px;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .hud-title-container {
+    padding: 4px 10px;
+    border-radius: 10px;
+    max-width: 48vw;
+  }
+
+  .hud-title-forest {
+    font-size: 9px;
+  }
+
+  .hud-title-level {
+    font-size: 11px;
+  }
+
+  .hud-stats-container {
+    gap: 4px;
+  }
+
+  .stat-card {
+    padding: 3px 8px;
+    font-size: 11px;
+    border-radius: 8px;
+    gap: 4px;
+  }
+
+  .stat-icon {
+    font-size: 14px;
+  }
+
+  /* Fixed Back to Map Button – top left */
+  .back-to-map-btn {
+    top: 4px !important;
+    left: 4px !important;
+    font-size: 10px !important;
+    padding: 4px 10px !important;
+    z-index: 9000 !important;
+  }
+
+  /* Top-right Mute Music toggle */
+  .background-music-toggle {
+    top: 4px !important;
+    right: 4px !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 16px !important;
+    z-index: 9999 !important;
+  }
+
+  /* Bottom-right Fullscreen toggle */
+  .ls-fs-toggle {
+    bottom: 4px !important;
+    right: 4px !important;
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 13px !important;
+    z-index: 9999 !important;
+  }
+
+  /* Left Side: Shopping Checklist – compact floating panel */
+  .sm-checklist-wrapper {
+    top: 40px;
+    left: 6px;
+    z-index: 40;
+  }
+
+  .shopping-checklist {
+    min-width: 130px;
+    max-width: 170px;
+    padding: 6px 10px;
+    border-radius: 14px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
+
+  .shopping-checklist__header {
+    margin-bottom: 6px;
+  }
+
+  .shopping-checklist__title {
+    font-size: 11px;
+  }
+
+  .shopping-checklist__progress {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+
+  .shopping-checklist__item {
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  .shopping-checklist__icon {
+    font-size: 12px;
+  }
+
+  /* Right Side / Center: Counter Modal (.shopping-scene) */
+  .shopping-scene {
+    position: absolute;
+    right: 6px;
+    left: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(480px, 66vw);
+    height: min(310px, 86vh);
+    border-radius: 16px;
+    border-width: 4px;
+    z-index: 50;
+  }
+
+  .shopping-scene--snack_dairy {
+    width: min(360px, 58vw);
+    height: min(310px, 86vh);
+  }
+
+  .shopping-scene__return-btn {
+    top: 6px;
+    left: 6px;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 10px;
+    z-index: 10;
+  }
+
+  /* Voice Panel – compact centered modal */
+  .sm-voice-panel {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(420px, 88vw);
+    max-height: 92vh;
+    padding: 10px 14px 14px;
+    border-radius: 18px;
+    gap: 6px;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .sm-voice-panel__title {
+    font-size: 14px;
+  }
+
+  .sm-voice-panel__icon {
+    font-size: 26px;
+  }
+
+  .voice-btn {
+    width: 72px;
+    height: 72px;
+  }
+
+  .voice-btn__icon {
+    font-size: 24px;
+  }
+
+  .voice-btn__label {
+    font-size: 10px;
+  }
+
+  /* Bottom Left: Mission toggle button */
+  .mission-panel-toggle-wrapper {
+    bottom: 4px;
+    left: 6px;
+    z-index: 40;
+  }
+
+  .mission-toggle-btn {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 8px;
+  }
+}
+
