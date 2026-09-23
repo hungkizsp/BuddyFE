@@ -20,6 +20,7 @@ import profileService from '../services/profileService';
 import progressService from '../services/progressService';
 import { useAuthStore } from '../../auth/store/authStore';
 import '../styles/SupermarketShoppingPage.css';
+import '../styles/ScenarioIntro.css';
 import supamarket2 from '../../../assets/supamarket2.png';
 import fridge from '../../../assets/fridge.png';
 import fruitCounter from '../../../assets/fruit_counter.png';
@@ -390,36 +391,28 @@ export default function SupermarketShoppingPage() {
 
       {/* ── Intro Story Panel (shown before game starts) ── */}
       {gameState === 'not-started' && (
-        <div className="sm-intro-overlay">
+        <div className="scenario-intro-overlay">
+          <div className="scenario-intro-label">
+            <span>Tình huống 2 – Supermarket Shopping</span>
+          </div>
+
+          <div className="scenario-intro-manga-grid">
+            <img
+              src={supermarketMini}
+              alt="Supermarket story panel"
+              className="scenario-intro-manga-panel"
+              draggable={false}
+            />
+          </div>
+
           <button
             type="button"
-            className="sm-intro-start-btn"
+            className="scenario-intro-start-btn"
             onClick={handleStartMission}
             disabled={startDisabled}
           >
             🚀 Bắt đầu!
           </button>
-
-          <button
-            type="button"
-            className="sm-intro-back-link"
-            onClick={() => navigate('/adventure/food-forest')}
-          >
-            ← Quay lại bản đồ
-          </button>
-
-          <div className="sm-intro-label">
-            <span>Tình huống 2 – Supermarket Shopping</span>
-          </div>
-
-          <div className="sm-intro-manga-grid">
-            <img
-              src={supermarketMini}
-              alt="Supermarket story panel"
-              className="sm-intro-manga-panel"
-              draggable={false}
-            />
-          </div>
         </div>
       )}
 
