@@ -144,7 +144,7 @@ export default function SupermarketShoppingPage() {
   // Auto-enter fullscreen on mount for mobile devices
   useEffect(() => {
     if (isMobile) requestFullscreen();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
 
   // ── Update profile when reward is shown (stage completed) ──
@@ -411,7 +411,7 @@ export default function SupermarketShoppingPage() {
             onClick={handleStartMission}
             disabled={startDisabled}
           >
-            🚀 Bắt đầu!
+            Bắt đầu!
           </button>
         </div>
       )}
@@ -578,7 +578,7 @@ export default function SupermarketShoppingPage() {
               <ShoppingChecklist
                 items={checklistItems}
                 collectedIds={collectedIds}
-                title="🛒 Danh sách mua sắm"
+                title=" Danh sách mua sắm"
               />
             </div>
           )}

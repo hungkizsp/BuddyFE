@@ -52,8 +52,8 @@
 /* ─── Shopping Scene (replaces old grid counter) ─────────── */
 .shopping-scene {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 20%;
+  left: 20%;
   transform: translate(-50%, -50%);
   width: min(720px, 92vw);
   height: min(480px, 80vh);

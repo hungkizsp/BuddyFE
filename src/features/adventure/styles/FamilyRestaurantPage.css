@@ -80,8 +80,7 @@
 .rest-waiter-img {
   position: relative;
   width: 100%;
-  max-width: 220px;
-  height: auto;
+  height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.2));
   animation: rest-float 3s ease-in-out infinite;
@@ -204,7 +203,7 @@
 /* ─── Menu panel ──────────────────────────────────────── */
 .rest-menu-panel {
   position: absolute;
-  right: 4%;
+  right: 37%;
   top: 50%;
   transform: translateY(-50%);
   width: min(340px, 32vw);

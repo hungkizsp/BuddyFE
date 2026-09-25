@@ -83,7 +83,7 @@ export default function FamilyRestaurantPage() {
   // Auto-enter fullscreen on mount for mobile devices
   useEffect(() => {
     if (isMobile) requestFullscreen();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
 
   useEffect(() => {
@@ -372,7 +372,7 @@ export default function FamilyRestaurantPage() {
             onClick={handleStartMission}
             disabled={startDisabled}
           >
-            🚀 Bắt đầu!
+            Bắt đầu!
           </button>
         </div>
       )}
