@@ -203,9 +203,9 @@
 /* ─── Menu panel ──────────────────────────────────────── */
 .rest-menu-panel {
   position: absolute;
-  right: 37%;
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
+  translate: -50% -50%;
   width: min(340px, 32vw);
   max-height: 82vh;
 
@@ -398,8 +398,9 @@
   }
 
   .rest-menu-panel {
-    left: 56%;
-    top: 44%;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
     width: min(200px, 40vw);
   }
 
@@ -590,14 +591,13 @@
     height: 72px;
   }
 
-  /* Right Side: Menu panel */
+  /* ĐIỆN THOẠI NẰM NGANG (MOBILE LANDSCAPE) - Thu nhỏ và căn giữa Menu */
   .rest-menu-panel {
-    right: 2%;
-    left: auto;
+    left: 50%;
     top: 50%;
-    transform: translateY(-50%);
-    width: min(200px, 44vw);
-    max-height: 85vh;
+    translate: -50% -50%;
+    width: min(180px, 35vw);
+    max-height: 80vh;
     pointer-events: auto;
     z-index: 8;
   }
