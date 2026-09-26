@@ -490,9 +490,10 @@
 
   /* Counter and dining table – scaled to fit small screen */
   .rest-counter {
-    left: 60%;
-    top: 8%;
-    width: min(90px, 20vw);
+    left: 5%;
+    top: auto;
+    bottom: 20%;
+    width: min(120px, 25vw);
   }
 
   .rest-dining-table {
@@ -603,13 +604,10 @@
   }
 
   .rest-counter {
-    left: 55%;
-    top: 6%;
-    width: 80px;
-  }
-
-  .rest-waiter-img {
-    max-width: 140px;
+    left: 10%;
+    top: auto;
+    bottom: 15%;
+    width: 110px;
   }
 
   .mission-panel-toggle-wrapper {
