@@ -1150,3 +1150,51 @@
     font-size: 12px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE LANDSCAPE / SMALL HEIGHT VIEWPORTS (≤ 520px height)
+   ═══════════════════════════════════════════════════════ */
+@media (max-height: 520px) {
+  /* Thu nhỏ Khung Hướng Dẫn Nhiệm Vụ */
+  .mission-panel-wrapper {
+    width: 220px;
+    left: 10px;
+    bottom: 10px;
+    transform: none;
+    padding: 10px 12px;
+  }
+
+  .mission-panel-toggle-wrapper {
+    left: 10px;
+    bottom: 10px;
+    transform: none;
+  }
+
+  .mission-panel-header {
+    font-size: 12px;
+  }
+
+  .mission-instruction,
+  .mission-description {
+    font-size: 10px;
+  }
+
+  .mission-start-btn {
+    font-size: 11px;
+    padding: 6px;
+  }
+
+  /* Thu nhỏ Khung Chat Bolly */
+  .speech-bubble {
+    max-width: 140px;
+    padding: 6px 10px;
+    border-radius: 12px;
+    border-width: 2px;
+    box-shadow: 0 4px 0 #1e293b;
+  }
+
+  .speech-bubble-text {
+    font-size: 10px;
+    line-height: 1.2;
+  }
+}
