@@ -575,20 +575,20 @@
     left: 2%;
     top: 50%;
     transform: translateY(-50%);
-    width: min(320px, 50vw);
-    max-height: 88vh;
-    border-radius: 18px;
-    padding: 10px 12px 14px;
+    width: min(240px, 45vw);
+    max-height: 85vh;
+    border-radius: 16px;
+    padding: 8px 10px 10px;
     overflow-y: auto;
     z-index: 9;
   }
 
-  .rest-voice-panel__icon  { font-size: 24px; }
-  .rest-voice-panel__title { font-size: 13px; }
+  .rest-voice-panel__icon  { font-size: 20px; }
+  .rest-voice-panel__title { font-size: 11px; }
 
   .rest-voice-panel .voice-btn {
-    width: 72px;
-    height: 72px;
+    width: 56px;
+    height: 56px;
   }
 
   /* ĐIỆN THOẠI NẰM NGANG (MOBILE LANDSCAPE) - Thu nhỏ và căn giữa Menu */

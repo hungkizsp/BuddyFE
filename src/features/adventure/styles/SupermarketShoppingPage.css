@@ -1765,35 +1765,47 @@
   .sm-voice-panel {
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(420px, 88vw);
-    max-height: 92vh;
-    padding: 10px 14px 14px;
-    border-radius: 18px;
-    gap: 6px;
+    translate: -50% -50%;
+    width: min(280px, 60vw);
+    max-height: 90vh;
+    padding: 8px 10px;
+    border-radius: 16px;
+    gap: 4px;
     overflow-y: auto;
     z-index: 100;
   }
 
   .sm-voice-panel__title {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .sm-voice-panel__icon {
-    font-size: 26px;
+    font-size: 20px;
   }
 
   .voice-btn {
-    width: 72px;
-    height: 72px;
+    width: 56px;
+    height: 56px;
   }
 
   .voice-btn__icon {
-    font-size: 24px;
+    font-size: 18px;
   }
 
   .voice-btn__label {
-    font-size: 10px;
+    font-size: 9px;
+  }
+
+  /* Evaluation Panel – compact */
+  .sm-evaluation-panel {
+    width: min(300px, 70vw);
+    padding: 12px;
+    max-height: 85vh;
+  }
+  
+  .sm-evaluation-panel h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
   }
 
   /* Bottom Left: Mission toggle button */
