@@ -28,6 +28,7 @@ import {
 import '../styles/KitchenAdventurePage.css';
 import '../styles/SupermarketShoppingPage.css';
 import '../styles/FamilyRestaurantPage.css';
+import '../styles/ScenarioIntro.css';
 
 import orderPerson from '../../../assets/order_person.png';
 import menuImg from '../../../assets/menu2.png';
@@ -82,7 +83,7 @@ export default function FamilyRestaurantPage() {
   // Auto-enter fullscreen on mount for mobile devices
   useEffect(() => {
     if (isMobile) requestFullscreen();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
 
   useEffect(() => {
@@ -351,36 +352,28 @@ export default function FamilyRestaurantPage() {
 
       {/* ── Intro Story Panel (shown before game starts) ── */}
       {gameState === 'not-started' && (
-        <div className="rest-intro-overlay">
-          <button
-            type="button"
-            className="rest-intro-start-btn"
-            onClick={handleStartMission}
-            disabled={startDisabled}
-          >
-            🚀 Bắt đầu!
-          </button>
-
-          <button
-            type="button"
-            className="rest-intro-back-link"
-            onClick={() => navigate('/adventure/food-forest')}
-          >
-            ← Quay lại bản đồ
-          </button>
-
-          <div className="rest-intro-label">
+        <div className="scenario-intro-overlay">
+          <div className="scenario-intro-label">
             <span>Tình huống 3 – Nhà Hàng Gia Đình</span>
           </div>
 
-          <div className="rest-intro-manga-grid">
+          <div className="scenario-intro-manga-grid">
             <img
               src={familyResMini}
               alt="Family Restaurant story panel"
-              className="rest-intro-manga-panel"
+              className="scenario-intro-manga-panel"
               draggable={false}
             />
           </div>
+
+          <button
+            type="button"
+            className="scenario-intro-start-btn"
+            onClick={handleStartMission}
+            disabled={startDisabled}
+          >
+            Bắt đầu!
+          </button>
         </div>
       )}
 

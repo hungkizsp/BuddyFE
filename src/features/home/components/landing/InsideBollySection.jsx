@@ -1,44 +1,44 @@
 const PIPELINE_NODES = [
   {
     step: '01',
-    name: 'Child Input',
-    sub: 'Microphone Speak',
-    desc: 'Child speaks naturally into their microphone.'
+    name: 'Giọng nói của bé',
+    sub: 'Microphone thu âm',
+    desc: 'Bé nói chuyện tự nhiên qua micro của thiết bị.'
   },
   {
     step: '02',
-    name: 'Speech Conversion',
+    name: 'Chuyển đổi âm thanh',
     sub: 'Web Speech API',
-    desc: 'Transforms spoken words into textual data in real-time.'
+    desc: 'Chuyển đổi lời nói thành văn bản theo thời gian thực.'
   },
   {
     step: '03',
-    name: 'AI Analysis',
+    name: 'Phân tích AI',
     sub: 'Gemini API',
-    desc: 'Evaluates grammar accuracy, vocabulary complexity, and pronunciation.'
+    desc: 'Đánh giá độ chính xác ngữ pháp, từ vựng và phát âm.'
   },
   {
     step: '04',
-    name: 'Bolly Decision',
+    name: 'Phản hồi từ Bolly',
     sub: 'Spring Boot Engine',
-    desc: 'Determines the responsive emotion, animation triggers, XP rewards, and streaks.'
+    desc: 'Xác định biểu cảm, hoạt ảnh 3D, điểm thưởng XP và chuỗi học.'
   },
   {
     step: '05',
-    name: 'Learning History',
-    sub: 'MySQL Database',
-    desc: 'Saves performance records to personalize future conversations.'
+    name: 'Lưu trữ tiến trình',
+    sub: 'SQL Server Database',
+    desc: 'Lưu kết quả học tập để cá nhân hóa các buổi học tiếp theo.'
   }
 ]
 
 const TECH_STACK = [
   { name: 'React', type: 'Frontend Framework' },
   { name: 'Spring Boot', type: 'Backend Service' },
-  { name: 'Gemini API', type: 'AI Language Model' },
-  { name: 'MySQL', type: 'Relational Database' },
-  { name: 'Web Speech API', type: 'STT & Speech Engine' },
-  { name: 'Tailwind CSS', type: 'Styling & Layout' },
-  { name: 'Three.js / Fiber', type: '3D Render Canvas' }
+  { name: 'Gemini API', type: 'Mô hình AI ngôn ngữ' },
+  { name: 'SQL Server', type: 'Cơ sở dữ liệu quan hệ' },
+  { name: 'Web Speech API', type: 'Công cụ nhận diện giọng nói' },
+  { name: 'Tailwind CSS', type: 'Giao diện & Thiết kế' },
+  { name: 'Three.js / Fiber', type: 'Khung hiển thị 3D' }
 ]
 
 export default function InsideBollySection() {
@@ -51,18 +51,18 @@ export default function InsideBollySection() {
         
         {/* Title */}
         <div className="text-center max-w-[800px] mx-auto mb-20">
-          <span className="font-mono text-neon text-sm uppercase tracking-widest font-semibold">Under The Hood</span>
+          <span className="font-mono text-neon text-sm uppercase tracking-widest font-semibold">Khám Phá Công Nghệ</span>
           <h2 className="font-grotesk text-[40px] sm:text-[60px] uppercase mt-4 mb-6 leading-tight">
-            Inside Bolly's Brain
+            Bộ Não Của Bolly
           </h2>
           <p className="font-mono text-sm sm:text-base text-cream/60 uppercase leading-relaxed max-w-[600px] mx-auto">
-            Understanding the technology flow that turns raw speech into an empathetic, rewarding conversation.
+            Khám phá quy trình công nghệ biến lời nói của bé thành những cuộc trò chuyện sinh động, thấu hiểu và bổ ích.
           </p>
         </div>
 
         {/* Architecture Flow Map */}
         <div className="mb-24">
-          <h3 className="font-grotesk text-2xl uppercase mb-8 text-center text-neon">Interactive Pipeline</h3>
+          <h3 className="font-grotesk text-2xl uppercase mb-8 text-center text-neon">Quy Trình Xử Lý Tương Tác</h3>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative">
             
             {PIPELINE_NODES.map((node, idx) => {
@@ -77,7 +77,7 @@ export default function InsideBollySection() {
                   )}
 
                   <span className="font-mono text-xs font-bold text-neon bg-neon/10 px-2 py-1 rounded-md mb-4 block">
-                    STEP {node.step}
+                    BƯỚC {node.step}
                   </span>
 
                   <h4 className="font-grotesk text-lg uppercase mb-1 group-hover:text-neon transition-colors">
@@ -99,7 +99,7 @@ export default function InsideBollySection() {
 
         {/* Tech Stack Layout */}
         <div className="bg-[#010828]/30 border border-white/10 rounded-3xl p-8 lg:p-12">
-          <h3 className="font-grotesk text-2xl uppercase mb-6 text-center">Engineered with Modern Technologies</h3>
+          <h3 className="font-grotesk text-2xl uppercase mb-6 text-center">Được Xây Dựng Với Công Nghệ Hiện Đại</h3>
           <div className="flex flex-wrap justify-center gap-4">
             {TECH_STACK.map((tech, idx) => (
               <div 

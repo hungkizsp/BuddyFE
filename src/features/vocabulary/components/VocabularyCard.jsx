@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import Badge from '../../../shared/components/ui/Badge'
+import { getCategoryDisplayName } from '../../../shared/utils/categoryUtils'
 
 const FALLBACK_IMG = 'https://placehold.co/400x400/0f172a/6FFF00?text=🦉&font=roboto'
 
@@ -78,7 +79,7 @@ export default function VocabularyCard({ vocab, onClick }) {
         {vocab.categoryName && (
           <div className="absolute bottom-3 left-3">
             <Badge variant={isLocked ? 'locked' : 'primary'}>
-              {vocab.categoryName}
+              {getCategoryDisplayName(vocab.categoryName)}
             </Badge>
           </div>
         )}
