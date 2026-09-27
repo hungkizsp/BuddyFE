@@ -20,58 +20,58 @@ const GithubIcon = () => (
 )
 
 const TEAM_MEMBERS = [
-  { name: 'Nguyen Manh Hung', role: 'Fullstack Dev & AI Integration' },
-  { name: 'Le Thi Hoa',       role: 'UX/UI Design & 3D Character' },
-  { name: 'Tran Duc Anh',     role: 'Product Manager & QA' },
+  { name: 'Nguyễn Mạnh Hùng', role: 'Fullstack Dev & Tích hợp AI' },
+  { name: 'Lê Thị Hoa',       role: 'Thiết kế UX/UI & Nhân vật 3D' },
+  { name: 'Trần Đức Anh',     role: 'Quản lý sản phẩm & Kiểm thử' },
 ]
 
 const PARENT_FEATURES = [
   {
     icon: '📊',
-    title: 'Progress Dashboard',
-    desc: 'Track vocabulary growth, speaking accuracy trends, daily streak data, and time spent learning — all in one clear parent dashboard.',
+    title: 'Bảng theo dõi tiến độ',
+    desc: 'Theo dõi sự gia tăng vốn từ, biểu đồ độ chính xác phát âm, chuỗi ngày học và thời gian học tập — tất cả trong một bảng điều khiển trực quan dành cho phụ huynh.',
   },
   {
     icon: '🔒',
-    title: 'Content Control',
-    desc: 'Every AI response passes through age-appropriate content filters. Parents can review session transcripts and set daily time limits.',
+    title: 'Kiểm soát nội dung an toàn',
+    desc: 'Mọi phản hồi từ AI đều qua bộ lọc phù hợp lứa tuổi. Phụ huynh có thể xem lại lịch sử trò chuyện và thiết lập giới hạn thời gian học mỗi ngày.',
   },
   {
     icon: '📱',
-    title: 'Session Reports',
-    desc: 'After each session, parents receive a summary: words practiced, pronunciation scores, areas for improvement, and recommendations.',
+    title: 'Báo cáo sau buổi học',
+    desc: 'Sau mỗi buổi học, phụ huynh nhận được bản tóm tắt chi tiết: từ vựng đã luyện, điểm phát âm, các điểm cần rèn luyện thêm và lộ trình gợi ý.',
   },
   {
     icon: '⏰',
-    title: 'Schedule & Reminders',
-    desc: 'Set preferred practice times. Bolly will remind your child when it is time to learn, keeping the streak alive without parental nagging.',
+    title: 'Lịch học & Nhắc nhở',
+    desc: 'Thiết lập khung giờ học yêu thích. Bolly sẽ nhắc bé khi đến giờ học, giúp duy trì thói quen học tập đều đặn mà không cần phụ huynh phải nhắc nhở.',
   },
 ]
 
 const FAQ_ITEMS = [
   {
-    q: 'What age is BollyEnglish designed for?',
-    a: 'BollyEnglish is optimized for Vietnamese children aged 4–12 who are learning English as a second language. Vocabulary, scenarios, and speaking speed are calibrated for this age range.',
+    q: 'BollyEnglish phù hợp với độ tuổi nào?',
+    a: 'BollyEnglish được tối ưu cho trẻ em Việt Nam từ 4–12 tuổi đang học tiếng Anh. Hệ thống từ vựng, tình huống giao tiếp và tốc độ nói được điều chỉnh phù hợp với khả năng tiếp thu của lứa tuổi này.',
   },
   {
-    q: 'Is it safe for my child to use?',
-    a: 'Yes. Every AI response is filtered for age-appropriate content. Bolly cannot discuss topics outside of English learning. All data is stored securely with JWT authentication, and no personal data is shared with third parties.',
+    q: 'Ứng dụng có an toàn cho trẻ nhỏ không?',
+    a: 'Hoàn toàn an toàn. Mọi nội dung từ AI đều được lọc nghiêm ngặt theo tiêu chuẩn giáo dục. Bolly chỉ tập trung vào bài học tiếng Anh, dữ liệu được bảo mật bằng JWT và cam kết không chia sẻ thông tin cá nhân với bên thứ ba.',
   },
   {
-    q: 'How does the speech recognition work?',
-    a: 'BollyEnglish uses the Web Speech API built into modern browsers to capture your child\'s voice. The audio is converted to text locally, then sent to our Spring Boot backend for analysis by Google Gemini AI. No audio recordings are stored.',
+    q: 'Công nghệ nhận diện giọng nói hoạt động như thế nào?',
+    a: 'BollyEnglish sử dụng Web Speech API tích hợp sẵn trên trình duyệt để ghi nhận giọng nói của bé, chuyển thành văn bản và phân tích qua mô hình AI Google Gemini trên máy chủ. Chúng tôi không lưu trữ file ghi âm giọng nói của bé.',
   },
   {
-    q: 'Does my child need a microphone?',
-    a: 'Yes, a working microphone is required for speaking practice. Most laptops, tablets, and phones have built-in microphones that work perfectly. We recommend using headphones with a mic for the best experience.',
+    q: 'Bé có cần sử dụng micro không?',
+    a: 'Có, thiết bị cần có micro để bé thực hành nói. Hầu hết laptop, máy tính bảng và điện thoại đều có sẵn micro hoạt động tốt. Chúng tôi khuyến khích dùng tai nghe có micro để đạt chất lượng âm thanh tốt nhất.',
   },
   {
-    q: 'How much does it cost?',
-    a: 'BollyEnglish is currently in beta and free to use. We plan to offer a freemium model with basic features available for free and premium worlds/scenarios available through a monthly subscription.',
+    q: 'Chi phí sử dụng BollyEnglish là bao nhiêu?',
+    a: 'Hiện tại BollyEnglish đang trong giai đoạn thử nghiệm và hoàn toàn miễn phí. Chúng tôi sẽ có thêm các gói nâng cao với các thế giới phiêu lưu mở rộng trong tương lai.',
   },
   {
-    q: 'Can I track my child\'s progress?',
-    a: 'Yes. The parent dashboard shows detailed analytics: vocabulary growth over time, pronunciation accuracy per session, daily streak tracking, and a full history of topics covered.',
+    q: 'Phụ huynh có thể theo dõi tiến độ của con không?',
+    a: 'Có. Bảng điều khiển phụ huynh hiển thị chi tiết: biểu đồ phát triển vốn từ, độ chính xác phát âm từng buổi, chuỗi ngày học liên tục và toàn bộ lịch sử các chủ đề đã học.',
   },
 ]
 
@@ -105,7 +105,7 @@ export default function TryBollySection({ username = 'Hung', currentUser }) {
             <div className="relative max-w-[65%] lg:pr-[10%] lg:pl-[5%] text-right">
               {/* Script overlay */}
               <span className="font-condiment text-[24px] sm:text-[42px] md:text-[56px] lg:text-[76px] text-neon mix-blend-exclusion opacity-90 absolute top-[-25px] sm:top-[-45px] lg:top-[-75px] left-[-30px] sm:left-[-50px] lg:left-[-70px] -rotate-1 normal-case leading-none pointer-events-none text-glow">
-                Start today
+                Bắt đầu ngay
               </span>
 
               {/* Heading */}
@@ -137,12 +137,12 @@ export default function TryBollySection({ username = 'Hung', currentUser }) {
                   <div className="bg-white/5 p-2.5 rounded-[10px]">
                     <span className="text-cream/60 block mb-0.5">Chuỗi ngày học</span>
                     <span className="text-cream font-bold text-sm text-glow">5 Ngày</span>
-                    <span className="text-neon block text-[10px] font-bold">Kỷ kỷ lục: 12 ngày</span>
+                    <span className="text-neon block text-[10px] font-bold">Kỷ lục: 12 ngày</span>
                   </div>
                   <div className="bg-white/5 p-2.5 rounded-[10px]">
                     <span className="text-cream/60 block mb-0.5">Từ vựng đã thuộc</span>
                     <span className="text-cream font-bold text-sm text-glow">47 / 135</span>
-                    <span className="text-neon block text-[10px] font-bold">Khu Rừng Thức Ăn: 80%</span>
+                    <span className="text-neon block text-[10px] font-bold">Rừng Thức Ăn: 80%</span>
                   </div>
                   <div className="bg-white/5 p-2.5 rounded-[10px]">
                     <span className="text-cream/60 block mb-0.5">Nhiệm vụ hôm nay</span>
@@ -208,14 +208,14 @@ export default function TryBollySection({ username = 'Hung', currentUser }) {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
           <div className="relative">
             <h2 className="font-grotesk text-[36px] sm:text-[56px] uppercase leading-[1.05] text-cream text-glow">
-              Built for<br />children
+              Thiết kế cho<br />trẻ em
             </h2>
             <span className="font-condiment text-[40px] sm:text-[68px] text-neon mix-blend-exclusion opacity-90 absolute bottom-[-10px] right-[-20px] -rotate-1 normal-case leading-none pointer-events-none text-glow">
-              trusted by parents
+              phụ huynh an tâm
             </span>
           </div>
           <p className="font-mono text-[14px] uppercase text-cream/80 max-w-[420px] leading-relaxed text-readable">
-            We understand that parents need to trust the technology their children use. BollyEnglish is designed with safety, transparency, and parental control at its core.
+            Chúng tôi thấu hiểu rằng phụ huynh cần sự an tâm tuyệt đối khi con tiếp xúc với công nghệ. BollyEnglish được xây dựng với các tiêu chuẩn an toàn, minh bạch và trao quyền kiểm soát cho phụ huynh.
           </p>
         </div>
 
@@ -235,9 +235,9 @@ export default function TryBollySection({ username = 'Hung', currentUser }) {
         <div id="faq" className="pt-12 border-t border-white/10">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
             <h2 className="font-grotesk text-[36px] sm:text-[56px] uppercase leading-[1.05] text-cream text-glow">
-              Frequently asked
+              Câu hỏi thường gặp
             </h2>
-            <span className="font-mono text-[13px] uppercase text-cream/60 text-readable">Got more questions? Contact us at bollyenglish@fpt.edu.vn</span>
+            <span className="font-mono text-[13px] uppercase text-cream/60 text-readable">Bạn còn thắc mắc? Liên hệ chúng tôi qua bollyenglish@fpt.edu.vn</span>
           </div>
 
           <div className="flex flex-col gap-4 max-w-[1000px] mx-auto">
@@ -263,11 +263,11 @@ export default function TryBollySection({ username = 'Hung', currentUser }) {
                 BollyEnglish
               </Link>
               <p className="font-mono text-[12px] uppercase text-cream/50 leading-relaxed text-readable">
-                An AI-powered English speaking companion for Vietnamese children. Built as a capstone project at FPT University (EXE101) to demonstrate that technology can make language learning accessible, safe, and genuinely fun.
+                Bạn đồng hành luyện nói tiếng Anh tương tác AI dành cho trẻ em Việt Nam. Dự án tốt nghiệp tại Đại học FPT (EXE101) chứng minh công nghệ có thể giúp việc học ngôn ngữ trở nên dễ tiếp cận, an toàn và tràn đầy niềm vui.
               </p>
             </div>
             <div className="flex flex-col gap-3">
-              <span className="font-grotesk text-[11px] uppercase tracking-widest text-neon">Team</span>
+              <span className="font-grotesk text-[11px] uppercase tracking-widest text-neon">Đội ngũ phát triển</span>
               {TEAM_MEMBERS.map((m) => (
                 <div key={m.name} className="font-mono text-[10px] uppercase">
                   <span className="text-cream/60">{m.name}</span>
@@ -276,12 +276,12 @@ export default function TryBollySection({ username = 'Hung', currentUser }) {
               ))}
             </div>
             <div className="flex flex-col gap-2">
-              <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon text-glow font-bold">Links</span>
+              <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon text-glow font-bold">Liên kết</span>
               {[
-                { name: 'GitHub Repository', href: 'https://github.com/dagowlol/Exe101_Project', isExternal: true },
-                { name: 'API Documentation', href: 'https://github.com/dagowlol/Exe101_Project/blob/main/bolly_english_be/README.md', isExternal: true },
-                { name: 'FPT University', href: 'https://fpt.edu.vn', isExternal: true },
-                { name: 'Privacy Policy', href: '#faq', isExternal: false }
+                { name: 'Mã nguồn GitHub', href: 'https://github.com/dagowlol/Exe101_Project', isExternal: true },
+                { name: 'Tài liệu API', href: 'https://github.com/dagowlol/Exe101_Project/blob/main/bolly_english_be/README.md', isExternal: true },
+                { name: 'Đại học FPT', href: 'https://fpt.edu.vn', isExternal: true },
+                { name: 'Chính sách bảo mật', href: '#faq', isExternal: false }
               ].map((link) => (
                 link.isExternal ? (
                   <a
@@ -307,7 +307,7 @@ export default function TryBollySection({ username = 'Hung', currentUser }) {
           </div>
           {/* Bottom row */}
           <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-2 font-mono text-[11px] uppercase text-cream/40 text-readable">
-            <span>© 2026 BollyEnglish — EXE101 Capstone Project, FPT University</span>
+            <span>© 2026 BollyEnglish — Dự án tốt nghiệp EXE101, Đại học FPT</span>
             <span>Spring Boot · React · Google Gemini AI · SQL Server</span>
           </div>
         </div>

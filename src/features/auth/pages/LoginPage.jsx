@@ -185,7 +185,7 @@ function LoginPage() {
                   <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                   Đang đăng nhập...
                 </span>
-              ) : 'Đăng Nhập 🚀'}
+              ) : 'Đăng Nhập '}
             </button>
 
             {/* Register link */}

@@ -24,9 +24,9 @@ const GithubIcon = () => (
 )
 
 const NAV_LINKS = [
-  { name: 'About', href: '#about' },
-  { name: 'Worlds', href: '#worlds' },
-  { name: 'For Parents', href: '#parents' },
+  { name: 'Giới thiệu', href: '#about' },
+  { name: 'Thế giới', href: '#worlds' },
+  { name: 'Dành cho phụ huynh', href: '#parents' },
   { name: 'FAQ', href: '#faq' }
 ]
 
@@ -132,7 +132,7 @@ function SocialIcons() {
 }
 
 export default function MeetBollyHero({ onLearnMore, currentUser }) {
-  const [bubbleText, setBubbleText] = useState("Hi there! I'm Bolly — your AI English speaking companion. I listen, I remember, and I grow with you every day!")
+  const [bubbleText, setBubbleText] = useState("Xin chào! Mình là Bolly — bạn đồng hành luyện nói tiếng Anh AI của bạn. Mình lắng nghe, ghi nhớ và cùng bạn tiến bộ mỗi ngày!")
   const [reaction, setReaction] = useState(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -143,14 +143,14 @@ export default function MeetBollyHero({ onLearnMore, currentUser }) {
   }
 
   const baseLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Worlds', href: '#worlds' },
-    { name: 'For Parents', href: '#parents' },
+    { name: 'Giới thiệu', href: '#about' },
+    { name: 'Thế giới', href: '#worlds' },
+    { name: 'Dành cho phụ huynh', href: '#parents' },
     { name: 'FAQ', href: '#faq' }
   ]
   const navLinks = currentUser
-    ? [...baseLinks, { name: 'Dashboard', href: '/home', isRoute: true }]
-    : [...baseLinks, { name: 'Login', href: '/login', isRoute: true }, { name: 'Register', href: '/register', isRoute: true }]
+    ? [...baseLinks, { name: 'Trang chủ', href: '/home', isRoute: true }]
+    : [...baseLinks, { name: 'Đăng nhập', href: '/login', isRoute: true }, { name: 'Đăng ký', href: '/register', isRoute: true }]
 
   return (
     <section className="relative overflow-hidden min-h-screen rounded-b-[32px] bg-[#010828] z-10 video-darken">
@@ -283,34 +283,34 @@ export default function MeetBollyHero({ onLearnMore, currentUser }) {
         <div className="flex-1 flex flex-col justify-center py-8 sm:py-10">
           <div className="relative w-full max-w-[780px] lg:ml-32">
             <h1 className="font-grotesk text-[32px] xs:text-[40px] sm:text-[60px] md:text-[76px] lg:text-[96px] uppercase leading-[1.08] md:leading-[1] text-cream text-glow">
-              Beyond classrooms<br />
-              and ( their ) familiar limits
+              Vượt qua giới hạn<br />
+              lớp học truyền thống
             </h1>
 
             {/* Script overlay */}
             <span className="font-condiment text-[24px] xs:text-[30px] sm:text-[42px] md:text-[54px] text-neon -rotate-1 mix-blend-exclusion opacity-90 absolute right-2 sm:right-4 lg:right-[20px] bottom-[-18px] sm:bottom-[-20px] leading-none normal-case pointer-events-none text-glow">
-              speak with Bolly
+              trò chuyện cùng Bolly
             </span>
           </div>
 
           {/* Sub-description */}
           <p className="font-mono text-[13px] sm:text-[15px] uppercase text-cream/80 max-w-[560px] mt-6 sm:mt-8 lg:ml-32 leading-relaxed text-readable">
-            An AI-powered speaking companion designed for Vietnamese children aged 4–12. Bolly uses real-time speech recognition, adaptive memory, and emotional intelligence to help kids practice English naturally — anytime, anywhere, without fear of judgment.
+            Bạn đồng hành luyện nói tiếng Anh tích hợp AI dành riêng cho trẻ em Việt Nam từ 4–12 tuổi. Bolly kết hợp nhận diện giọng nói thời gian thực, trí nhớ thích ứng và trí tuệ cảm xúc giúp bé tự tin luyện nói tiếng Anh tự nhiên — mọi lúc, mọi nơi, không sợ mắc lỗi.
           </p>
 
           {/* CTA buttons */}
           <div className="flex flex-wrap gap-3 sm:gap-4 mt-6 sm:mt-8 lg:ml-32">
             {currentUser ? (
               <Link to="/home" className="inline-block px-6 py-3.5 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-xs sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
-                Go to Dashboard
+                Đến Trang Chủ
               </Link>
             ) : (
               <Link to="/register" className="inline-block px-6 py-3.5 sm:px-10 sm:py-5 bg-gradient-to-r from-neon to-[#88ff44] text-[#010828] font-grotesk text-xs sm:text-base uppercase tracking-wider rounded-full hover:scale-105 transition-transform font-bold">
-                Try Bolly Free
+                Trải nghiệm Bolly miễn phí
               </Link>
             )}
             <button onClick={onLearnMore} className="liquid-glass px-6 py-3.5 sm:px-10 sm:py-5 font-grotesk text-xs sm:text-base uppercase tracking-wider rounded-full text-cream hover:bg-white/10 transition-all text-readable">
-              Learn More
+              Tìm hiểu thêm
             </button>
           </div>
 
@@ -324,21 +324,21 @@ export default function MeetBollyHero({ onLearnMore, currentUser }) {
         <div className="hidden sm:block absolute right-[4%] lg:right-[6%] top-[12%] lg:top-[18%] max-w-[240px] sm:max-w-[300px] liquid-glass rounded-2xl rounded-tr-none p-4 sm:p-5 z-30">
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-wider text-neon font-bold">Bolly online</span>
+            <span className="font-mono text-[10px] uppercase tracking-wider text-neon font-bold">Bolly trực tuyến</span>
           </div>
           <p className="font-mono text-[13px] text-cream leading-relaxed">{bubbleText}</p>
           <div className="flex gap-2 mt-3">
             <button
-              onClick={() => triggerReaction("Great to see you! Let me show you how I help kids speak English with confidence. Just talk to me like a friend!", 'wave')}
+              onClick={() => triggerReaction("Rất vui được gặp bạn! Hãy để mình chỉ cho bạn cách giúp các bé tự tin giao tiếp tiếng Anh nhé. Cứ trò chuyện với mình như một người bạn thân!", 'wave')}
               className="font-mono text-[10px] px-2 py-1 bg-white/5 hover:bg-white/10 text-cream/80 rounded-lg border border-white/10 transition-all"
             >
-              👋 Wave
+              👋 Vẫy tay
             </button>
             <button
-              onClick={() => triggerReaction("I remember everything we practiced together! Yesterday we learned about animals. Ready to continue today?", 'nod')}
+              onClick={() => triggerReaction("Mình ghi nhớ tất cả những gì chúng ta đã cùng nhau luyện tập! Hôm qua chúng ta đã học về các loài động vật. Bạn đã sẵn sàng tiếp tục hôm nay chưa?", 'nod')}
               className="font-mono text-[10px] px-2 py-1 bg-white/5 hover:bg-white/10 text-[#6FFF00] rounded-lg border border-[#6FFF00]/20 transition-all"
             >
-              😊 Smile
+              😊 Mỉm cười
             </button>
           </div>
         </div>
@@ -347,23 +347,23 @@ export default function MeetBollyHero({ onLearnMore, currentUser }) {
         <div className="pt-5 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-cream/50 font-mono text-[12px] uppercase text-readable">
           <div className="flex gap-8">
             <div>
-              <span className="text-neon block">4–12</span>
-              <span>Target age</span>
+              <span className="text-neon block">4–12 tuổi</span>
+              <span>Độ tuổi phù hợp</span>
             </div>
             <div>
               <span className="text-neon block">100%</span>
-              <span>Child-safe AI</span>
+              <span>An toàn cho trẻ</span>
             </div>
             <div>
-              <span className="text-neon block">Real-time</span>
-              <span>Speech analysis</span>
+              <span className="text-neon block">Thời gian thực</span>
+              <span>Phân tích giọng nói</span>
             </div>
             <div>
               <span className="text-neon block">Gemini AI</span>
-              <span>Powered by</span>
+              <span>Công nghệ AI</span>
             </div>
           </div>
-          <span>© 2026 BollyEnglish — FPT University</span>
+          <span>© 2026 BollyEnglish — Đại học FPT</span>
         </div>
 
       </div>

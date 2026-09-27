@@ -3,50 +3,54 @@ import { useState } from 'react'
 const EMOTION_LOGIC = {
   happy: {
     emoji: '😊',
-    title: 'Happy & Confident',
-    condition: 'Correct pronunciation detected',
-    desc: 'When your child pronounces a word correctly, Bolly lights up with genuine excitement. This positive reinforcement builds speaking confidence and motivates children to keep practicing without fear of making mistakes.',
+    label: 'Vui vẻ',
+    title: 'Vui Vẻ & Tự Tin',
+    condition: 'Phát âm chính xác',
+    desc: 'Khi bé phát âm đúng từ vựng, Bolly sẽ bày tỏ sự vui mừng và khích lệ chân thành. Sự công nhận kịp thời này giúp bé xây dựng sự tự tin và tạo niềm hứng khởi học tập không ngừng.',
   },
   encourage: {
     emoji: '💪',
-    title: 'Gently Encouraging',
-    condition: 'Pronunciation needs work',
-    desc: `Bolly never says "wrong." Instead, he models the correct pronunciation slowly and clearly, then asks the child to try again. This patient approach mirrors how the best language tutors work — through encouragement, not correction.`,
+    label: 'Động viên',
+    title: 'Ân Cần Động Viên',
+    condition: 'Cần cải thiện phát âm',
+    desc: `Bolly không bao giờ phán xét "sai rồi". Thay vào đó, bạn ấy sẽ phát âm mẫu thật chậm rãi, rõ ràng và khuyến khích bé thử lại. Phương pháp kiên nhẫn này giúp bé tiếp thu tự nhiên mà không sợ mắc lỗi.`,
   },
   celebrate: {
     emoji: '🥳',
-    title: 'Celebrating Milestones',
-    condition: 'Lesson or mission completed',
-    desc: 'Completing a scenario, finishing a vocabulary set, or maintaining a streak triggers a full celebration from Bolly. Children earn coins, unlock new adventure worlds, and see their progress visually — making every achievement feel meaningful.',
+    label: 'Ăn mừng',
+    title: 'Ăn Mừng Thành Tích',
+    condition: 'Hoàn thành bài học hoặc nhiệm vụ',
+    desc: 'Khi hoàn thành kịch bản, làm chủ bộ từ vựng hay duy trì chuỗi học, Bolly sẽ cùng bé ăn mừng tưng bừng. Bé nhận thêm xu thưởng, mở khóa các vùng đất mới và nhìn thấy rõ tiến trình trưởng thành của mình.',
   },
   thinking: {
     emoji: '🤔',
-    title: 'Actively Listening',
-    condition: 'Processing speech input',
-    desc: 'While your child speaks, Bolly tilts his head and listens carefully. Behind the scenes, the Web Speech API captures audio, converts it to text, and sends it to our Spring Boot backend for AI-powered analysis using Google Gemini.',
+    label: 'Lắng nghe',
+    title: 'Tập Trung Lắng Nghe',
+    condition: 'Đang xử lý giọng nói',
+    desc: 'Khi bé nói, Bolly nghiêng đầu lắng nghe chăm chú. Hệ thống ghi nhận âm thanh trực tiếp, chuyển thành văn bản và gửi đến máy chủ Spring Boot để AI Google Gemini phân tích tức thì.',
   },
 }
 
 const WHY_DIFFERENT = [
   {
     icon: '🧠',
-    title: 'Long-term memory',
-    desc: 'Unlike generic chatbots, Bolly remembers what your child learned yesterday, last week, and last month. Each session starts exactly where the previous one ended — no repetition, no wasted time.',
+    title: 'Trí nhớ dài hạn',
+    desc: 'Khác với chatbot thông thường, Bolly ghi nhớ chính xác những gì bé đã học hôm qua, tuần trước và tháng trước. Mỗi buổi học tiếp nối liền mạch điểm dừng trước đó — không trùng lặp, không lãng phí thời gian.',
   },
   {
     icon: '🎭',
-    title: 'Emotional awareness',
-    desc: `Bolly reads your child's performance in real-time and adapts his mood accordingly. Struggling? He slows down and simplifies. Excelling? He introduces harder vocabulary and faster pacing.`,
+    title: 'Thấu hiểu cảm xúc',
+    desc: `Bolly nhận biết biểu hiện của bé theo thời gian thực và điều chỉnh tâm trạng tương ứng. Khi bé gặp khó khăn? Bạn ấy nói chậm lại và đơn giản hóa. Khi bé làm tốt? Bạn ấy tăng độ khó và mở rộng vốn từ.`,
   },
   {
     icon: '🛡️',
-    title: '100% child-safe responses',
-    desc: 'Every AI response passes through a strict content filter before reaching your child. No inappropriate content, no off-topic conversations — only age-appropriate English learning.',
+    title: 'Phản hồi 100% an toàn cho trẻ',
+    desc: 'Mọi câu trả lời của AI đều qua bộ lọc nội dung nghiêm ngặt trước khi đến với bé. Không có nội dung độc hại, không lạc đề — chỉ tập trung vào việc học tiếng Anh bổ ích.',
   },
   {
     icon: '🌍',
-    title: 'Scenario-based learning',
-    desc: `Instead of boring drills, children explore themed worlds — ordering food at a restaurant, visiting a zoo, shopping at a market. Each scenario teaches contextual vocabulary that sticks.`,
+    title: 'Học qua tình huống thực tế',
+    desc: `Thay vì các bài tập nhàm chán, bé được hòa mình vào các thế giới theo chủ đề — gọi món ở nhà hàng, khám phá sở thú, mua sắm ở siêu thị. Mỗi tình huống giúp từ vựng ghi sâu vào trí nhớ.`,
   },
 ]
 
@@ -75,8 +79,8 @@ export default function WhyBollySection({ username = 'Hung' }) {
           {/* Left: Heading */}
           <div className="relative">
             <h2 className="font-grotesk text-[30px] sm:text-[56px] lg:text-[68px] uppercase leading-[1.08] text-cream text-glow">
-              Meet your<br />
-              AI companion
+              Gặp gỡ người bạn<br />
+              AI của bé
             </h2>
             {/* Cursive Accent overlay */}
             <span className="font-condiment text-[32px] sm:text-[64px] lg:text-[76px] text-neon mix-blend-exclusion opacity-90 absolute bottom-[-8px] sm:bottom-[-10px] right-[-10px] sm:right-[-20px] -rotate-1 normal-case leading-none pointer-events-none text-glow">
@@ -86,7 +90,7 @@ export default function WhyBollySection({ username = 'Hung' }) {
 
           {/* Right: Description */}
           <p className="font-mono text-[14px] lg:text-[16px] uppercase text-cream/90 max-w-[380px] leading-relaxed text-readable">
-            Bolly is not just another language app. He is a persistent, emotionally intelligent AI friend who remembers your child, adapts to their level, and makes every English conversation feel like play — not homework.
+            Bolly không chỉ là một ứng dụng học tập thông thường. Bạn ấy là một người bạn AI thông minh, thấu hiểu cảm xúc, luôn ghi nhớ hành trình của bé và biến mỗi cuộc trò chuyện tiếng Anh thành những giờ chơi bổ ích.
           </p>
         </div>
 
@@ -106,31 +110,31 @@ export default function WhyBollySection({ username = 'Hung' }) {
           
           {/* Memory Timeline Card */}
           <div className="liquid-glass rounded-[32px] p-6">
-            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-2">Adaptive Memory System</span>
+            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-2">Hệ Thống Trí Nhớ Thích Ứng</span>
             <p className="font-mono text-[12px] uppercase text-cream/60 mb-4 leading-relaxed">
-              Bolly stores every interaction in a personalized learning profile. vocabulary mastered, topics explored, common mistakes, and preferred learning pace — all saved across sessions.
+              Bolly lưu trữ mọi tương tác vào hồ sơ học tập cá nhân: từ vựng đã thành thạo, chủ đề đã khám phá, các lỗi hay gặp và tốc độ học tập tối ưu.
             </p>
             <div className="space-y-3 font-mono text-[13px] uppercase">
               <div className="bg-white/5 p-4 rounded-[16px] border border-white/5">
-                <span className="text-neon block mb-1">Session #14 — Yesterday</span>
-                <span className="text-cream/50">{username} practiced: </span>
-                <span className="text-cream font-bold">Fruits vocabulary — Apple, Banana, Orange, Grape</span>
-                <span className="text-cream/30 block mt-1">Pronunciation accuracy: 78% → Bolly noted "R" sounds need practice</span>
+                <span className="text-neon block mb-1">Buổi học #14 — Hôm qua</span>
+                <span className="text-cream/50">{username} đã luyện tập: </span>
+                <span className="text-cream font-bold">Từ vựng hoa quả — Táo (Apple), Chuối (Banana), Cam (Orange), Nho (Grape)</span>
+                <span className="text-cream/30 block mt-1">Độ chính xác phát âm: 78% → Bolly ghi nhận cần luyện thêm âm "R"</span>
               </div>
               <div className="text-center text-neon text-lg">↓</div>
               <div className="bg-[#6FFF00]/10 p-4 rounded-[16px] border border-[#6FFF00]/20">
-                <span className="text-neon block mb-1">Session #15 — Today</span>
-                <span className="text-cream font-bold block">{`Bolly says: "Welcome back, ${username}! Yesterday you learned 4 new fruits. Today let's practice the ones you found tricky — especially 'grape' and 'orange.' Ready?"`}</span>
-                <span className="text-cream/30 block mt-1">→ Automatically loads targeted review before new content</span>
+                <span className="text-neon block mb-1">Buổi học #15 — Hôm nay</span>
+                <span className="text-cream font-bold block">{`Bolly nói: "Chào mừng ${username} quay lại! Hôm qua bạn đã học 4 loại trái cây. Hôm nay chúng mình cùng ôn lại những từ bạn thấy hơi khó nhé — đặc biệt là 'grape' và 'orange'. Bạn sẵn sàng chưa?"`}</span>
+                <span className="text-cream/30 block mt-1">→ Tự động kích hoạt bài ôn tập trọng tâm trước khi học bài mới</span>
               </div>
             </div>
           </div>
 
           {/* Emotion Decision Engine */}
           <div className="liquid-glass rounded-[32px] p-6">
-            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-2">Emotion Decision Engine</span>
+            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-2">Cơ Chế Phân Tích Cảm Xúc</span>
             <p className="font-mono text-[12px] uppercase text-cream/60 mb-4 leading-relaxed">
-              {`Bolly's emotional state isn't random. It's driven by a rule-based engine in our Spring Boot backend that evaluates pronunciation accuracy, response time, streak data, and session progress to determine the most supportive reaction.`}
+              Cảm xúc của Bolly được điều khiển bởi hệ thống thông minh trên nền tảng Spring Boot, tự động đánh giá độ chính xác phát âm, phản xạ câu hỏi và tiến trình học tập để phản hồi khích lệ bé tốt nhất.
             </p>
             <div className="grid grid-cols-2 gap-2 mb-4">
               {Object.entries(EMOTION_LOGIC).map(([key, item]) => (
@@ -144,7 +148,7 @@ export default function WhyBollySection({ username = 'Hung' }) {
                   }`}
                 >
                   <span className="text-lg">{item.emoji}</span>
-                  <span>{key}</span>
+                  <span>{item.label || key}</span>
                 </button>
               ))}
             </div>
@@ -155,8 +159,8 @@ export default function WhyBollySection({ username = 'Hung' }) {
               </div>
               <p className="text-cream/60 leading-relaxed">{em.desc}</p>
               <div className="mt-3 pt-3 border-t border-white/5 flex justify-between text-cream/20">
-                <span>Engine: Spring Boot + Gemini AI</span>
-                <span>Response latency: ~200ms</span>
+                <span>Hệ thống: Spring Boot + Gemini AI</span>
+                <span>Độ trễ phản hồi: ~200ms</span>
               </div>
             </div>
           </div>
@@ -167,18 +171,18 @@ export default function WhyBollySection({ username = 'Hung' }) {
           
           {/* Left: Who is this for? */}
           <div className="max-w-[420px]">
-            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-3 text-glow">Who is Bolly for?</span>
+            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-3 text-glow">Bolly dành cho ai?</span>
             <div className="space-y-3 font-mono text-[13px] uppercase text-cream/70 leading-relaxed text-readable">
-              <p>→ Vietnamese children aged 4–12 who are learning English as a second language</p>
-              <p>→ Parents who want a safe, screen-time-positive learning experience</p>
-              <p>→ Families who cannot afford private English tutors but want quality practice</p>
-              <p>→ Schools looking for supplementary AI-assisted speaking practice tools</p>
+              <p>→ Trẻ em Việt Nam từ 4–12 tuổi đang học và làm quen với tiếng Anh</p>
+              <p>→ Phụ huynh tìm kiếm giải pháp tiếp cận công nghệ an toàn, bổ ích và lành mạnh</p>
+              <p>→ Gia đình mong muốn có môi trường luyện nói chuẩn bản xứ ngay tại nhà</p>
+              <p>→ Trường học và trung tâm cần công cụ tương tác luyện nói tiếng Anh với AI</p>
             </div>
           </div>
 
           {/* Right: Tech Stack */}
           <div className="max-w-[420px]">
-            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-3 text-glow">Built with</span>
+            <span className="font-grotesk text-[14px] uppercase tracking-widest text-neon block mb-3 text-glow">Công nghệ phát triển</span>
             <div className="flex flex-wrap gap-2">
               {['React', 'Three.js', 'Tailwind CSS', 'Spring Boot', 'SQL Server', 'Google Gemini AI', 'Web Speech API', 'JWT Auth', 'REST API', 'Cloudinary'].map((tech) => (
                 <span key={tech} className="liquid-glass px-3 py-1.5 rounded-full font-mono text-[11px] uppercase text-cream/70">

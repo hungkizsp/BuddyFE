@@ -47,13 +47,13 @@ export default function LearnJourneySection({ currentUser }) {
 
   return (
     <section id="worlds" className="relative bg-[#010828] overflow-hidden py-16 lg:py-24 z-10">
-      
+
       {/* Container */}
       <div className="max-w-[1831px] mx-auto px-6 sm:px-10 lg:px-16">
-        
+
         {/* ── HEADER ROW ── */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
-          
+
           {/* Left: Heading */}
           <div>
             <h2 className="font-grotesk text-[36px] sm:text-[68px] uppercase leading-[1.05] text-cream text-glow">
@@ -90,7 +90,7 @@ export default function LearnJourneySection({ currentUser }) {
         </p>
 
         {/* ── WORLD CARD GRID ── */}
-        <div className="flex flex-col gap-8 mb-20 max-w-[1000px] mx-auto">
+        <div className="flex flex-rơư gap-8 mb-20 max-w-[1000px] mx-auto">
           {WORLDS_DATA.map((world, i) => (
             <div
               key={i}
@@ -180,8 +180,8 @@ export default function LearnJourneySection({ currentUser }) {
               },
               {
                 num: '05',
-                title: 'Session Memory Saved',
-                sub: 'Everything you practiced — words mastered, areas of difficulty, time spent, pronunciation scores — is saved to your child profile in SQL Server. Tomorrow, Bolly picks up exactly where you left off. The moment the session ends, our backend engine writes a structured database entry to SQL Server. This learning footprint documents every word spoken, pronunciation scores, time spent, and error categories. This persistent memory allows the AI system to build an evolutionary model of the child\'s skills. When they return tomorrow, the system automatically adapts, generating custom reviews for weak spots before introducing new lessons, ensuring a continuous, personalized learning journey.',
+                title: 'Lưu trữ tiến trình buổi học',
+                sub: 'Mọi nội dung bé đã luyện tập — từ vựng thành thạo, điểm số phát âm, thời lượng học và các điểm cần cải thiện — đều được lưu vào hồ sơ học tập. Bolly sẽ tiếp tục ngay điểm dừng này vào ngày mai và tự động gợi ý ôn tập những điểm chưa vững, đảm bảo hành trình học tập liên tục và vững chắc.',
                 color: '#6FFF00',
               },
             ].map((step) => (
