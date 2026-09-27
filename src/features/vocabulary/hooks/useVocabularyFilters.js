@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { getCategoryDisplayName } from '../../../shared/utils/categoryUtils'
 
 /**
  * useVocabularyFilters – Manages filter/search/tab state for the vocabulary gallery.
@@ -9,7 +10,7 @@ export default function useVocabularyFilters(allData) {
   const [selectedTab, setSelectedTab] = useState('all')
   const [selectedCategory, setSelectedCategory] = useState(null)
 
-  // Extract unique categories from the data
+  // Extract unique categories from the data with Vietnamese display names
   const categories = useMemo(() => {
     const cats = new Map()
     allData.forEach((v) => {
@@ -17,7 +18,11 @@ export default function useVocabularyFilters(allData) {
         cats.set(v.categoryId, v.categoryName)
       }
     })
-    return Array.from(cats.entries()).map(([id, name]) => ({ id, name }))
+    return Array.from(cats.entries()).map(([id, name]) => ({
+      id,
+      name: getCategoryDisplayName(name),
+      rawName: name,
+    }))
   }, [allData])
 
   // Compute filtered list
@@ -43,7 +48,8 @@ export default function useVocabularyFilters(allData) {
         (v) =>
           v.word?.toLowerCase().includes(term) ||
           v.meaning?.toLowerCase().includes(term) ||
-          v.categoryName?.toLowerCase().includes(term)
+          v.categoryName?.toLowerCase().includes(term) ||
+          getCategoryDisplayName(v.categoryName)?.toLowerCase().includes(term)
       )
     }
 

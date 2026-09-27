@@ -4,6 +4,7 @@ import Badge from '../../../shared/components/ui/Badge'
 import useHighlight from '../../study/hooks/useHighlight'
 import HighlightableText from '../../study/components/HighlightableText'
 import { synthesizeSpeech } from '../../adventure/services/speechService'
+import { getCategoryDisplayName } from '../../../shared/utils/categoryUtils'
 
 const FALLBACK_IMG = 'https://placehold.co/400x400/0f172a/6FFF00?text=🦉&font=roboto'
 
@@ -91,7 +92,7 @@ export default function VocabularyDetailDrawer({ vocab, childId, open, onClose }
 
       {/* Category + Difficulty */}
       <div className="flex gap-2 mb-6">
-        {vocab.categoryName && <Badge variant={isLocked ? 'locked' : 'primary'}>{vocab.categoryName}</Badge>}
+        {vocab.categoryName && <Badge variant={isLocked ? 'locked' : 'primary'}>{getCategoryDisplayName(vocab.categoryName)}</Badge>}
         {vocab.difficulty && <Badge variant="warning">{vocab.difficulty}</Badge>}
       </div>
 

@@ -6,10 +6,12 @@ import useVocabularyFilters from '../../vocabulary/hooks/useVocabularyFilters';
 import FilterBar from '../../vocabulary/components/FilterBar';
 import VocabularyGallery from '../../vocabulary/components/VocabularyGallery';
 import VocabularyDetailDrawer from '../../vocabulary/components/VocabularyDetailDrawer';
+import Pagination from '../../../shared/components/ui/Pagination';
 import TopBar from '../../../shared/components/TopBar';
 import SideBar from '../../../layouts/SideBar';
 import Button from '../../../shared/components/ui/Button';
 import ModeSelector from '../components/ModeSelector';
+import { getCategoryDisplayName } from '../../../shared/utils/categoryUtils';
 import '../../home/pages/HomePage.css'; // Reuse sidebar layout styles
 
 function XpBar({ xp, level }) {
@@ -51,6 +53,21 @@ export default function StudyHubPage() {
   const [selectedVocab, setSelectedVocab] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedMode, setSelectedMode] = useState('flashcards');
+
+  // Pagination state for vocabulary gallery
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  // Reset page when filter criteria change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedTab, selectedCategory]);
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage) || 1;
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredData.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredData, currentPage, itemsPerPage]);
 
   // Compute category word counts from enriched vocabulary list
   const categoryCounts = useMemo(() => {
@@ -99,7 +116,7 @@ export default function StudyHubPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-8 sm:space-y-10">
           <div>
             <h1 className="font-grotesk text-3xl font-bold text-cream mb-2 flex items-center gap-3">
-              🧠 Trung Tâm Ôn Tập
+              Trung Tâm Ôn Tập
             </h1>
             <p className="text-sm text-cream/60 max-w-xl">
               Chọn chủ đề từ vựng bạn muốn ôn tập, xem trước ảnh & nghĩa từ vựng, rồi chọn chế độ học tương ứng để bắt đầu.
@@ -110,7 +127,7 @@ export default function StudyHubPage() {
           {!loading && categories.length > 0 && (
             <div>
               <h2 className="font-grotesk text-xl font-bold text-cream mb-4 flex items-center gap-2">
-                📂 1. Chọn chủ đề học
+                1. Chọn chủ đề học
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {categories.map((cat) => {
@@ -120,14 +137,13 @@ export default function StudyHubPage() {
                     <div
                       key={cat.id}
                       onClick={() => setSelectedCategory(isSelected ? null : cat.id)}
-                      className={`cursor-pointer rounded-2xl p-5 border-2 transition-all select-none ${
-                        isSelected
+                      className={`cursor-pointer rounded-2xl p-5 border-2 transition-all select-none ${isSelected
                           ? 'bg-primary/10 border-primary text-cream shadow-glow'
                           : 'bg-slate-900/40 border-slate-800 text-cream/70 hover:border-slate-700 hover:text-cream'
-                      }`}
+                        }`}
                     >
                       <h4 className="font-grotesk font-bold text-base mb-1 truncate">
-                        {cat.name}
+                        {getCategoryDisplayName(cat.name)}
                       </h4>
                       <p className="font-mono text-xs text-cream/40">
                         {wordCount} từ vựng
@@ -142,7 +158,7 @@ export default function StudyHubPage() {
           {/* 🎮 Mode selection */}
           <div>
             <h2 className="font-grotesk text-xl font-bold text-cream mb-4 flex items-center gap-2">
-              🎮 2. Chọn chế độ ôn tập
+              2. Chọn chế độ ôn tập
             </h2>
             <ModeSelector selectedMode={selectedMode} onSelectMode={setSelectedMode} />
           </div>
@@ -154,7 +170,7 @@ export default function StudyHubPage() {
               disabled={!selectedCategory}
               className="px-12 py-4 rounded-2xl bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-slate-800 disabled:to-slate-900 disabled:text-cream/35 disabled:cursor-not-allowed disabled:shadow-none text-white font-grotesk font-bold text-lg shadow-glow hover:scale-[1.03] active:scale-[0.97] transition-all w-full max-w-md"
             >
-              🚀 Bắt đầu ôn tập {activeCategory ? `"${activeCategory.name}"` : ''}
+              Bắt đầu ôn tập {activeCategory ? `"${getCategoryDisplayName(activeCategory.name)}"` : ''}
             </button>
             {!selectedCategory && (
               <p className="text-xs text-danger font-mono uppercase tracking-wider mt-2">
@@ -168,7 +184,7 @@ export default function StudyHubPage() {
             <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <h2 className="font-grotesk text-2xl font-bold text-cream flex items-center gap-2">
-                  📚 Bộ từ vựng của bạn
+                  Bộ từ vựng của bạn
                 </h2>
                 <p className="text-sm text-cream/50 mt-1">
                   Hiển thị hình ảnh thực tế và nghĩa dịch đầy đủ của các từ bạn đã học.
@@ -191,11 +207,22 @@ export default function StudyHubPage() {
             {/* Vocabulary cards gallery */}
             <div className="mt-6">
               <VocabularyGallery
-                items={filteredData}
+                items={paginatedData}
                 loading={loading}
                 error={error}
                 onCardClick={handleCardClick}
               />
+
+              {/* Pagination controls */}
+              {!loading && !error && filteredData.length > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalItems={filteredData.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={setCurrentPage}
+                />
+              )}
             </div>
           </div>
         </div>
